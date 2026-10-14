@@ -118,7 +118,11 @@ belirt ve raporda "rf.js'e taşınmalı" diye bildir. `index.html`'i elle düzen
   `RF.halfWaveDipoleLength(f, k)`, `RF.DIPOLE_DBI`, `RF.dbiToDbd`, `RF.dB/fromDB`, `RF.arrayFactor(elems, φ)`,
   `RF.ulaFactor(N, d, β, θ)`, `RF.steerPhase`, `RF.polarizationLoss`, `RF.reactiveNearField`, `RF.fraunhofer`,
   `RF.fspl(d, f)`, `RF.friis({...})`, `RF.wToDbm/dbmToW`, `RF.noiseFloorDbm`, `RF.powerDensity`, `RF.dishGain`,
-  `RF.CABLES` (RG-58, RG-213, RG-6, LMR-400), `RF.DIELECTRICS`. Testler: `node tests/rf.test.js`.
+  `RF.CABLES` (RG-58, RG-213, RG-6, LMR-400), `RF.DIELECTRICS`. Ayrıca: `RF.Si/Ci/siCi`, `RF.besselJ1`, `RF.logJ0`,
+  `RF.currentDensityRatio(r, a, δ)` ve `RF.acDcRatio(a, δ)` (deri etkisi, tam Bessel çözümü), `RF.coaxOptimum(εr)`
+  (en az kayıp / en çok güç), `RF.dipoleFeedReactance(L/λ, a/λ)`, `RF.dipoleResonantLength(a/λ)`, `RF.mutualZ(d/λ)`,
+  `RF.dipoleSeriesRLC(f, f0, Q, R)`, `RF.dishBeamwidthDeg`, `RF.circularAperture`, `RF.helixDirectivity`,
+  `RF.jones(tür, açı)` ve `RF.polarizationMatch(et, er)`, `RF.icnirpPublicDensity(f)`. Testler: `node tests/rf.test.js`.
 - **1B FDTD (`FDTD1D.Sim`):** `new FDTD1D.Sim({ N, Z0, Rs })`; `sim.source = { kind: "pulse"|"sine"|"step", width, period, amp }`;
   `sim.load = { R, L, C }` ya da `{ open: true }` ya da `sim.setLoadZ(R, X)` (sinüs periyodunda eşdeğer L/C);
   `sim.setProfile(k => Ω)` (hat boyunca empedans; TDR arızası); `sim.setLoss(perCell)`; `sim.step(n)`; `sim.fire()`;

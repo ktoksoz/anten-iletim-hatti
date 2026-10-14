@@ -5,38 +5,8 @@
 
   /* ---------------- yerel yardımcılar ---------------- */
 
-  // Si(x) ve Ci(x): sinüs ve kosinüs integralleri (küçük x için seri, büyük x için asimptotik açılım).
-  // Doğrulama: Si(π) = 1,85194, Ci(π) = 0,07367, Si(25) = 1,53148 (Abramowitz–Stegun tablo 5.1 ile uyumlu).
-  function siCi(x) {
-    if (x <= 0) return { si: 0, ci: -Infinity };
-    if (x < 20) {
-      let s = 0, p = x;
-      for (let n = 0; n < 200; n++) { const v = p / (2 * n + 1); s += v; p *= (-x * x) / ((2 * n + 2) * (2 * n + 3)); if (Math.abs(v) < 1e-16) break; }
-      let c = 0; p = (-x * x) / 2;
-      for (let n = 1; n < 200; n++) { const v = p / (2 * n); c += v; p *= (-x * x) / ((2 * n + 1) * (2 * n + 2)); if (Math.abs(v) < 1e-16) break; }
-      return { si: s, ci: 0.5772156649015329 + Math.log(x) + c };
-    }
-    let fs = 0, gs = 0, tf = 1, tg = 1;
-    for (let n = 0; n < 8; n++) { fs += tf; gs += tg; tf *= (-(2 * n + 1) * (2 * n + 2)) / (x * x); tg *= (-(2 * n + 2) * (2 * n + 3)) / (x * x); }
-    const f = fs / x, g = gs / (x * x);
-    return { si: Math.PI / 2 - f * Math.cos(x) - g * Math.sin(x), ci: f * Math.sin(x) - g * Math.cos(x) };
-  }
-  // İnce dipolün besleme reaktansı (indüklenmiş EMK yöntemi; Balanis, Antenna Theory, 4. baskı, denklem 8-61b,
-  // akım tepesine göre Xm; beslemeye Xin = Xm / sin²(kL/2)). L ve a (tel yarıçapı) dalga boyu cinsinden.
-  // L = λ/2'de tel kalınlığından bağımsız olarak +42,5 Ω verir. (rf.js'e taşınmalı)
-  function dipoleFeedReactance(Lwl, aWl) {
-    const kl = 2 * Math.PI * Lwl, ka = 2 * Math.PI * aWl;
-    const A = siCi(kl), B = siCi(2 * kl), Cc = siCi((2 * ka * aWl) / Lwl);
-    const xm = (RF.eta0 / (4 * Math.PI)) * (2 * A.si + Math.cos(kl) * (2 * A.si - B.si) - Math.sin(kl) * (2 * A.ci - B.ci - Cc.ci));
-    const s = Math.sin(Math.PI * Lwl);
-    return xm / (s * s);
-  }
-  // Reaktansın sıfırlandığı (rezonans) uzunluk, dalga boyu cinsinden (ikiye bölme)
-  function dipoleResonantLength(aWl) {
-    let lo = 0.4, hi = 0.5;
-    for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; dipoleFeedReactance(m, aWl) > 0 ? (hi = m) : (lo = m); }
-    return (lo + hi) / 2;
-  }
+  // İndüklenmiş EMK reaktansı ve rezonans boyu rf.js'te (testli)
+  const dipoleFeedReactance = RF.dipoleFeedReactance, dipoleResonantLength = RF.dipoleResonantLength;
   // Ekseni etrafında simetrik bir güç deseni U(θ) için yönlülük: D = 4π Umax / ∫U dΩ = 2 Umax / ∫0^π U sinθ dθ (Simpson)
   function directivityOf(U) {
     const N = 1800; let s = 0, umax = 0;

@@ -197,19 +197,10 @@
   };
 
   /* ================= Karakteristik empedans ================= */
-  // Hava koaksiyelde en düşük kayıp ve en yüksek güç için D/d oranı (aynı dış çap, sayısal optimum)
-  function golden(f, a, b, maxim) {
-    const r = (Math.sqrt(5) - 1) / 2; let c = b - r * (b - a), d = a + r * (b - a);
-    for (let i = 0; i < 80; i++) {
-      const fc = f(c), fd = f(d);
-      if (maxim ? fc > fd : fc < fd) { b = d; d = c; c = b - r * (b - a); } else { a = c; c = d; d = a + r * (b - a); }
-    }
-    return (a + b) / 2;
-  }
-  const lossOf = (x) => RF.coaxLoss(1e8, 0.01, 0.01 / x, 1).conductor;                     // D = 10 mm sabit
-  const powerOf = (x) => { const a = 0.005 / x, v = a * Math.log(x); return (v * v) / RF.coaxZ0(x, 1, 1); }; // E_max sabit: V = E·a·ln(D/d)
-  const X_LOSS = golden(lossOf, 1.2, 10, false), X_POW = golden(powerOf, 1.05, 10, true);
-  const Z_LOSS = RF.coaxZ0(X_LOSS, 1, 1), Z_POW = RF.coaxZ0(X_POW, 1, 1);
+  // Hava koaksiyelde en düşük kayıp ve en yüksek güç için D/d oranı ve Z0 (rf.js'te sayısal optimum, testli)
+  const lossOf = (x) => RF.coaxLossOfRatio(x), powerOf = RF.coaxPowerOfRatio;
+  const OPT = RF.coaxOptimum(1);
+  const X_LOSS = OPT.lossDd, X_POW = OPT.powerDd, Z_LOSS = OPT.lossZ0, Z_POW = OPT.powerZ0;
 
   Demos.ch2Z0 = function (stage, slide) {
     slide.querySelectorAll("[data-z0]").forEach((el) => { el.textContent = "≈ " + ohm(el.dataset.z0 === "loss" ? Z_LOSS : Z_POW, 3); });
@@ -522,52 +513,8 @@
   };
 
   /* ================= Deri etkisi ================= */
-  // J0(z) karmaşık Bessel: |z| < 16 seri açılım, üstünde asimptotik açılım (Im z < 0 için baskın terim).
-  // Dönüş: { lm: ln|J0|, ph: arg J0 }
-  function logJ0(z) {
-    const az = CX.abs(z);
-    if (az < 16) {
-      const q = CX.scale(CX.mul(z, z), -0.25);
-      let term = RF.cx(1, 0), sum = RF.cx(1, 0);
-      for (let k = 1; k < 120; k++) {
-        term = CX.scale(CX.mul(term, q), 1 / (k * k));
-        sum = CX.add(sum, term);
-        if (CX.abs(term) < 1e-17 * CX.abs(sum)) break;
-      }
-      return { lm: Math.log(CX.abs(sum)), ph: CX.arg(sum) };
-    }
-    // J0(z) ≈ √(2/πz) · e^{iχ}/2 · (P + iQ), χ = z − π/4, P = 1 − 9/(128 z²), Q = −1/(8z) + 75/(1024 z³)
-    const zi = CX.inv(z), zi2 = CX.mul(zi, zi), zi3 = CX.mul(zi2, zi);
-    const Pp = CX.sub(1, CX.scale(zi2, 9 / 128));
-    const Qq = CX.add(CX.scale(zi, -1 / 8), CX.scale(zi3, 75 / 1024));
-    const PQ = CX.add(Pp, CX.mul(RF.cx(0, 1), Qq));
-    const chiRe = z.re - Math.PI / 4, chiIm = z.im;
-    return {
-      lm: 0.5 * Math.log(2 / (Math.PI * az)) - chiIm - Math.LN2 + Math.log(CX.abs(PQ)),
-      ph: -CX.arg(z) / 2 + chiRe + CX.arg(PQ),
-    };
-  }
-  // J(r)/J(a) karmaşık oran; k = (1 − j)/δ
-  function jRatio(r, a, delta, la) {
-    const lr = logJ0(RF.cx(r / delta, -r / delta));
-    la = la || logJ0(RF.cx(a / delta, -a / delta));
-    return CX.polar(Math.exp(lr.lm - la.lm), lr.ph - la.ph);
-  }
-  // AC/DC direnç oranı: R_ac/R_dc = πa² ∫|J|² dA / |∫J dA|², yüzeye sıkışan ızgarayla sayısal integral
-  function acdc(a, delta) {
-    const la = logJ0(RF.cx(a / delta, -a / delta));
-    const M = 2400;
-    let Ire = 0, Iim = 0, Pw = 0, prev = null;
-    for (let i = 0; i <= M; i++) {
-      const s = a * Math.pow(i / M, 3), r = a - s; // derinlik s, yüzeyde sık
-      const J = jRatio(r, a, delta, la), mag2 = J.re * J.re + J.im * J.im;
-      const cur = { r, re: J.re * r, im: J.im * r, p: mag2 * r };
-      if (prev) { const ds = prev.r - r; Ire += 0.5 * (cur.re + prev.re) * ds; Iim += 0.5 * (cur.im + prev.im) * ds; Pw += 0.5 * (cur.p + prev.p) * ds; }
-      prev = cur;
-    }
-    // ∫…2πr dr: 2π katsayıları oranda sadeleşir → πa²·2π·Pw / (2π)²|I|² = a² Pw / (2|I|²)
-    return (a * a * Pw) / (2 * (Ire * Ire + Iim * Iim));
-  }
+  // Tam Bessel çözümü ve AC/DC oranı rf.js'te (testli)
+  const logJ0 = RF.logJ0, jRatio = RF.currentDensityRatio, acdc = RF.acDcRatio;
   // Veri sayfası noktaları (dB/100 ft → dB/100 m çarpı 3,2808):
   //  Belden 9201 (RG-58) nominal: 1 MHz 0,3 · 50 MHz 2,5 · 100 MHz 3,8 · 1000 MHz 14,5 dB/100 ft
   //  Belden 8267 (RG-213) nominal: 100 MHz 1,9 · 400 MHz 4,1 dB/100 ft

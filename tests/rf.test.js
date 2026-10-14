@@ -114,5 +114,47 @@ near("Friis doğrusal ve dB tutarlı", RF.wToDbm(1 * RF.friisRatio(RF.fromDB(2.1
 near("1 W = 30 dBm", RF.wToDbm(1), 30, 1e-12);
 near("Gürültü tabanı 12,5 kHz, NF 0 (dBm)", RF.noiseFloorDbm(12.5e3), -133.03, 0.01);
 
+// Bölümlerden taşınan yardımcılar
+near("Si(π) (A–S 5.1)", RF.Si(Math.PI), 1.851937, 1e-6);
+near("Ci(π) (A–S 5.1)", RF.Ci(Math.PI), 0.073668, 1e-6);
+near("Si(25) (asimptotik dal)", RF.Si(25), 1.531477, 1e-5);
+near("Si / Ci 20'de dallar arası süreklilik", RF.Si(19.9999) - RF.Si(20.0001), 0, 1e-4);
+near("J1(1)", RF.besselJ1(1), 0.4400506, 1e-6);
+near("J1'in ilk sıfırı 3,8317", RF.besselJ1(3.8317), 0, 1e-4);
+near("J1(10) (polinom dalı)", RF.besselJ1(10), 0.0434727, 1e-6);
+near("Dairesel açıklık: 2J1(u)/u, u → 0", RF.circularAperture(1e-12), 1, 1e-12);
+near("Yarım dalga dipol reaktansı (Ω, Balanis +42,5)", RF.dipoleFeedReactance(0.5, 1e-3), 42.5, 0.1);
+const lr = RF.dipoleResonantLength(1e-3);
+near("İnce dipol rezonans boyu (λ) 0,47–0,49 aralığında", lr > 0.47 && lr < 0.49 ? 1 : 0, 1, 0);
+near("Rezonans boyunda reaktans ≈ 0", RF.dipoleFeedReactance(lr, 1e-3), 0, 0.01);
+cnear("Karşılıklı empedans d = 0,5λ (Balanis)", RF.mutualZ(0.5), cx(-12.53, -29.93), 0.05);
+cnear("Karşılıklı empedans d → 0 = öz empedans", RF.mutualZ(1e-4), cx(73.1, 42.5), 0.1);
+near("Seri RLC dipol: rezonansta X = 0", RF.dipoleSeriesRLC(145e6, 145e6, 10).im, 0, 1e-9);
+// deri etkisi: kalın telde R_ac/R_dc ≈ a/(2δ) + 1/4; ince telde ≈ 1
+const dS = RF.skinDepth(100e6);
+near("AC/DC oranı 2 mm tel, 100 MHz ≈ a/2δ + 1/4", RF.acDcRatio(1e-3, dS), 1e-3 / (2 * dS) + 0.25, 0.3);
+near("AC/DC oranı 2 mm tel, 50 Hz ≈ 1", RF.acDcRatio(1e-3, RF.skinDepth(50)), 1, 0.01);
+near("Akım yoğunluğu yüzeyde 1", RF.C.abs(RF.currentDensityRatio(1e-3, 1e-3, dS)), 1, 1e-12);
+near("Akım yoğunluğu bir δ içeride ≈ 1/e", RF.C.abs(RF.currentDensityRatio(1e-3 - dS, 1e-3, dS)), Math.exp(-1), 0.01);
+// koaks optimumları (hava): en az kayıp ≈ 76,7 Ω, en çok güç ≈ 30 Ω
+const co = RF.coaxOptimum(1);
+near("Koaks en düşük kayıp Z0 (hava)", co.lossZ0, 76.7, 0.2);
+near("Koaks en yüksek güç Z0 (hava)", co.powerZ0, 30.0, 0.2);
+near("Koaks en yüksek güç D/d = √e", co.powerDd, Math.sqrt(Math.E), 1e-3);
+// çanak ve helis
+near("Çanak hüzmesi 1 m, 10 GHz (°)", RF.dishBeamwidthDeg(1, 10e9), 2.098, 0.01);
+near("Helis yönlülüğü N=6, C=1λ, S=0,25λ", RF.helixDirectivity(6, 1, 0.25), 22.5, 1e-12);
+// polarizasyon (Jones)
+near("Dikey–yatay uyum", RF.polarizationMatch(RF.jones("v", 0), RF.jones("v", Math.PI / 2)), 0, 1e-12);
+near("Doğrusal 30° = cos²", RF.polarizationMatch(RF.jones("v", 0), RF.jones("v", Math.PI / 6)), RF.polarizationLoss(Math.PI / 6), 1e-12);
+near("Dairesel–doğrusal = 1/2 (3 dB)", RF.polarizationMatch(RF.jones("r"), RF.jones("v", 0.7)), 0.5, 1e-12);
+near("Sağ el–sağ el = 1", RF.polarizationMatch(RF.jones("r"), RF.jones("r")), 1, 1e-12);
+near("Sağ el–sol el = 0", RF.polarizationMatch(RF.jones("r"), RF.jones("l")), 0, 1e-12);
+// ICNIRP 2020 genel halk
+near("ICNIRP 145 MHz (W/m²)", RF.icnirpPublicDensity(145e6), 2, 0);
+near("ICNIRP 1 GHz (W/m²)", RF.icnirpPublicDensity(1e9), 5, 0);
+near("ICNIRP 5 GHz (W/m²)", RF.icnirpPublicDensity(5e9), 10, 0);
+near("ICNIRP 10 MHz tanımsız", isNaN(RF.icnirpPublicDensity(10e6)) ? 1 : 0, 1, 0);
+
 console.log(`\n${pass} geçti, ${fail} kaldı`);
 process.exit(fail ? 1 : 0);

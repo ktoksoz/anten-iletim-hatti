@@ -18,17 +18,8 @@
      Sağ el (IEEE): (x̂ − jŷ)/√2; sol el: (x̂ + jŷ)/√2. Doğrusal, dikeyden a açısı: (−sin a, cos a).
      Polarizasyon uyum oranı PLF = |ê_t · ê_r*|² (doğrusal–doğrusal durumda RF.polarizationLoss(Δ) = cos²Δ ile aynı).
      ===================================================================== */
-  const S2 = Math.SQRT1_2;
-  function jones(kind, a) {
-    if (kind === "r") return [RF.cx(S2, 0), RF.cx(0, -S2)];
-    if (kind === "l") return [RF.cx(S2, 0), RF.cx(0, S2)];
-    return [RF.cx(-Math.sin(a), 0), RF.cx(Math.cos(a), 0)];
-  }
-  function plf(et, er) {
-    const d = RF.C.add(RF.C.mul(et[0], RF.C.conj(er[0])), RF.C.mul(et[1], RF.C.conj(er[1])));
-    const a = RF.C.abs(d);
-    return a * a;
-  }
+  // Jones vektörleri ve polarizasyon uyum oranı rf.js'te (testli)
+  const jones = RF.jones, plf = RF.polarizationMatch;
 
   Demos.ch6bPol = function (stage) {
     const cv = h("canvas", { "aria-label": "İlerleyen elektromanyetik dalga: elektrik alanı vektörü ve ona dik manyetik alan; verici ve alıcı antenler" });
@@ -489,25 +480,8 @@
      helisel = RF.ulaFactor ile uç-ateşlemeli Hansen–Woodyard dizisi × cos θ (yaklaşık, Kraus);
      çanak = düzgün aydınlatılmış dairesel açıklık 2 J1(u)/u (yaklaşık).
      ===================================================================== */
-  // Birinci tür Bessel J1 (Numerical Recipes, bessj1 polinom yaklaşımı; bağıl hata < 1e-7). rf.js'e taşınmalı.
-  function besselJ1(x) {
-    const ax = Math.abs(x);
-    if (ax < 8) {
-      const y = x * x;
-      const a1 = x * (72362614232.0 + y * (-7895059235.0 + y * (242396853.1 + y * (-2972611.439 + y * (15704.48260 + y * -30.16036606)))));
-      const a2 = 144725228442.0 + y * (2300535178.0 + y * (18583304.74 + y * (99447.43394 + y * (376.9991397 + y))));
-      return a1 / a2;
-    }
-    const z = 8 / ax, y = z * z, xx = ax - 2.356194491;
-    const p1 = 1 + y * (0.183105e-2 + y * (-0.3516396496e-4 + y * (0.2457520174e-5 + y * -0.240337019e-6)));
-    const p2 = 0.04687499995 + y * (-0.2002690873e-3 + y * (0.8449199096e-5 + y * (-0.88228987e-6 + y * 0.105787412e-6)));
-    const ans = Math.sqrt(0.636619772 / ax) * (Math.cos(xx) * p1 - z * Math.sin(xx) * p2);
-    return x < 0 ? -ans : ans;
-  }
-  // Çanak hüzme genişliği (−3 dB) ≈ 70 λ / D derece: yaygın mühendislik kuralı (ör. ARRL Antenna Book). rf.js'e taşınmalı.
-  const dishBeamwidthDeg = (diam, f) => (70 * RF.wavelength(f)) / diam;
-  // Eksenel kipte helis yönlülüğü (Kraus, 1949): D ≈ 15 N (C/λ)² (S/λ). rf.js'e taşınmalı.
-  const helixDirectivity = (N, Cwl, Swl) => 15 * N * Cwl * Cwl * Swl;
+  // J1, çanak hüzme genişliği ve helis yönlülüğü rf.js'te (testli)
+  const besselJ1 = RF.besselJ1, dishBeamwidthDeg = RF.dishBeamwidthDeg, helixDirectivity = RF.helixDirectivity;
   const HELIX = { N: 6, C: 1, S: 0.25 };
 
   const ANT = [

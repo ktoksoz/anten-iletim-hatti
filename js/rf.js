@@ -362,8 +362,176 @@
   // Uzak alanda güç yoğunluğu: S = P G / (4π r²) (W/m²)
   const powerDensity = (pW, gLin, r) => (pW * gLin) / (4 * Math.PI * r * r);
 
+  /* ---------- Özel fonksiyonlar ---------- */
+  // Si(x) ve Ci(x): sinüs ve kosinüs integralleri. x < 20 seri, üstünde asimptotik açılım.
+  // Abramowitz–Stegun tablo 5.1: Si(π) = 1,851937, Ci(π) = 0,073668.
+  function siCi(x) {
+    if (x <= 0) return { si: 0, ci: -Infinity };
+    if (x < 20) {
+      let s = 0, p = x;
+      for (let n = 0; n < 200; n++) { const v = p / (2 * n + 1); s += v; p *= (-x * x) / ((2 * n + 2) * (2 * n + 3)); if (Math.abs(v) < 1e-16) break; }
+      let c = 0; p = (-x * x) / 2;
+      for (let n = 1; n < 200; n++) { const v = p / (2 * n); c += v; p *= (-x * x) / ((2 * n + 1) * (2 * n + 2)); if (Math.abs(v) < 1e-16) break; }
+      return { si: s, ci: 0.5772156649015329 + Math.log(x) + c };
+    }
+    let fs = 0, gs = 0, tf = 1, tg = 1;
+    for (let n = 0; n < 8; n++) { fs += tf; gs += tg; tf *= (-(2 * n + 1) * (2 * n + 2)) / (x * x); tg *= (-(2 * n + 2) * (2 * n + 3)) / (x * x); }
+    const f = fs / x, g = gs / (x * x);
+    return { si: Math.PI / 2 - f * Math.cos(x) - g * Math.sin(x), ci: f * Math.sin(x) - g * Math.cos(x) };
+  }
+  const Si = (x) => siCi(x).si;
+  const Ci = (x) => siCi(x).ci;
+  // Birinci tür Bessel J1 (Numerical Recipes bessj1 polinom yaklaşımı; bağıl hata < 1e-7)
+  function besselJ1(x) {
+    const ax = Math.abs(x);
+    if (ax < 8) {
+      const y = x * x;
+      const a1 = x * (72362614232.0 + y * (-7895059235.0 + y * (242396853.1 + y * (-2972611.439 + y * (15704.48260 + y * -30.16036606)))));
+      const a2 = 144725228442.0 + y * (2300535178.0 + y * (18583304.74 + y * (99447.43394 + y * (376.9991397 + y))));
+      return a1 / a2;
+    }
+    const z = 8 / ax, y = z * z, xx = ax - 2.356194491;
+    const p1 = 1 + y * (0.183105e-2 + y * (-0.3516396496e-4 + y * (0.2457520174e-5 + y * -0.240337019e-6)));
+    const p2 = 0.04687499995 + y * (-0.2002690873e-3 + y * (0.8449199096e-5 + y * (-0.88228987e-6 + y * 0.105787412e-6)));
+    const ans = Math.sqrt(0.636619772 / ax) * (Math.cos(xx) * p1 - z * Math.sin(xx) * p2);
+    return x < 0 ? -ans : ans;
+  }
+  // Karmaşık argümanlı J0(z)'nin logaritması: { lm: ln|J0|, ph: arg J0 }.
+  // |z| < 16 seri açılım, üstünde asimptotik açılım (Im z < 0 için baskın terim). Deri etkisi profili için.
+  function logJ0(z) {
+    const az = C.abs(z);
+    if (az < 16) {
+      const q = C.scale(C.mul(z, z), -0.25);
+      let term = cx(1, 0), sum = cx(1, 0);
+      for (let k = 1; k < 120; k++) {
+        term = C.scale(C.mul(term, q), 1 / (k * k));
+        sum = C.add(sum, term);
+        if (C.abs(term) < 1e-17 * C.abs(sum)) break;
+      }
+      return { lm: Math.log(C.abs(sum)), ph: C.arg(sum) };
+    }
+    // J0(z) ≈ √(2/πz) · e^{iχ}/2 · (P + iQ), χ = z − π/4, P = 1 − 9/(128 z²), Q = −1/(8z) + 75/(1024 z³)
+    const zi = C.inv(z), zi2 = C.mul(zi, zi), zi3 = C.mul(zi2, zi);
+    const Pp = C.sub(1, C.scale(zi2, 9 / 128));
+    const Qq = C.add(C.scale(zi, -1 / 8), C.scale(zi3, 75 / 1024));
+    const PQ = C.add(Pp, C.mul(cx(0, 1), Qq));
+    return {
+      lm: 0.5 * Math.log(2 / (Math.PI * az)) - z.im - Math.LN2 + Math.log(C.abs(PQ)),
+      ph: -C.arg(z) / 2 + (z.re - Math.PI / 4) + C.arg(PQ),
+    };
+  }
+
+  /* ---------- Deri etkisi: yuvarlak telde akım yoğunluğu (tam Bessel çözümü) ---------- */
+  // J(r)/J(a) karmaşık oranı; yarıçap a, deri derinliği δ (aynı birim). k = (1 − j)/δ.
+  // la: logJ0((1 − j)a/δ) önceden hesaplandıysa verilebilir.
+  function currentDensityRatio(r, a, delta, la) {
+    const lr = logJ0(cx(r / delta, -r / delta));
+    la = la || logJ0(cx(a / delta, -a / delta));
+    return C.polar(Math.exp(lr.lm - la.lm), lr.ph - la.ph);
+  }
+  // AC/DC direnç oranı: R_ac/R_dc = πa² ∫|J|² dA / |∫J dA|². a ≫ δ iken ≈ a/(2δ) + 1/4.
+  function acDcRatio(a, delta) {
+    const la = logJ0(cx(a / delta, -a / delta));
+    const M = 2400;
+    let Ire = 0, Iim = 0, Pw = 0, prev = null;
+    for (let i = 0; i <= M; i++) {
+      const s = a * Math.pow(i / M, 3), r = a - s; // derinlik s; ızgara yüzeyde sık
+      const J = currentDensityRatio(r, a, delta, la), mag2 = J.re * J.re + J.im * J.im;
+      const cur = { r, re: J.re * r, im: J.im * r, p: mag2 * r };
+      if (prev) { const ds = prev.r - r; Ire += 0.5 * (cur.re + prev.re) * ds; Iim += 0.5 * (cur.im + prev.im) * ds; Pw += 0.5 * (cur.p + prev.p) * ds; }
+      prev = cur;
+    }
+    // ∫…2πr dr: 2π katsayıları sadeleşir → a² Pw / (2|I|²)
+    return (a * a * Pw) / (2 * (Ire * Ire + Iim * Iim));
+  }
+
+  /* ---------- Koaksiyel optimumlar ---------- */
+  // Dış çap sabitken: en düşük iletken kaybı ve en yüksek güç taşıma (bozulma alanı sabit) için D/d ve Z0.
+  // Hava için ≈ 76,7 Ω ve 30 Ω (Microwaves101, "Why fifty ohms?"). D/d optimumları εr'den bağımsızdır.
+  function golden(f, a, b, maxim) {
+    const r = (Math.sqrt(5) - 1) / 2; let c = b - r * (b - a), d = a + r * (b - a);
+    for (let i = 0; i < 80; i++) {
+      const fc = f(c), fd = f(d);
+      if (maxim ? fc > fd : fc < fd) { b = d; d = c; c = b - r * (b - a); } else { a = c; c = d; d = a + r * (b - a); }
+    }
+    return (a + b) / 2;
+  }
+  // x = D/d için göreli büyüklükler (D = 10 mm sabit)
+  const coaxLossOfRatio = (x, er = 1) => coaxLoss(1e8, 0.01, 0.01 / x, er).conductor;
+  const coaxPowerOfRatio = (x) => { const a = 0.005 / x, v = a * Math.log(x); return (v * v) / coaxZ0(x, 1, 1); };
+  function coaxOptimum(er = 1) {
+    const lossDd = golden((x) => coaxLossOfRatio(x, er), 1.2, 10, false);
+    const powerDd = golden(coaxPowerOfRatio, 1.05, 10, true);
+    return { lossDd, lossZ0: coaxZ0(lossDd, 1, er), powerDd, powerZ0: coaxZ0(powerDd, 1, er) };
+  }
+
+  /* ---------- Dipol: reaktans, rezonans, karşılıklı empedans, yaklaşık model ---------- */
+  // İnce dipolün besleme reaktansı (indüklenmiş EMK; Balanis, Antenna Theory, 4. baskı, denk. 8-61b).
+  // Akım tepesine göre Xm, beslemeye Xin = Xm / sin²(kL/2). L ve a (tel yarıçapı) dalga boyu cinsinden.
+  // L = λ/2'de tel kalınlığından bağımsız olarak +42,5 Ω.
+  function dipoleFeedReactance(Lwl, aWl) {
+    const kl = 2 * Math.PI * Lwl, ka = 2 * Math.PI * aWl;
+    const A = siCi(kl), B = siCi(2 * kl), Cc = siCi((2 * ka * aWl) / Lwl);
+    const xm = (eta0 / (4 * Math.PI)) * (2 * A.si + Math.cos(kl) * (2 * A.si - B.si) - Math.sin(kl) * (2 * A.ci - B.ci - Cc.ci));
+    const s = Math.sin(Math.PI * Lwl);
+    return xm / (s * s);
+  }
+  // Reaktansın sıfırlandığı (rezonans) uzunluk, dalga boyu cinsinden
+  function dipoleResonantLength(aWl) {
+    let lo = 0.4, hi = 0.5;
+    for (let i = 0; i < 50; i++) { const m = (lo + hi) / 2; dipoleFeedReactance(m, aWl) > 0 ? (hi = m) : (lo = m); }
+    return (lo + hi) / 2;
+  }
+  // Yan yana iki paralel yarım dalga dipolün karşılıklı empedansı, aralık d dalga boyu cinsinden.
+  // Balanis 8-68. d = 0,5λ → −12,5 − j29,9 Ω; d → 0 → öz empedans 73,1 + j42,5 Ω.
+  function mutualZ(dWl) {
+    const k = 2 * Math.PI, Lh = 0.5, r = Math.sqrt(dWl * dWl + Lh * Lh);
+    const u0 = k * dWl, u1 = k * (r + Lh), u2 = k * (r - Lh);
+    return cx(30 * (2 * Ci(u0) - Ci(u1) - Ci(u2)), -30 * (2 * Si(u0) - Si(u1) - Si(u2)));
+  }
+  // Rezonans çevresinde dipolün yaklaşık seri RLC modeli: Z = R + j Q R (f/f0 − f0/f)
+  const dipoleSeriesRLC = (f, f0, Q, R = 73) => cx(R, Q * R * (f / f0 - f0 / f));
+
+  /* ---------- Diğer antenler ---------- */
+  // Çanak hüzme genişliği (−3 dB) ≈ 70 λ / D derece (yaygın mühendislik kuralı)
+  const dishBeamwidthDeg = (diam, f) => (70 * wavelength(f)) / diam;
+  // Düzgün aydınlatılmış dairesel açıklığın deseni: 2 J1(u)/u
+  const circularAperture = (u) => (Math.abs(u) < 1e-9 ? 1 : (2 * besselJ1(u)) / u);
+  // Eksenel kipte helis yönlülüğü (Kraus, 1949): D ≈ 15 N (C/λ)² (S/λ)
+  const helixDirectivity = (N, Cwl, Swl) => 15 * N * Cwl * Cwl * Swl;
+
+  /* ---------- Polarizasyon (Jones vektörleri) ---------- */
+  // "r": sağ el dairesel, "l": sol el dairesel, diğerleri: düşeyden a radyan yatık doğrusal
+  function jones(kind, a = 0) {
+    const s = Math.SQRT1_2;
+    if (kind === "r") return [cx(s, 0), cx(0, -s)];
+    if (kind === "l") return [cx(s, 0), cx(0, s)];
+    return [cx(-Math.sin(a), 0), cx(Math.cos(a), 0)];
+  }
+  // Polarizasyon uyum oranı (alınan güç / en iyi durum) = |ê_t · ê_r*|². Doğrusal–doğrusalda cos²Δ.
+  function polarizationMatch(et, er) {
+    const d = C.add(C.mul(et[0], C.conj(er[0])), C.mul(et[1], C.conj(er[1])));
+    const a = C.abs(d);
+    return a * a;
+  }
+
+  /* ---------- RF güvenliği ---------- */
+  // ICNIRP 2020, Tablo 5 (genel halk, tüm vücut, 30 dk ortalama), eşdeğer düzlem dalga güç yoğunluğu (W/m²):
+  //  >30–400 MHz: 2 ; >400–2000 MHz: f/200 (f MHz) ; >2–300 GHz: 10. 30 MHz altında tanımlı değil (NaN).
+  function icnirpPublicDensity(f) {
+    const fM = f / 1e6;
+    if (fM <= 30) return NaN;
+    if (fM <= 400) return 2;
+    if (fM <= 2000) return fM / 200;
+    return 10;
+  }
+
   const RF = {
     c0, mu0, eps0, eta0, SIGMA_CU, cx, C,
+    siCi, Si, Ci, besselJ1, logJ0, currentDensityRatio, acDcRatio,
+    coaxOptimum, coaxLossOfRatio, coaxPowerOfRatio,
+    dipoleFeedReactance, dipoleResonantLength, mutualZ, dipoleSeriesRLC,
+    dishBeamwidthDeg, circularAperture, helixDirectivity, jones, polarizationMatch, icnirpPublicDensity,
     gamma, zFromGamma, vswr, gammaFromVswr, returnLoss, mismatchLoss, powerDelivered, zSeries, zParallel,
     omega, xL, xC, zL, zC, resonance, qSeries, qParallel, reactanceToPart, susceptanceToPart,
     wavelength, vfFromEr, electricalLengthDeg, electricalLengthWl, roundTrip, distanceFromRoundTrip,

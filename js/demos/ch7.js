@@ -222,7 +222,7 @@
   const FA = 120e6, FB = 170e6, NS = 301;
   const RG58 = RF.CABLES["RG-58"];
   // Dipol yaklaşık modeli: seri RLC, R sabit, X = Q·R·(f/f0 − f0/f)
-  const dipoleZ = (f, f0, Q, R = 73) => RF.cx(R, Q * R * (f / f0 - f0 / f));
+  const dipoleZ = RF.dipoleSeriesRLC;
   function cableZ(Z, f, len, lossy) {
     if (len <= 0) return Z;
     const beta = (2 * Math.PI * f) / (RF.c0 * RG58.vf);
@@ -356,24 +356,8 @@
   /* =====================================================================
      3. Pratik hatalar
      ===================================================================== */
-  // Si(x), Ci(x): sinüs ve kosinüs integralleri (Simpson). Karşılıklı empedans için. rf.js'e taşınmalı.
-  function Si(x) {
-    const n = Math.max(200, Math.ceil(x * 40)) * 2, hh = x / n; let s = 0;
-    for (let i = 0; i <= n; i++) { const t = i * hh, v = t ? Math.sin(t) / t : 1; s += v * (i === 0 || i === n ? 1 : i % 2 ? 4 : 2); }
-    return (s * hh) / 3;
-  }
-  function Ci(x) {
-    const n = Math.max(200, Math.ceil(x * 40)) * 2, hh = x / n; let s = 0;
-    for (let i = 0; i <= n; i++) { const t = i * hh, v = t ? (Math.cos(t) - 1) / t : 0; s += v * (i === 0 || i === n ? 1 : i % 2 ? 4 : 2); }
-    return 0.5772156649 + Math.log(x) + (s * hh) / 3;
-  }
-  // Yan yana iki paralel yarım dalga dipolün karşılıklı empedansı (d dalga boyu cinsinden). Balanis, Antenna Theory, 8.68.
-  // Doğrulama: d = 0,5λ → −12,5 − j29,9 Ω ; d → 0 → 73,1 + j42,5 Ω
-  function mutualZ(d) {
-    const k = 2 * Math.PI, Lh = 0.5, r = Math.sqrt(d * d + Lh * Lh);
-    const u0 = k * d, u1 = k * (r + Lh), u2 = k * (r - Lh);
-    return RF.cx(30 * (2 * Ci(u0) - Ci(u1) - Ci(u2)), -30 * (2 * Si(u0) - Si(u1) - Si(u2)));
-  }
+  // Yan yana iki yarım dalga dipolün karşılıklı empedansı rf.js'te (Balanis 8-68, testli)
+  const mutualZ = RF.mutualZ;
   const Z11 = mutualZ(1e-4); // ince telin öz empedansı (≈ 73,1 + j42,5 Ω)
 
   Demos.ch7Pitfalls = function (stage) {
@@ -604,15 +588,8 @@
   /* =====================================================================
      4. Güvenlik: ICNIRP 2020 genel halk referans seviyeleri, güvenli mesafe; uç gerilimi
      ===================================================================== */
-  // ICNIRP 2020, Tablo 5 (genel halk, tüm vücut, 30 dk ortalama), güç yoğunluğu Sinc (W/m²):
-  //  >30–400 MHz: 2 ; >400–2000 MHz: f/200 (f MHz) ; >2–300 GHz: 10. 30 MHz altında Sinc tanımlı değil (NA).
-  function icnirpPublicS(f) {
-    const fM = f / 1e6;
-    if (fM <= 30) return NaN;
-    if (fM <= 400) return 2;
-    if (fM <= 2000) return fM / 200;
-    return 10;
-  }
+  // ICNIRP 2020 genel halk güç yoğunluğu sınırı rf.js'te (Tablo 5, testli)
+  const icnirpPublicS = RF.icnirpPublicDensity;
   const EFHW_Z = 50 * 49; // 49:1 dönüştürücüyle beslenen uçtan beslemeli yarım dalga: ≈ 2,45 kΩ
 
   Demos.ch7Safety = function (stage) {

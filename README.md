@@ -53,7 +53,7 @@ Her slaytın bağlantısı adres çubuğunda durur (ör. `#smith-abagi`).
 ## Yapı
 
 - `index.html`: `tools/parts/ch*.html` parçalarından `python3 tools/assemble.py` ile kurulur. Slaytları parçalarda düzenleyin.
-- `js/rf.js`: RF hesap çekirdeği: karmaşık sayılar, Z ↔ Γ ↔ VSWR ↔ geri dönüş kaybı ↔ uyumsuzluk kaybı, kayıplı/kayıpsız hat dönüşümü, koaks / çift hat / mikroşerit Z₀, deri derinliği ve kablo kaybı, L-ağı, çeyrek dalga, tek stub, dipol ve monopol (ışıma direnci, yönlülük), dizi faktörü, Friis ve yol kaybı
+- `js/rf.js`: RF hesap çekirdeği: karmaşık sayılar, Z ↔ Γ ↔ VSWR ↔ geri dönüş kaybı ↔ uyumsuzluk kaybı, kayıplı/kayıpsız hat dönüşümü, koaks / çift hat / mikroşerit Z₀ ve koaks optimumları, deri derinliği, akım yoğunluğu profili ve kablo kaybı, L-ağı, çeyrek dalga, tek stub, dipol ve monopol (ışıma direnci, reaktans, yönlülük, karşılıklı empedans), dizi faktörü, polarizasyon, Friis ve yol kaybı, ICNIRP sınırları; sitedeki bütün sayılar buradan gelir
 - `js/fdtd1d.js`: 1B FDTD iletim hattı (telgrafçı denklemleri, Courant 1; Thevenin kaynak, seri R-L-C yük, hat boyunca empedans profili; ileri/yansıyan dalga ayrımı için gölge hat)
 - `js/fdtd2d.js`: 2B FDTD alan simülasyonu (TE kipi, Yee ızgarası, kademeli sönümleyici sınır, mükemmel iletkenler; elektrik alan çizgileri için Ψ = ∫Hz dt eş-değer eğrileri)
 - `js/smith.js`: sitedeki tek Smith abağı bileşeni (düz düzleme geçiş, admitans ızgarası, VSWR dairesi, bileşen ekleme izleri)
@@ -68,8 +68,10 @@ Her slaytın bağlantısı adres çubuğunda durur (ör. `#smith-abagi`).
 ## Testler
 
 ```sh
-node tests/rf.test.js       # 112 test: Γ/VSWR, λ/4 ve λ/2 dönüşümü, RG-58/RG-213/LMR-400/RG-6 Z₀, mikroşerit,
-                            # deri derinliği, L-ağı ve stub çözümleri, dipol 73 Ω ve 2,15 dBi, monopol, Friis, FSPL
+node tests/rf.test.js       # 146 test: Γ/VSWR, λ/4 ve λ/2 dönüşümü, RG-58/RG-213/LMR-400/RG-6 Z₀, mikroşerit,
+                            # deri derinliği ve AC/DC oranı, koaks optimumları (76,7 Ω / 30 Ω), L-ağı ve stub,
+                            # dipol 73 + j42,5 Ω ve 2,15 dBi, karşılıklı empedans, monopol, Si/Ci ve J1,
+                            # Jones polarizasyonu, ICNIRP sınırları, Friis, FSPL
 node tests/fdtd1d.test.js   # 17 test: uyumlu yükte yansıma 0, kısa devre −1, açık devre +1, 100 Ω → 1/3,
                             # karmaşık yüklerde |Γ| ve açı, TDR yankı genliği ve dönüş zamanı
 node tests/fdtd2d.test.js   # 3 test: sönümleyici sınır, dalga hızı, iletken duvarın gölgesi
