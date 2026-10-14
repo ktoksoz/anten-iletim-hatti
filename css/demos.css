@@ -1,0 +1,76 @@
+/* Ortak demo bileşenleri */
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--f-display); font-size: 0.82rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+/* sayısal göstergeler: ölçü aletinin okuma pencereleri */
+.readouts { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.readout { display: inline-flex; flex-direction: column; line-height: 1.15; }
+.readout .k { font-family: var(--f-display); font-size: 0.74rem; color: var(--muted); font-weight: 500; }
+.readout .v { font-family: var(--f-num); font-variant-numeric: tabular-nums; font-weight: 500; font-size: 1.02rem; color: var(--ink); white-space: nowrap; }
+.readout.c-fwd .v { color: var(--fwd); } .readout.c-ref .v { color: var(--ref); } .readout.c-tot .v { color: var(--tot); }
+.readout.c-e .v { color: var(--e); } .readout.c-h .v { color: var(--hf); } .readout.c-r .v { color: var(--r); }
+.readout.c-xp .v { color: var(--xp); } .readout.c-xn .v { color: var(--xn); } .readout.c-cu .v { color: var(--copper); }
+.readout.ok .v { color: var(--ok); } .readout.bad .v { color: var(--bad); }
+
+/* tuvalin üstünde yüzen bilgi kutusu */
+.float {
+  position: absolute; z-index: 2; pointer-events: none;
+  padding: 8px 12px; border-radius: var(--r-sm);
+  background: rgba(8, 23, 38, 0.82); border: 1px solid var(--line);
+  backdrop-filter: blur(4px);
+  font-family: var(--f-display); font-size: 0.84rem; color: var(--ink-2);
+}
+.float.tl { left: 12px; top: 12px; } .float.tr { right: 12px; top: 12px; }
+.float.bl { left: 12px; bottom: 12px; } .float.br { right: 12px; bottom: 12px; }
+.float b { color: var(--ink); }
+
+.chip {
+  display: inline-block; padding: 1px 9px; border-radius: 3px; font-family: var(--f-display); font-size: 0.8rem; font-weight: 600;
+  border: 1px solid var(--line-2); color: var(--ink-2);
+}
+.note-small { font-family: var(--f-display); font-size: 0.78rem; color: var(--muted); }
+/* "yaklaşık model" etiketi */
+.approx {
+  display: inline-block; font-family: var(--f-display); font-size: 0.74rem; font-weight: 600;
+  color: var(--copper); border: 1px dashed rgba(238,143,95,.6); border-radius: 3px; padding: 0 6px;
+}
+
+/* güç çubuğu (yüzde) */
+.meter { position: relative; height: 12px; background: var(--bg-deep); border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+.meter > i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--fwd); transition: width .25s; }
+.meter > i.ref { background: var(--ref); }
+
+/* kapak: alan simülasyonunun üstünde okunur metin */
+.cover .stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(8,23,38,.9) 0%, rgba(8,23,38,.62) 32%, rgba(8,23,38,0) 64%),
+    linear-gradient(0deg, rgba(8,23,38,.85) 0%, rgba(8,23,38,0) 46%);
+}
+@media (max-width: 860px) {
+  .cover .stage::after { background: linear-gradient(0deg, rgba(8,23,38,.95) 0%, rgba(8,23,38,.75) 55%, rgba(8,23,38,.2) 100%); }
+}
+
+/* kapak ve kapanış: kaynak kodu ve lisans bağlantıları (ikincil bilgi) */
+.cover-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 0.4rem; pointer-events: auto; }
+.cover-meta a {
+  display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+  font-family: var(--f-display); font-size: 0.8rem; color: var(--ink-2);
+  padding: 4px 10px 4px 7px; border-radius: var(--r-sm); border: 1px solid var(--line); background: rgba(8, 23, 38, 0.6);
+  transition: border-color .15s, color .15s;
+}
+.cover-meta a:hover, .cover-meta a:focus-visible { color: var(--ink); border-color: var(--ink-2); }
+.cover-meta svg { width: 17px; height: 17px; }
+.cover-meta img { width: 18px; height: 18px; display: block; filter: invert(1) brightness(0.85); }
+.cover-meta .lic img + img { margin-left: -3px; }
+.cover-meta .lic span { margin-left: 3px; }
+.cover .license { margin: 0.6rem 0 0; font-family: var(--f-display); font-size: 0.8rem; color: var(--muted); }
+@media (max-width: 860px) {
+  .cover .cover-text { padding-top: max(150px, 20svh); }
+  .cover .stage { position: fixed; inset: 0 0 var(--bar-h) 0; }
+}
+
+/* kapanış */
+.cover .outro-title { font-size: clamp(2.6rem, 5.4vw, 5.6rem); font-weight: 800; font-stretch: 125%; line-height: 0.95; letter-spacing: -0.02em; text-shadow: 0 6px 50px rgba(8, 23, 38, 0.95); }
+.cover .also { font-size: 0.95rem; }
+.cover .also a { color: var(--ink); text-decoration-color: var(--copper); text-underline-offset: 3px; }

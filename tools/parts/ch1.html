@@ -1,0 +1,66 @@
+<!-- ================= 1. DALGA VE KABLO ================= -->
+<section class="slide" data-chapter="1" data-demo="ch1Rope" id="ip-dalgasi">
+  <div class="text">
+    <h2>İpte ilerleyen dalga</h2>
+    <p class="lead">Bir ipin ucunu bir kez sallayın: bir tümsek ipin üzerinde koşar, öbür uca çarpar ve geri döner.</p>
+    <p>Kablodaki elektrik sinyali de tam böyle davranır. Bu sitede renkler hep aynı şeyi anlatır: <span class="c-fwd">sarı</span> kaynaktan uzaklaşan <span class="c-fwd">ileri dalga</span>, <span class="c-ref">camgöbeği</span> uçtan geri gelen <span class="c-ref">yansıyan dalga</span>, <span class="c-tot">beyaz</span> ikisinin toplamı, yani ipin gerçek şekli.</p>
+    <p>Uç duvara bağlıysa (<strong>sabit uç</strong>) tümsek ters dönerek, bir halkada serbestçe kayabiliyorsa (<strong>serbest uç</strong>) düz dönerek yansır. Kabloda sabit ucun karşılığı <strong>kısa devre</strong>, serbest ucun karşılığı <strong>açık devre</strong>dir.</p>
+    <details class="more"><summary>Daha fazla: neden ters döner?</summary>
+      <p>Kısa devrede iki tel birbirine bağlıdır; uçtaki gerilim sıfır olmak zorundadır. Bunu sağlamanın tek yolu, gelen dalgayla aynı büyüklükte ama ters işaretli bir dalganın geri dönmesidir. Açık devrede uçtan akım akamaz; bu kez dalga aynı işaretle döner ve uçtaki gerilim iki katına çıkar.</p>
+      <span class="formula">kısa devre: Γ = −1 · açık devre: Γ = +1</span>
+      <p>Γ (gama), yansıma katsayısı: yansıyan gerilimin gelen gerilime oranı. Akım dalgası tersini yapar: kısa devrede düz, açık devrede ters döner.</p>
+    </details>
+    <p class="try">“Salla” düğmesine basın, sonra ucu değiştirip yeniden sallayın; yansıyan tümseğin yönüne bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Görüntü bir hesap: 1B FDTD ile çözülen kayıpsız iletim hattı. İp benzetmesi gerilim dalgası için birebir: ipin yer değiştirmesi ↔ gerilim.</li>
+    <li>Sabit uç ↔ kısa devre (Γ = −1), serbest uç ↔ açık devre (Γ = +1). “Yansıyan / gelen” okuması simülasyondan ölçülür.</li>
+    <li>Sol uç, yani “el”, dalgayı yutan uyumlu bir kaynak; bu yüzden geri dönen dalga solda kaybolur ve ikinci kez yansımaz.</li>
+    <li>“Sürekli” seçilince ileri ve yansıyan dalgalar üst üste biner: yerinde sayan bir desen, yani duran dalga belirir (Bölüm 3'te ayrıntılı).</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="1" data-demo="ch1When" id="kablo-ne-zaman">
+  <div class="text">
+    <h2>Kablo ne zaman sadece bir tel değildir?</h2>
+    <p class="lead">Lambanızın 10 metrelik uzatma kablosu için “dalga” sözcüğü abartı gibi gelir. Frekans yükselince değil.</p>
+    <p>Belirleyici olan, kablonun boyunun <strong>dalga boyuna</strong> oranıdır. Dalga boyu kablodan çok uzunsa, kablonun iki ucu aynı anda aynı gerilimi görür: kablo sadece bir teldir.</p>
+    <p>Dalga boyu kabloya yaklaştıkça uçlar farklı anlarda farklı şeyler görür. Kablonun üstünde dalga belirir; artık o bir <strong>iletim hattı</strong>dır ve ucundaki yük, boyu, yapısı önem kazanır.</p>
+    <p>Kaba kural: kablo dalga boyunun onda birinden kısaysa tel gibi davranır.</p>
+    <details class="more"><summary>Daha fazla: elektriksel uzunluk</summary>
+      <p>Kablonun boyunu dalga boyu cinsinden, ya da bir tam dalga 360° olacak biçimde derece cinsinden yazarız. Bu elektriksel uzunluk iki uç arasındaki faz farkıdır.</p>
+      <span class="formula">λ = v / f · elektriksel uzunluk = 360° · ℓ / λ</span>
+      <p>Burada kablo, hız faktörü 0,66 olan RG-58 (katı polietilen dielektrikli koaksiyel); dalga kabloda ışığın üçte ikisi hızla ilerler.</p>
+    </details>
+    <p class="try">Frekans kaydırıcısını 50 Hz'ten yukarı doğru sürükleyin; iki uçtaki göstergelerin ne zaman ayrıştığına bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kablo 10 m RG-58 (VF 0,66). λ/10 sınırı bu kablo için yaklaşık 2 MHz'e denk gelir: kısa dalga bantlarında 10 m kablo artık bir iletim hattıdır.</li>
+    <li>Uçlardaki iki gösterge her ucun gerilim fazını gösterir; zaman ağır çekimde, fazlar arasındaki fark gerçek.</li>
+    <li>50 Hz'te dalga boyu binlerce kilometredir; şebeke hatları ancak yüzlerce kilometre uzunlukta iletim hattı gibi davranır.</li>
+    <li>Yük uyumlu varsayılır (yansıma yok); dalga yalnızca ileri gider. Uyumsuz yükü Bölüm 3'te göreceğiz.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="1" data-demo="ch1Velocity" id="hiz-faktoru">
+  <div class="text">
+    <h2>Kablodaki dalga ışıktan yavaştır</h2>
+    <p class="lead">Boşlukta ışık hızıyla giden dalga, kablonun içine girince yavaşlar.</p>
+    <p>Sinyal aslında tellerin içinde değil, iki iletken arasındaki yalıtkanda, yani <strong>dielektrik</strong>te ilerleyen bir alandır. Yalıtkan ne kadar “yoğun”sa (dielektrik sabiti ne kadar büyükse) dalga o kadar yavaşlar.</p>
+    <p>Hızın ışık hızına oranına <strong>hız faktörü</strong> denir. Dalga yavaşlayınca dalga boyu da kısalır: aynı frekansta kablodaki dalga boyu boşluktakinden kısadır. Kabloyla anten ya da çeyrek dalga parçası keserken bu yüzden önemlidir.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">VF = 1 / √εr · v = VF · c · λ_kablo = VF · c / f</span>
+      <p>Katı polietilen (εr ≈ 2,25) kabloda VF ≈ 0,66; köpük polietilende 0,8'in üstüne çıkar. Hava dielektrikli hatlar neredeyse ışık hızındadır.</p>
+    </details>
+    <p class="try">Kablo türünü “Köpük PE” yapın ve “Yarıştır”a basın; aradaki farka ve kısalan dalga boyuna bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yarışta iki dalga aynı anda aynı frekansta yola çıkar; pist boyu boşluktaki dalga boyunun beş katı. Varış süreleri RF.wavelength ve hız faktöründen hesaplanır.</li>
+    <li>Tipik değerler: RG-58 / RG-213 (katı PE) 0,66; RG-6 (köpük PE) 0,83 civarı; LMR-400 0,85.</li>
+    <li>Pratik sonuç: 145 MHz'te katı PE kabloyla yapılan bir çeyrek dalga parçası, boşluktaki çeyrek dalganın yalnızca üçte ikisi uzunluğundadır.</li>
+    <li>Hava “hız faktörü 1” sayılır; havanın εr değeri 1,0006 olduğundan aradaki fark binde birin altındadır.</li>
+  </ul></aside>
+</section>

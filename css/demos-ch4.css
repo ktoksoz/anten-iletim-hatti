@@ -1,0 +1,49 @@
+/* Bölüm 4: empedans ve Smith abağı */
+.stage > .readouts.ch4-ro { padding: 8px 16px 6px; border-top: 1px solid var(--line); background: rgba(8, 23, 38, 0.35); gap: 4px 20px; }
+.ch4-row { flex: 1; min-height: 0; display: flex; }
+.ch4-row > .fill { flex: 1; min-width: 0; }
+.ch4-side {
+  width: 236px; flex: none; display: flex; flex-direction: column; gap: 12px;
+  padding: 14px 14px 12px; overflow-y: auto; scrollbar-width: thin;
+  border-left: 1px solid var(--line); background: rgba(8, 23, 38, 0.45);
+}
+.ch4-side .readouts { flex-direction: column; gap: 9px; }
+.ch4-side .readout .v { font-size: 0.98rem; }
+.ch4-h { font-family: var(--f-display); font-weight: 600; font-stretch: 108%; font-size: 0.8rem; color: var(--ink-2); padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+
+/* oyun: adım listesi */
+.ch4-steps { list-style: none; margin: 0; padding: 0; font-family: var(--f-display); font-size: 0.8rem; color: var(--ink-2); counter-reset: s; }
+.ch4-steps li { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; border-bottom: 1px dashed rgba(150, 196, 235, 0.12); line-height: 1.35; }
+.ch4-steps li.cur { color: var(--ink); }
+.ch4-steps li b { font-weight: 600; color: var(--ink); }
+.ch4-steps li span { display: block; font-family: var(--f-num); font-size: 0.92em; }
+.ch4-steps li b { font-family: var(--f-display); font-size: 1.02em; }
+.ch4-steps li .ch4-sw { transform: translateY(-3px); align-self: flex-start; margin-top: 0.7em; }
+.ch4-sw { flex: none; width: 18px; height: 0; border-top: 3px solid var(--opc); transform: translateY(-4px); }
+.ch4-sw.dash { border-top-style: dashed; }
+.ch4-sw.dot { border-top-style: dotted; }
+.ch4-goal {
+  font-family: var(--f-display); font-size: 0.82rem; color: var(--ink-2);
+  padding: 7px 10px; border-radius: var(--r-sm); border: 1px solid rgba(143, 224, 138, 0.35); background: rgba(143, 224, 138, 0.05);
+}
+.ch4-goal.win { color: #10230f; background: var(--ok); border-color: var(--ok); font-weight: 700; }
+.ch4-fq { display: inline-flex; align-items: center; gap: 10px; }
+.ch4-ops { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.btn.ch4-op { position: relative; padding-left: 2.1em; }
+.btn.ch4-op::before {
+  content: ""; position: absolute; left: 0.7em; top: 50%; width: 0.95em; border-top: 3px solid var(--opc);
+}
+.btn.ch4-op.dash::before { border-top-style: dashed; }
+.btn.ch4-op.dot::before { border-top-style: dotted; }
+.controls input[type="range"]:disabled { opacity: 0.35; cursor: default; }
+
+@media (max-width: 1300px) { .ch4-side { width: 204px; padding: 12px 12px 10px; } }
+@media (max-width: 860px) {
+  .ch4-row { flex-direction: column; }
+  .stage.ch4-big .ch4-row > .fill { flex: none; height: min(100vw, 460px); }
+  .stage:not(.ch4-big) > .fill { min-height: 400px; }
+  #empedans-nedir .stage > .fill { min-height: 560px; }
+  .ch4-side { width: auto; border-left: 0; border-top: 1px solid var(--line); }
+  .ch4-side .readouts { flex-direction: row; flex-wrap: wrap; gap: 6px 16px; }
+  .stage > .readouts.ch4-ro { padding: 8px 12px 6px; gap: 4px 14px; }
+}

@@ -1,0 +1,14 @@
+/* Bölüm 6b: polarizasyon, Yagi, faz dizisi, diğer antenler */
+.ch6b-pnote { max-width: min(420px, calc(100% - 24px)); line-height: 1.4; font-size: 0.8rem; }
+.ch6b-capbar {
+  border-top: 1px solid var(--line);
+  padding: 8px 16px;
+  background: rgba(8, 23, 38, 0.45);
+  min-height: 3.1em;
+}
+.ch6b-cap { margin: 0; font-family: var(--f-body); font-size: 0.9rem; line-height: 1.4; color: var(--ink-2); }
+.ch6b-cap b { font-family: var(--f-display); color: var(--ink); font-weight: 700; }
+#polarizasyon .controls .seg button { padding: 0.3em 0.65em; }
+@media (max-width: 860px) {
+  .ch6b-pnote { max-width: calc(100% - 150px); }
+}

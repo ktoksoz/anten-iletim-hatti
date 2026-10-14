@@ -1,0 +1,17 @@
+/* Bölüm 6 (anten, ilk yarı) */
+.ch6-scope { width: 244px; padding: 8px 10px 9px; font-size: 0.78rem; line-height: 1.35; }
+.ch6-scope canvas { display: block; width: 220px; height: 70px; margin: 5px 0 6px; border: 1px solid var(--line); background: rgba(8, 23, 38, 0.6); }
+.ch6-scope-h { font-weight: 600; color: var(--ink); }
+.ch6-scope-txt b { color: var(--ink); font-weight: 500; }
+.ch6-scope-txt .note-small { margin-top: 2px; }
+input.ch6-num {
+  width: 6.2em; padding: 0.28em 0.5em; border-radius: var(--r-sm);
+  border: 1px solid var(--line-2); background: var(--bg-deep); color: var(--ink);
+  font-family: var(--f-num); font-size: 0.86rem; font-variant-numeric: tabular-nums;
+}
+input.ch6-num:focus-visible { border-color: var(--copper); }
+.readout .v .note-small { font-size: 0.72rem; }
+@media (max-width: 860px) {
+  .ch6-scope { width: 196px; font-size: 0.72rem; right: 8px; top: 8px; }
+  .ch6-scope canvas { width: 172px; height: 54px; }
+}

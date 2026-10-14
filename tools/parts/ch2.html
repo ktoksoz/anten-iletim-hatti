@@ -1,0 +1,64 @@
+<!-- ================= 2. İLETİM HATTI ================= -->
+<section class="slide" data-chapter="2" data-demo="ch2Ladder" id="lc-merdiven">
+  <div class="text">
+    <h2>Hattın içi: bobin ve kondansatör merdiveni</h2>
+    <p class="lead">Bir kabloyu çok ince dilimlere kesin: her dilim, küçük bir bobin ve küçük bir kondansatörden ibarettir.</p>
+    <p>Teller boyunca akan akım manyetik alan kurar; bu, telin her santimetresinde küçük bir <span class="c-xp">bobin (L)</span> gibi davranır. İki iletken arasındaki gerilim elektrik alanı kurar; bu da her santimetrede küçük bir <span class="c-xn">kondansatör (C)</span> demektir.</p>
+    <p>Darbe bu merdivende basamak basamak ilerler: her bobin bir sonraki kondansatörü doldurur, o da bir sonraki bobine akım verir. Basamak az olunca darbe yayvanlaşır, gecikir ve biçimini kaybeder; basamak sayısı arttıkça merdiven gerçek, sürekli bir hatta dönüşür.</p>
+    <details class="more"><summary>Daha fazla: telgrafçı denklemleri</summary>
+      <p>Heaviside, hattı sonsuz sayıda sonsuz küçük L ve C basamağı olarak düşündü. Birim uzunluk değerleri L′ ve C′ ise dalganın hızı ve karakteristik empedansı:</p>
+      <span class="formula">v = 1 / √(L′C′) · Z₀ = √(L′ / C′)</span>
+      <p>Sonlu sayıda basamaktan oluşan merdiven ise bir alçak geçiren süzgeçtir: kesim frekansının üstündeki bileşenleri geçiremez. Darbenin hızlı değişen kısımları bu yüzden geçemez ve darbe yayvanlaşır; kesime yakın frekanslar da daha yavaş ilerlediği için biçim bozulur.</p>
+    </details>
+    <p class="try">Basamak sayısını 4'e indirip “Darbe gönder”e basın, sonra 60'a çıkarıp yeniden gönderin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hat: 1 m RG-58 boyutlarında koaksiyel; L′ ve C′ RF.coaxL / RF.coaxC ile kesitten hesaplanır. Toplam L ve C basamaklara eşit bölünür.</li>
+    <li>Merdiven, gerçek devre denklemleriyle (her bobin ve kondansatör için) küçük zaman adımlarıyla çözülür; “bozulma” ölçülen çıkışın ideal gecikmeli darbeden sapmasıdır.</li>
+    <li>Kesim frekansı f_c = 1 / (π√(LC)) basamak başına; darbenin içerdiği frekanslar f_c'ye yaklaştıkça bozulma büyür.</li>
+    <li>Olası soru: “Gerçek kablo kaç basamak?” Sonsuz; dalga boyuna göre çok küçük dilimler (λ/10'dan çok kısa) yeterince iyi bir modeldir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="2" data-demo="ch2Z0" id="karakteristik-empedans">
+  <div class="text">
+    <h2>Karakteristik empedans</h2>
+    <p class="lead">Kablonun “kimlik numarası” uzunluğu değil, kesitidir.</p>
+    <p>Sonsuz uzun bir kablonun ucuna gerilim uygulasanız, kablo belli bir akım çeker; bu oran kablonun <strong>karakteristik empedansı</strong>dır (Z₀). Bobin etkisi akımı frenler, kondansatör etkisi akımı çeker; Z₀ ikisinin dengesidir.</p>
+    <p>Teller birbirinden uzaklaştıkça Z₀ büyür, yaklaştıkça küçülür. Dielektrik dalgayı yavaşlatır ve Z₀'ı düşürür. Bu yüzden koaksiyel kablolar 50 ya da 75 Ω, geniş aralıklı çift hat 300 Ω civarındadır.</p>
+    <details class="more"><summary>Daha fazla: neden tam 50 Ω?</summary>
+      <p>Hava dielektrikli koaksiyelde en düşük kayıp <span class="num" data-z0="loss">…</span>, en yüksek güç taşıma <span class="num" data-z0="power">…</span> civarında olur (değerler burada formülden hesaplanır). 50 Ω ikisi arasında bir uzlaşmadır. Bu seçim, koaksiyel kabloyu 1929'da Bell Laboratuvarları'nda geliştiren Lloyd Espenschied ve Herman Affel'e atfedilir. 75 Ω ise düşük kayba yakın durur; kaybın gücten önemli olduğu TV ve video kablolarında tercih edilir.</p>
+      <span class="formula">Z₀ = √(L′/C′) · koaks: Z₀ = (60 / √εr) · ln(D/d)</span>
+    </details>
+    <p class="try">“Dış çap D” kaydırıcısını sürükleyin ya da kesitteki bakır tutamaçları çekin; sonra hazır kablo düğmelerini deneyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Z₀ değerleri RF.coaxZ0, RF.twinZ0 ve RF.microstripZ0 (Hammerstad, iletken kalınlığı ihmal) ile hesaplanır. Çift hatta dielektrik tellerin çevresini tamamen dolduruyor varsayılır; gerçek TV şeridinde etkin εr daha düşüktür.</li>
+    <li>50 Ω'un kökeni: Microwaves101, “Why fifty ohms?” (hava koaksiyelde en düşük kayıp ≈ 77 Ω, en yüksek tepe gücü ≈ 30 Ω); Belden, “50 ohms the forgotten impedance” (Espenschied ve Affel, Bell Labs, 1929). Birincil Bell Labs belgesi bulunamadı; atıf ikincil kaynaklara dayanır.</li>
+    <li>Bell Labs için ayrıca ≈ 60 Ω “en yüksek gerilim dayanımı” değeri anılır (D/d = e). Bunlar hava dielektrik içindir; katı PE ile en düşük kayıp ≈ 51 Ω'a iner.</li>
+    <li>Microwaves101'e göre 75 Ω'un nedeni tam olarak kayıp optimumu değil, kayıp ile esneklik/maliyet arasında pratik bir uzlaşmadır.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="2" data-demo="ch2Skin" id="deri-etkisi">
+  <div class="text">
+    <h2>Deri etkisi</h2>
+    <p class="lead">Frekans yükseldikçe akım telin içini terk eder ve yüzeye kaçar.</p>
+    <p>Telin içinde değişen akım, kendi manyetik alanıyla merkezde ters yönlü küçük girdaplar oluşturur. Bunlar merkezdeki akımı bastırır; akım yüzeydeki ince bir “deri”ye sıkışır.</p>
+    <p>Bu derinin kalınlığına <strong>deri derinliği</strong> denir. Bakırda 50 Hz'te santimetre mertebesindedir; radyo frekanslarında mikrometrelere iner. Akım daha dar bir yoldan akınca direnç ve kablo kaybı frekansla artar.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">δ = 1 / √(π f μ σ) · J(r) ≈ J(a) · e^(−(a − r)/δ)</span>
+      <p>Isı haritası tam çözümdür (Bessel fonksiyonları); ince çizgi yaklaşık üstel profil. Kablo kaybı eğrileri kuramsal: düz, pürüzsüz bakır varsayar. Örgülü dış iletken ve çok telli iç iletken yüzünden veri sayfası değerleri biraz daha yüksektir (noktalar).</p>
+    </details>
+    <p class="try">Frekans kaydırıcısını yavaşça 50 Hz'ten 1 GHz'e sürükleyin; akımın yüzeye çekilişine ve kaybın artışına bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Akım yoğunluğu çivit renkle (akım manyetik alan üretir); renk her frekansta yüzeydeki değere göre ölçeklenir.</li>
+    <li>δ = RF.skinDepth(f), bakır σ = 5,8·10⁷ S/m. AC/DC direnç oranı, tam profilden sayısal integralle hesaplanır; yüksek frekansta ≈ a / 2δ.</li>
+    <li>Kayıp eğrileri RF.coaxLoss (iletken + dielektrik, tanδ = 2·10⁻⁴). Veri sayfası noktaları: Belden 9201 (RG-58) ve Belden 8267 (RG-213) nominal zayıflama tabloları.</li>
+    <li>Gümüş kaplamanın yalnızca birkaç mikrometrelik bir katman olmasına rağmen işe yaraması bu yüzdendir: akım zaten orada akar.</li>
+  </ul></aside>
+</section>

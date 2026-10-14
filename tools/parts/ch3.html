@@ -1,0 +1,94 @@
+<!-- ================= 3. YANSIMA VE DURAN DALGA ================= -->
+<section class="slide" data-chapter="3" data-demo="ch3Line" data-title="Kablodaki yankı" id="hat-simulasyonu">
+  <div class="text">
+    <h2>Kablodaki yankı</h2>
+    <p class="lead">Kabloya gönderdiğiniz dalga, ucundaki yüke çarpar. Yük kablonun “beklediği” gibi değilse dalganın bir kısmı yankı olarak geri döner.</p>
+    <p>Bir ipi duvara bağlayıp silkelerseniz dalga duvardan ters dönerek geri gelir; ipin ucu serbestse düz döner. Kablo da böyle davranır: <span class="c-r">yük direnci</span> küçükse yankı ters, büyükse düz döner. Yük tam 50 Ω olduğunda kablo sonsuza uzanıyormuş gibi davranır: dalga yükte emilir, yankı olmaz.</p>
+    <p><span class="c-fwd">Sarı</span> kaynaktan yola çıkan dalga, <span class="c-ref">camgöbeği</span> yükten dönen yankı, <span class="c-tot">beyaz</span> ise kabloda bir voltmetreyle gerçekten ölçeceğiniz toplam gerilim.</p>
+    <details class="more"><summary>Daha fazla: reaktans, darbe ve formül</summary>
+      <p>Yüke <span class="c-xp">+X</span> eklediğinizde simülasyon sinüsün frekansında tam o reaktansı veren bir bobin, <span class="c-xn">−X</span> eklediğinizde bir kondansatör koyar. Sürekli sinüste yankının boyu ve kayması tek bir karmaşık sayıyla, Γ ile anlatılır; ölçülen ve hesaplanan değer yan yana durur.</p>
+      <p>Darbe ise birçok frekansın toplamıdır. Bobin ilk anda açık devre gibi davranır, sonra akımı geçirir; kondansatör ilk anda kısa devre gibidir, doldukça açık devreye döner. Bu yüzden reaktif yükte darbenin yankısı biçim değiştirir ve tek bir sayıyla anlatılamaz.</p>
+      <span class="formula">Γ = (Z_L − Z₀) / (Z_L + Z₀)</span>
+      <p>Simülasyon, kablonun telgrafçı denklemlerini FDTD yöntemiyle adım adım çözer; dalga her adımda tam bir hücre ilerler.</p>
+    </details>
+    <p class="try">Önce “Kısa devre”, sonra “Açık devre” düğmesine basın: yankı bir ters, bir düz döner. Sonra “50 Ω” ile yankıyı yok edin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hat 400 hücre; Courant sayısı 1 olduğundan dalga her adımda tam bir hücre ilerler, sayısal dağılma yok. Kaynağın iç direnci 50 Ω: geri dönen yankı kaynakta emilir, ikinci kez yansımaz.</li>
+    <li>İleri ve yansıyan dalga ayrımı yaklaşık değil: aynı kaynakla, uyumlu yüklü ikinci bir “gölge” hat koşar; ileri dalga = gölge hattaki gerilim, yansıyan = toplam − ileri.</li>
+    <li>Ölçüm darbede hattın ortasında (tepe oranı), sinüste yükte (bir periyotluk Fourier toplamı) yapılır. Uyumlu yükte ≈ 0, kısa devrede −1, açık devrede +1, 100 Ω'da +1/3, 25 Ω'da −1/3 çıkar.</li>
+    <li>Olası soru: “Yankı vericiye ne yapar?” Gerçek vericinin çıkışı her zaman 50 Ω'luk bir direnç gibi davranmaz; dönen güç çıkış katını zorlayabilir. Bölüm 5'te uydurma ile çözülür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Gamma" data-title="Yansıma katsayısı" id="yansima-katsayisi">
+  <div class="text">
+    <h2>Yankının boyu ve yönü</h2>
+    <p class="lead">Yansıma katsayısı Γ (gama) tek bir sayıda iki şey söyler: yankı ne kadar büyük ve gelen dalgaya göre ne kadar kaymış.</p>
+    <p>Γ'yı bir ok gibi düşünün. <strong>Okun boyu</strong> yankının genliği: 0 ise yankı yok, 1 ise dalganın tamamı geri dönüyor. <strong>Okun yönü</strong> yankının kayması: sağa bakan ok düz, sola bakan ok ters dönen yankı demek.</p>
+    <p>Ok hiçbir zaman birim çemberin dışına çıkmaz. Çemberin sol ucu kısa devre, sağ ucu açık devre, tam ortası uyumlu yük. Üst yarıda yük <span class="c-xp">endüktif (+X)</span>, alt yarıda <span class="c-xn">kapasitif (−X)</span>. Bu düzlem, birazdan Smith abağının zemini olacak.</p>
+    <p>Yansıyan güç okun boyunun karesidir: genliği yarıya inen yankı, gücün dörtte birini geri taşır.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <span class="formula">Γ = (Z_L − Z₀) / (Z_L + Z₀)</span>
+      <span class="formula">P_yansıyan / P_gelen = |Γ|²</span>
+      <span class="formula">Z_L = Z₀ (1 + Γ) / (1 − Γ)</span>
+      <p>Pay, yükün 50 Ω'dan ne kadar saptığını ölçer. Direnç negatif olamadığı için (pasif yük) |Γ| hiçbir zaman 1'i geçmez.</p>
+    </details>
+    <p class="try">Oku ucundan tutup çemberin içinde gezdirin; yük empedansı, |Γ| ve yansıyan güç canlı değişir.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Zemindeki soluk ızgara, Smith abağının ta kendisi: kemik renkli daireler sabit direnç, mor ve turkuaz yaylar sabit reaktans. Bölüm 4'te bu ızgarayı okuyacağız.</li>
+    <li>|Γ| = 1 çemberinin üstündeki yükler (kısa, açık, saf bobin, saf kondansatör) hiç güç tüketmez: gelen gücün tamamı geri döner.</li>
+    <li>Sağdaki iki dalga yükteki gelen (sarı) ve yansıyan (camgöbeği) dalgadır; aralarındaki zaman kayması Γ'nın açısıdır.</li>
+    <li>Gösteri sırası önerisi: Kısa devre → Açık devre → Uyumlu yük → Rastgele.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Swr" data-title="Duran dalga" id="duran-dalga">
+  <div class="text">
+    <h2>Duran dalga</h2>
+    <p class="lead">Giden dalga ile yankı aynı kabloda üst üste biner. Bazı noktalarda birbirini güçlendirir, bazılarında söndürür; ortaya yerinde sayan bir desen çıkar.</p>
+    <p><span class="c-tot">Beyaz</span> çizgi kablodaki gerçek gerilim; kesikli zarf, her noktada ulaşılan en yüksek değer. İki tepe arası hep yarım dalga boyudur.</p>
+    <p>En yüksek ve en düşük gerilimin oranı <strong>VSWR</strong> (duran dalga oranı): telsizcinin SWR metresinde okuduğu sayı. 1 kusursuz uyum demek.</p>
+    <p><strong>Geri dönüş kaybı</strong> yankının kaç desibel zayıf döndüğünü söyler; büyük olması iyidir. <strong>Uyumsuzluk kaybı</strong> ise yankı yüzünden antene ulaşamayan gücün desibel karşılığıdır.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <span class="formula">VSWR = V_max / V_min = (1 + |Γ|) / (1 − |Γ|)</span>
+      <span class="formula">Geri dönüş kaybı = −20 log₁₀ |Γ|  dB</span>
+      <span class="formula">Uyumsuzluk kaybı = −10 log₁₀ (1 − |Γ|²)  dB</span>
+      <span class="formula">|V(d)| = |V⁺| · |1 + Γ e^(−j2βd)|</span>
+      <p>Örnek kablo: <span class="mono" data-ch3="swr-f"></span> ve RG-58 (hız faktörü <span class="mono" data-ch3="swr-vf"></span>); burada λ/2 = <span class="mono" data-ch3="swr-half"></span>. Hesap kayıpsız hat ve uyumlu verici varsayar. Gerçek kablonun kaybı yankıyı da zayıflatır; bu yüzden vericinin yanında ölçülen SWR, antenin yanındakinden iyi görünür.</p>
+    </details>
+    <p class="try">Yük direncini 50 Ω'dan uzaklaştırın: zarf dalgalanır, VSWR büyür, antene ulaşan güç çubuğu kısalır.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Çizim, kararlı durumdaki fazör çözümü: V(d, t) = Re{(e^(jβd) + Γ e^(−jβd)) e^(jωt)}. Zarf RF.envelope ile, VSWR, geri dönüş ve uyumsuzluk kaybı RF ile hesaplanır; “V_max / V_min” okuması zarftan ölçülür ve VSWR ile aynı çıkmalı.</li>
+    <li>Saf direnç yükte (X = 0) R &gt; 50 Ω iken yükte tepe, R &lt; 50 Ω iken yükte çukur olur. Reaktans eklenince desen kayar.</li>
+    <li>Güç çubuğu kayıpsız hat ve uyumlu kaynak varsayar: yüke ulaşan oran 1 − |Γ|². VSWR 2 iken kayıp yalnızca yarım desibel civarındadır; asıl dert yansıyan gücün vericiyi zorlamasıdır.</li>
+    <li>Olası soru: “SWR metre nereye takılmalı?” Kablo kaybı yüzünden vericinin yanında ölçülen SWR olduğundan iyi görünür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Tdr" data-title="TDR" id="tdr">
+  <div class="text">
+    <h2>Yankıdan arıza bulmak</h2>
+    <p class="lead">Kabloya kısa bir darbe gönderip yankısını dinlerseniz kabloyu sökmeden nerede ne olduğunu bulursunuz. Buna TDR (zaman alanında yansıma ölçümü) denir.</p>
+    <p><strong>Ne zaman</strong> döndüğü uzaklığı verir: darbe arızaya gidip geri gelir, yolu iki kez kateder. RG-58'de dalga ışık hızının <span class="mono" data-ch3="tdr-vf"></span> katıyla ilerler.</p>
+    <p><strong>Hangi yönde</strong> döndüğü türünü söyler: <strong>kopuk</strong> kablo (açık devre) düz, <strong>kısa devre</strong> ters ve tam boy yankı verir. <strong>Ezilmiş</strong> kesitte empedans düşer: önce ters, sonra düz küçük bir yankı. <strong>Kötü konektör</strong> kısa bir yüksek empedans bölgesidir: önce düz, sonra ters.</p>
+    <details class="more"><summary>Daha fazla: hesap</summary>
+      <span class="formula">d = v · t / 2,   v = hız faktörü · c</span>
+      <p>RG-58'de darbe 1 ns'de <span class="mono" data-ch3="tdr-cm1"></span> yol alır; gidiş-dönüş hesaba katılınca osiloskoptaki her 1 ns, kablo üzerinde <span class="mono" data-ch3="tdr-cm2"></span> demektir.</p>
+      <p>Gerçek TDR cihazları çoğunlukla darbe yerine hızlı yükselen bir basamak gönderir; okuma mantığı aynıdır. NanoVNA gibi ağ analizörleri de frekans taramasından bu grafiği hesaplayabilir.</p>
+    </details>
+    <p class="try">“Arızayı bul”a geçin. Osiloskopta yankının zamanını okuyun, türünü seçin, sonra kablo üzerinde arızanın yerine tıklayın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Ölçek: 25 m RG-58 (hız faktörü 0,66), 500 hücre × 5 cm; bir simülasyon adımı ≈ 0,25 ns. Kablonun ucunda uyumlu 50 Ω yük var, bu yüzden arıza yoksa uçtan yankı gelmez.</li>
+    <li>Ezik: dış iletken iç iletkene yaklaşır, D/d küçülür, Z₀ = 60/√εr · ln(D/d) düşer (burada 35 Ω). Kötü konektör: 15 cm boyunca 120 Ω.</li>
+    <li>Simülasyon kayıpsız. Gerçek kabloda kayıp, uzaktaki yankıyı küçültür ve yayar; yine de zamanı aynıdır.</li>
+    <li>Oyunda puan, tahminle gerçek yer arasındaki metre cinsinden hatadır; tür tahmini ayrıca sayılır.</li>
+  </ul></aside>
+</section>

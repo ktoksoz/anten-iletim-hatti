@@ -1,0 +1,97 @@
+<!-- ================= 6. ANTEN (ilk yarı) ================= -->
+<section class="slide" data-chapter="6" data-demo="ch6Open" id="anten-nasil-isir">
+  <div class="text">
+    <h2>Anten nasıl ışır?</h2>
+    <p class="lead">Anten, ağzı açılmış bir iletim hattıdır.</p>
+    <p>İki paralel tel enerjiyi taşırken alan iki telin arasına hapsolur: tellerden birinin alanını öbürü hemen yok eder. Hattın ucu açık kalırsa dalganın çoğu oraya çarpıp geri döner. Uçtaki kolları birbirinden ayırınca alan çizgileri artık kapanamaz; halka olup kopar ve boşluğa yayılır.</p>
+    <p>Antene çok yakında <span class="c-e">E</span> ile <span class="c-h">H</span> enerjiyi bir depolayıp bir geri verir (yakın alan). Uzaklaştıkça adım adım yürümeye başlarlar ve oranları 377 Ω'a oturur (uzak alan).</p>
+    <details class="more"><summary>Daha fazla: yakın alan, uzak alan, model</summary>
+      <p>Reaktif yakın alanın sınırı yaklaşık λ/2π'dir. Uzak alan kuralı r ≫ λ ve r &gt; 2D²/λ'dır (D: antenin boyu); çizimde 2λ'da işaretli.</p>
+      <span class="formula">r_yakın ≈ λ / 2π     r_uzak &gt; 2D² / λ</span>
+      <p>Bu sahne <span class="approx">yaklaşık model</span>: 2B FDTD, yani teller sayfanın içine doğru sonsuz uzun şeritler. Gerçek antenin 3B alanı uzaklıkla daha hızlı zayıflar. Bu yüzden yakın alandaki faz farkı 2B ölçümde 3B kuramdan farklı çıkar; sonda kutusu ikisini yan yana gösterir. 2B'de hattın açık ucu da bir miktar sızdırır; gerçek ince bir hatta bu sızıntı çok daha küçüktür. Kollar yarı açıkken hat bir huni gibi kademeli genişler ve en iyi uyumu o verir; huni (horn) antenler bu fikirle çalışır.</p>
+    </details>
+    <p class="try">“Açılma” kaydırıcısını sona çekin; sonra sondayı antene yakından uzağa sürükleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Renk |E| şiddeti (ya da H modunda Hz işareti); ince çizgiler elektrik alan çizgileri (Ψ eş-değer eğrileri). Verici solda; hat sola doğru sönümleyici kenara girer, yani verici uyumlu.</li>
+    <li>“Geri dönen” ve “boşluğa salınan” yüzdeleri hattaki duran dalgaya ileri ve geri dalga uydurularak ölçülür (|Γ|²). Paralel hatta güç büyük ölçüde geri döner; açınca boşluğa giden pay artar.</li>
+    <li>Olası soru: “Yarı açıkken neden daha çok ışıyor?” Kademeli açılan hat bir huni gibi uyum sağlar: horn ve Vivaldi antenleri bu fikirle çalışır. Tam dipolün empedansı ise hattınkinden farklı; gerçekte de 300 Ω hatla 73 Ω dipol uyumsuzdur.</li>
+    <li>Sonda: teğet E ile Hz arasındaki faz farkı ve E/H oranı (×376,7 Ω). Uzakta ≈ 0° ve ≈ 377 Ω.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Dipole" id="dipol">
+  <div class="text">
+    <h2>Yarım dalga dipol</h2>
+    <p class="lead">Ortadan kesilip beslenen, yarım dalga boyunda bir tel: antenlerin “merhaba dünya”sı.</p>
+    <p>Telin uçlarında akım gidecek yer bulamaz, sıfırdır; yükler orada yığılır, gerilim tepe yapar. Ortada tam tersi: <span class="c-h">akım</span> en büyük, <span class="c-e">gerilim</span> en küçüktür. Besleme noktası bu yüzden yaklaşık 73 Ω görür, koaks için çok uygun.</p>
+    <p>Tam λ/2 boyundaki tel biraz “uzun” davranır (+j42,5 Ω). Tel yüzde birkaç kısaltılınca reaktans sıfırlanır: buna <strong>kısaltma faktörü</strong> denir.</p>
+    <details class="more"><summary>Daha fazla: neden kısaltma?</summary>
+      <p>Telin uçları küçük birer kondansatör gibi yük tutar (uç etkisi); akım tel ucunda birden kesilmez. Tel kalınlaştıkça bu etki büyür. Telde dalganın yavaşladığı açıklaması yaygındır ama asıl neden bu uç ve kalınlık etkileridir.</p>
+      <span class="formula">L = k · λ/2 = k · c / (2f)     Z ≈ 73 + j42,5 Ω (L = λ/2)</span>
+      <p>Empedans <span class="approx">yaklaşık model</span>: boşlukta ince tel, sinüs akım (indüklenmiş EMK yöntemi). Yerden yükseklik gerçek değeri epey değiştirir.</p>
+    </details>
+    <p class="try">145 MHz'i seçin, sonra “Rezonansa getir”e basıp reaktansın sıfırlandığı boyu bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Amatör kuralı 468/f (feet, f MHz) ≈ 143/f metre; k ≈ 0,95'e karşılık gelir. Hesaplayıcıdaki “rezonans için k” tel çapına bağlı olarak 0,93–0,98 arasında değişir.</li>
+    <li>Rezonansta direnç 73 Ω'un biraz altına (≈ 65–68 Ω) iner; ekranda canlı hesaplanır. Kaynak: Balanis, Antenna Theory, böl. 8 (indüklenmiş EMK); kb6nu.com “468: ham radio's magic number”.</li>
+    <li>Uç gerilimi: ortalama karakteristik empedans Za = 120(ln(L/a) − 1) ile kaba tahmin. 100 W'ta bile uçlarda kilovolt mertebesi: izolatör ve dokunma uyarısı.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Mono" id="monopol">
+  <div class="text">
+    <h2>Monopol ve toprak düzlemi</h2>
+    <p class="lead">Dipolün yarısını atın, yerine iletken bir düzlem koyun: alan aynı kalır.</p>
+    <p>İletken düzlem bir ayna gibi davranır. Üstteki çeyrek dalga tel, düzlemin altında hayalî bir eşi varmış gibi ışır. Düzlemin üstündeki alan, tam bir yarım dalga dipolün üst yarısıyla birebir aynıdır.</p>
+    <p>Fark beslemede: gerilim yarı tele düşer, ışıma direnci yarıya iner (≈ 36 Ω). Bütün güç üst yarı uzaya gider; yönlülük 3 dB artar (≈ 5,16 dBi).</p>
+    <p>Gerçekte düzlem; toprağa serilen radyal teller, aracın metal tavanı ya da el telsizinde elinizdir.</p>
+    <p class="try">“Ayna görüntüsünü göster”e basın, sonra “Tam dipol” ile karşılaştırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>İki benzetim yan yana koşuyor: biri toprak düzlemi + λ/4 tel, öbürü düzlem olmadan λ/2 dipol. “Üst yarıda fark” iki benzetimin |E|² alanlarının ölçülen bağıl farkı; ayna görüntüsü fikrini sayıyla doğrular.</li>
+    <li>Değerler mükemmel ve sonsuz düzlem içindir. Gerçek toprak kayıplıdır; radyal sayısı azsa verim düşer, besleme direnci yükselir.</li>
+    <li>Araç tavanındaki 145 MHz'lik çeyrek dalga anten (≈ 49 cm) tipik örnektir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Pattern" id="isima-deseni">
+  <div class="text">
+    <h2>Işıma deseni</h2>
+    <p class="lead">Anten her yöne eşit ışımaz; deseni simidi andırır.</p>
+    <p>Dipol en güçlü kendi eksenine dik yönde ışır; telin ucuna doğru hiç ışımaz (boşluk). Kutupsal çizim dikey kesiti desibel ölçeğinde gösterir; yanındaki çizim aynı desenin 3B hâli.</p>
+    <p>Teli uzattıkça simit yassılaşır ve yönlülük artar. Bir buçuk dalga boyunda tel üstünde ters yönlü akan parçalar belirir; ana lob ikiye bölünür, yatay yönde zayıflar.</p>
+    <details class="more"><summary>Daha fazla: desen formülü</summary>
+      <span class="formula">F(θ) = [cos(πL/λ · cosθ) − cos(πL/λ)] / sinθ</span>
+      <p>θ telle yapılan açıdır. Sinüs akım dağılımlı ince dipol için geçerlidir. 1λ ve 2λ'da besleme noktası akım düğümüne düşer; besleme direnci kuramda çok yükselir.</p>
+    </details>
+    <p class="try">Önce 1λ'ya, sonra 1,5λ'ya basın; 3B deseni sürükleyip çevirin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yönlülük: 0,5λ'da 2,15 dBi, 1,25λ'da ≈ 5,2 dBi (dipolün en yönlü olduğu boy), 1,5λ'da loblar bölünür ve yönlülük düşer.</li>
+    <li>Işıma direnci akım tepesine göre; besleme direnci beslemedeki akıma göre. İkisi yarım dalgada aynıdır.</li>
+    <li>Kutupsal ızgara: 0, −10, −20, −30 dB halkaları; −40 dB merkez.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Gain" id="kazanc">
+  <div class="text">
+    <h2>Kazanç, yönlülük, dBi ve dBd</h2>
+    <p class="lead">Kazanç enerji yaratmaz; olanı yönlendirir.</p>
+    <p>Işıma desenini bir balon gibi düşünün: bir yerden sıkıştırınca başka yerden şişer. Toplam güç aynıdır; ama bir yöne toplanınca o yönde daha güçlü görünür. Yönlülük bu toplanmanın ölçüsüdür.</p>
+    <p>Karşılaştırma için iki cetvel var: <strong>dBi</strong> her yöne eşit ışıyan hayalî (izotropik) antene, <strong>dBd</strong> yarım dalga dipole göre. Dipol 2,15 dBi olduğu için dBd = dBi − 2,15.</p>
+    <p>Kayıplar (direnç, toprak, uyumsuz parçalar) gücün bir kısmını ısıya çevirir: <span class="c-fwd">kazanç</span> = <span class="c-r">verim</span> × yönlülük.</p>
+    <p class="try">“Dipol”den “Yönlü”ye geçin ve sıkıştırmayı artırın; sonra verimi düşürün.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yönlü desen cosⁿθ (yalnız ön yarı uzay). Yönlülük her desen için sayısal integralle hesaplanır; cosⁿ için 2(n+1) çıkmalı (n = 4 → 10 → 10 dBi).</li>
+    <li>“Toplam ışınan güç” göstergesi desenin küre üstündeki integralidir: desen ne olursa olsun verimle aynı kalır. Balonun hacmi değil, desenin integrali sabittir; balon bir benzetme.</li>
+    <li>Reklam tuzağı: “dB” yazan kazanç dBi mi dBd mi? 2,15 dB fark eder. Olası soru: izotropik anten gerçekte yoktur, yalnızca cetveldir.</li>
+  </ul></aside>
+</section>

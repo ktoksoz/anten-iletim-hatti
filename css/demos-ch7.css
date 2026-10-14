@@ -1,0 +1,40 @@
+/* Bölüm 7: gerçek dünyada */
+.ch7-verdict {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 22px;
+  padding: 10px 16px; border-bottom: 1px solid var(--line);
+  background: rgba(8, 23, 38, 0.35);
+}
+.ch7-big {
+  font-family: var(--f-display); font-weight: 700; font-stretch: 115%; font-size: 1.32rem; line-height: 1.1;
+  padding-left: 12px; border-left: 3px solid currentColor; min-width: 12.5em;
+}
+.ch7-big.ok { color: var(--ok); }
+.ch7-big.warn { color: var(--fwd); }
+.ch7-big.bad { color: var(--bad); }
+
+/* kontrol ızgarası: etiket sabit genişlikte, kaydırıcı esnek */
+.controls.ch7-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); gap: 6px 20px; }
+.ch7-grid label.sl, .ch7-pane label.sl { display: grid; grid-template-columns: 7.8em minmax(56px, 1fr) auto; gap: 8px; align-items: center; }
+.ch7-grid label.sl input[type="range"], .ch7-pane label.sl input[type="range"] { width: 100%; }
+.ch7-grid .val { min-width: 5.6em; white-space: nowrap; }
+.ch7-cab { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.ch7-cab > .lab { min-width: 7.4em; }
+.ch7-cab label.sl { flex: 1 1 170px; grid-template-columns: minmax(70px, 1fr) auto; }
+.ch7-cab label.sl .lab { display: none; }
+.ch7-cabloss { color: var(--ink-2); min-width: 4.4em; white-space: nowrap; }
+.ch7-span { grid-column: 1 / -1; padding-top: 4px; }
+.ch7-pane { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; flex: 1 1 100%; }
+.ch7-pane label.sl { flex: 1 1 320px; grid-template-columns: auto minmax(90px, 1fr) auto; }
+.ch7-vna-ro { flex: 1 1 100%; }
+
+@media (max-width: 860px) {
+  .stage .fill.ch7-fill { min-height: 420px; }
+  .stage .fill.ch7-tall { min-height: 560px; }
+  .stage .fill.ch7-vna { min-height: 720px; }
+  .controls.ch7-grid { grid-template-columns: 1fr; }
+  .ch7-grid label.sl { grid-template-columns: 7.2em minmax(60px, 1fr) auto; }
+  .ch7-big { min-width: 0; font-size: 1.15rem; }
+  .ch7-verdict { padding: 8px 12px; }
+}
+.ch7-top .seg, .ch7-pane .seg, .ch7-cab .seg { flex-wrap: wrap; }
+@media (max-width: 860px) { .ch7-top > .lab { display: none; } }

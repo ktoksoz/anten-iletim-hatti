@@ -1,0 +1,27 @@
+/* Bölüm 3: yansıma ve duran dalga */
+.ch3 .readouts { gap: 6px 22px; }
+.ch3 .readout .v { min-width: 7.5ch; }
+.ch3 .controls { gap: 10px 12px; }
+.ch3 .controls.top { padding-top: 9px; padding-bottom: 9px; }
+.ch3 .controls + .controls { border-top: 0; padding-top: 2px; }
+.ch3 .controls input[type="range"] { width: 130px; }
+.ch3-presets { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.ch3-presets .btn { padding: 0.32em 0.75em; font-size: 0.82rem; }
+.ch3-group { display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+
+/* antene ulaşan güç çubuğu */
+.ch3-power { flex-basis: 100%; display: grid; gap: 5px; margin-top: 2px; }
+.ch3-power .head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; color: var(--ink); font-weight: 600; font-size: 0.88rem; }
+.ch3-power .head b { font-family: var(--f-num); font-weight: 500; font-size: 1.1rem; color: var(--fwd); font-variant-numeric: tabular-nums; }
+.ch3-power .foot { display: flex; gap: 14px; font-size: 0.76rem; }
+.ch3-power .foot .note-small { margin-left: auto; }
+.ch3-meter { position: relative; height: 14px; background: var(--bg-deep); border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+.ch3-meter i { position: absolute; top: 0; bottom: 0; transition: width .25s; }
+.ch3-meter i.ant { left: 0; background: var(--fwd); }
+.ch3-meter i.back { right: 0; background: var(--ref); opacity: 0.85; }
+
+@media (max-width: 860px) {
+  .ch3 .controls input[type="range"] { width: 110px; }
+  .ch3 .readouts { gap: 4px 14px; }
+  .ch3 .readout .v { font-size: 0.92rem; min-width: 0; }
+}

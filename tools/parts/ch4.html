@@ -1,0 +1,106 @@
+<!-- ================= 4. EMPEDANS VE SMITH ABAĞI ================= -->
+<section class="slide" data-chapter="4" data-demo="ch4Imp" id="empedans-nedir">
+  <div class="text">
+    <h2>Empedans nedir?</h2>
+    <p class="lead">Bir yük, gelen dalgaya iki türlü karşılık verir: enerjiyi yutar ya da bir an saklayıp geri verir.</p>
+    <p><span class="c-r">Direnç (R)</span> enerjiyi ısıya ya da ışımaya çevirir. Bobin enerjiyi manyetik alanında, kondansatör elektrik alanında saklar ve her yarım periyotta geri verir. Bu saklayıp geri verme işine <em>reaktans</em> (X) denir: bobininki <span class="c-xp">artı (+X, endüktif)</span>, kondansatörünkü <span class="c-xn">eksi (−X, kapasitif)</span>.</p>
+    <p>Bobin hızlı değişime direnir; frekans arttıkça reaktansı büyür. Kondansatör yavaş değişimde dolup akımı keser; frekans düştükçe reaktansı büyür. İkisini birlikte yazınca empedans tek bir sayı olmaktan çıkar, düzlemde bir nokta olur: yatayda R, dikeyde X.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <p>Empedans karmaşık bir sayıdır. Baştaki j, sayının dikey eksende durduğunu söyler (j² = −1). Seri bağlı elemanların reaktansları toplanır.</p>
+      <span class="formula">Z = R + jX &nbsp;·&nbsp; X_L = 2πfL &nbsp;·&nbsp; X_C = −1/(2πfC) &nbsp;·&nbsp; |Z| = √(R² + X²)</span>
+    </details>
+    <p class="try">Frekansı kaydırın: nokta yalnızca dikey yönde kayar; mor ok uzarken turkuaz ok kısalır.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Seri R-L-C'de R frekansla değişmez; bu yüzden nokta düzlemde dikey bir çizgi üzerinde gezer. Paralel devrede durum farklıdır (sonraki slayt).</li>
+    <li>Okların uç uca eklenmesi karmaşık toplamanın kendisidir: önce R kadar sağa, sonra X_L kadar yukarı, sonra X_C kadar aşağı.</li>
+    <li>Olası soru: "Reaktans güç harcar mı?" Hayır; ideal bobin ve kondansatör enerjiyi yarım periyot saklar, sonra devreye geri verir. Harcanan güç yalnızca R'dedir.</li>
+    <li>Gerçek bobinin telinde direnç, gerçek kondansatörde kaçak vardır; burada ideal elemanlar kullanılıyor.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Res" id="rezonans">
+  <div class="text">
+    <h2>Rezonans</h2>
+    <p class="lead">Salıncağı kendi ritminde iterseniz küçük itmeler büyük salınıma dönüşür. Bobin ile kondansatör de böyle bir çift kurar.</p>
+    <p>Enerji bobinin manyetik alanı ile kondansatörün elektrik alanı arasında gidip gelir. Bir frekansta iki reaktans eşit büyüklükte ve ters işaretli olur, birbirini sıfırlar: geriye yalnızca <span class="c-r">direnç</span> kalır. Bu frekans <em>rezonans</em> frekansıdır; grafikte <span class="c-xp">mor</span> ve <span class="c-xn">turkuaz</span> çizgilerin kesiştiği yer.</p>
+    <p>Seri devrede empedans rezonansta en küçük değerine iner, akım en büyük olur. Paralel devrede tersine en büyük değerine çıkar. Direnç sürtünme gibidir; tepeyi yayvanlaştırır. Tepenin ne kadar sivri olduğunu <em>Q faktörü</em> söyler.</p>
+    <details class="more"><summary>Daha fazla: f₀, Q ve bant genişliği</summary>
+      <span class="formula">f₀ = 1 / (2π√(LC)) &nbsp;·&nbsp; Q_seri = (1/R)·√(L/C) &nbsp;·&nbsp; Q_paralel = R·√(C/L) &nbsp;·&nbsp; BW = f₀/Q</span>
+      <p>Bant genişliği, gücün yarıya indiği (−3 dB) iki frekans arasındaki aralıktır; grafikte bakır ölçü çizgisi. Antenler de rezonans devresi gibi davranır: yüksek Q'lu bir anten dar bantlıdır.</p>
+    </details>
+    <p class="try">Frekansı rezonansa getirin, sonra direnci küçültün: salıncak büyür, tepe sivrilir.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Grafik iki eksende de logaritmik: X_L ve |X_C| bu ölçekte düz çizgi olur ve tam f₀'da kesişir.</li>
+    <li>Salıncak benzetmesi: itme ritmi sürücü frekansı, salıncağın kendi ritmi f₀. Salınım yüzdesi, seri devrede akımın, paralel devrede gerilimin rezonanstaki değerine oranı.</li>
+    <li>Seri devrede küçük R yüksek Q verir; paralel devrede büyük R yüksek Q verir. Aynı sezgi: sürtünme azalınca tepe sivrilir.</li>
+    <li>Olası soru: "Antenim neden yalnızca bir bantta iyi?" Çünkü anten de bir rezonans devresi; rezonanstan uzaklaştıkça reaktansı büyür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Line" id="hat-donusumu">
+  <div class="text">
+    <h2>Hat empedansı dönüştürür</h2>
+    <p class="lead">Bir yükü kablonun öbür ucundan ölçerseniz yükün kendisini değil, kablonun dönüştürdüğü empedansı görürsünüz.</p>
+    <p>Yükten dönen yankı girişe gidip gelme yolu kadar gecikir. Kablo uzadıkça yankının fazı döner ve girişte toplanan dalga başka bir gerilim/akım oranı gösterir. Bu yüzden giriş empedansının <span class="c-r">R</span>'si ve <span class="c-xp">+X</span>/<span class="c-xn">−X</span>'i hat boyunca dalgalanır.</p>
+    <p>İki uzunluk özeldir. <strong>Çeyrek dalga boyu</strong> hat empedansı tersine çevirir: küçük büyük, kısa devre açık devre olur. <strong>Yarım dalga boyu</strong> hat yükü aynen tekrarlar; desen her yarım dalga boyunda baştan başlar.</p>
+    <details class="more"><summary>Daha fazla: giriş empedansı formülü</summary>
+      <span class="formula">Z_giriş = Z₀ · (Z_L + jZ₀ tan βd) / (Z₀ + jZ_L tan βd) &nbsp;·&nbsp; β = 2π/λ</span>
+      <p>d = λ/4'te tan βd sonsuza gider ve Z_giriş = Z₀²/Z_L olur; d = λ/2'de tan βd = 0 ve Z_giriş = Z_L. Burada hat kayıpsız kabul ediliyor (ideal model).</p>
+    </details>
+    <p class="try">Hat uzunluğunu sürükleyin, sonra λ/4 ve λ/2 düğmelerine basıp giriş empedansını yükle karşılaştırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Pratik sonuç: anten analizörünü kablonun ucuna takarsanız, kablo uzunluğu ölçülen empedansı değiştirir; VSWR ise (kayıpsız hatta) değişmez.</li>
+    <li>λ/4 dönüştürücü uydurmada kullanılır (Bölüm 5): Z₁ = √(Z₀·R_L) empedanslı çeyrek dalga hat, R_L'yi Z₀'a çevirir.</li>
+    <li>Kısa devre yükle λ/4 hat girişte açık devre gibi görünür; stub filtreleri ve "çeyrek dalga tuzakları" böyle çalışır.</li>
+    <li>Sağ üstteki küçük Smith önizlemesi: nokta merkez etrafında dönüyor; bir sonraki slaytın konusu.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Smith" id="smith-abagi">
+  <div class="text">
+    <h2>Smith abağı</h2>
+    <p class="lead">Bütün pasif empedansları tek bir daireye sığdıran harita: sonsuza uzanan düzlemi büküp bir daireye kapatır.</p>
+    <p>Düz düzlemde R sıfırdan sonsuza, X eksi sonsuzdan artı sonsuza gider. Smith abağı bu düzlemi yansıma katsayısına (Γ) göre büker: merkez tam uyum, sol uç kısa devre, sağ uç açık devre, dış çember saf reaktans. <span class="c-r">Kemik daireler</span> sabit direnç, <span class="c-xp">üst</span> ve <span class="c-xn">alt</span> yaylar sabit reaktanstır.</p>
+    <p>Merkezden uzaklık |Γ|'dır; aynı uzaklıktaki her nokta aynı VSWR (duran dalga oranı) değerini verir. Hat eklemek noktayı bu <span class="c-ref">daire</span> üzerinde saat yönünde döndürür; yarım dalga boyunda tam bir tur.</p>
+    <p>Bell Laboratuvarları'ndan Phillip H. Smith abağı Ocak 1939'da <em>Electronics</em> dergisinde yayımladı. İlk denemesi dikdörtgen bir çizelgeydi.</p>
+    <details class="more"><summary>Daha fazla: abağın matematiği</summary>
+      <span class="formula">z = Z/Z₀ &nbsp;·&nbsp; Γ = (z − 1)/(z + 1) &nbsp;·&nbsp; VSWR = (1 + |Γ|)/(1 − |Γ|) &nbsp;·&nbsp; Γ(d) = Γ_L·e^(−j2βd)</span>
+      <p>Bu dönüşüm doğruları ve daireleri yine daireye çevirir; bu yüzden ızgaranın hepsi daire yaylarından oluşur. Dış ölçek, hattın kaynağa doğru kaç dalga boyu uzadığını okur.</p>
+    </details>
+    <p class="try">“Düz düzlem” düğmesine basıp abağın açılışını izleyin; sonra noktayı abakta sürükleyin ve hat ekleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: P. H. Smith, "Transmission Line Calculator", Electronics, c. 12, sayı 1, Ocak 1939, s. 29–31; geliştirilmiş sürüm Ocak 1944. Japonya'da Tōsaku Mizuhashi 1937'de benzer bir abak yayımladı (en.wikipedia.org/wiki/Smith_chart).</li>
+    <li>Smith önce dikdörtgen bir çizelge kullandı, sonra kutupsal biçime geçti; "Düz düzlem" animasyonu bu bükülmeyi gösteriyor. Düz düzlemde yalnızca R ≤ 4·Z₀ ve |X| ≤ 2,6·Z₀ kısmı sığar.</li>
+    <li>NanoVNA'nın Smith ekranı aynı şeyi gösterir: frekans taranırken nokta abakta bir eğri çizer (Bölüm 7).</li>
+    <li>Olası soru: "Nokta neden saat yönünde döner?" Hat, yansımaya gidiş-dönüş gecikmesi ekler; faz geriler, Γ saat yönünde döner.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Game" id="smith-oyun">
+  <div class="text">
+    <h2>Smith'te oyna</h2>
+    <p class="lead">Rastgele bir yükü yalnızca bobin, kondansatör ve kablo ekleyerek merkeze, yani uyuma getirin.</p>
+    <ul>
+      <li><span class="c-xp">Seri bobin</span> ya da <span class="c-xn">seri kondansatör</span> direnci değiştirmez: nokta kendi kemik direnç dairesinde kayar; bobin yukarı, kondansatör aşağı.</li>
+      <li>Paralel eleman iletkenliği değiştirmez: nokta kesikli iletkenlik dairesinde kayar (kesikli izler).</li>
+      <li>Hat parçası noktayı merkez çevresinde döndürür (noktalı iz).</li>
+    </ul>
+    <p>Püf noktası: önce noktayı merkezden geçen kesikli daireye (g = 1) ya da kemik daireye (r = 1) taşıyın, sonra tek elemanla merkeze kayın. Sonraki bölümün L-ağı tam olarak budur.</p>
+    <p class="try">“Seri L” ekleyip miktarı artırın; nokta kesikli daireye değince “Paralel C” ekleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Değerler seçilen frekansta ideal bobin ve kondansatöre çevriliyor (pF, nH). Aynı Smith yolu 7 MHz'te ve 435 MHz'te çok farklı parça değerleri verir.</li>
+    <li>Hedef halkası VSWR 1,2'nin altını gösterir; amatör telsizde VSWR 1,5'in altı genellikle yeterli sayılır.</li>
+    <li>Hat adımının fiziksel uzunluğu RG-58'in hız faktörüyle hesaplanıyor.</li>
+    <li>İpucu: paralel eleman eklerken admitans ızgarasına (kesikli soluk daireler) bakın; seri eleman eklerken empedans ızgarasına.</li>
+  </ul></aside>
+</section>

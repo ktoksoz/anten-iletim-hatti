@@ -1,0 +1,11 @@
+/* Bölüm 2: karakteristik empedans denetimleri */
+.z0-sliders, .z0-presets { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.z0-presets .btn { padding: 0.35em 0.75em; font-size: 0.82rem; }
+.controls.z0-row { border-top: 1px solid var(--line); }
+.z0-leg { display: inline-flex; }
+#karakteristik-empedans .seg { flex-wrap: wrap; }
+#karakteristik-empedans .seg button { white-space: nowrap; }
+@media (max-width: 860px) {
+  #karakteristik-empedans .stage .fill, #deri-etkisi .stage .fill { min-height: 560px; }
+  #lc-merdiven .stage .fill { min-height: 440px; }
+}

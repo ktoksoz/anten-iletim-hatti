@@ -1,0 +1,6 @@
+/* Bölüm 1: dar ekranda ip lejantı küçülsün */
+@media (max-width: 560px) {
+  #ip-dalgasi .float.tl { padding: 5px 8px; }
+  #ip-dalgasi .legend { gap: 2px 10px; font-size: 0.72rem; }
+}
+@media (max-width: 560px) { #ip-dalgasi .float.tl { display: none; } }

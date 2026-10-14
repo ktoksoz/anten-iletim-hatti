@@ -1,0 +1,97 @@
+<!-- ================= 7. GERÇEK DÜNYADA ================= -->
+<section class="slide" data-chapter="7" data-demo="ch7Budget" id="baglanti-butcesi">
+  <div class="text">
+    <h2>Bu bağlantı kurulur mu?</h2>
+    <p class="lead">Bir telsiz bağlantısı, verici gücünden başlayıp alıcıya kadar süren bir desibel hesabıdır: kimi basamak ekler, kimi götürür.</p>
+    <p>Kablolar biraz kaybettirir, antenler gücü bir yöne toplayarak kazandırır. Asıl büyük düşüş yolda olur: dalga yayıldıkça güç gittikçe büyüyen bir küreye dağılır. Mesafe iki katına çıkınca sinyal dörtte birine iner (6 dB).</p>
+    <p>Alıcıya ulaşan <span class="c-fwd">sinyal seviyesi</span>, alıcının duyabildiği en zayıf sinyalden (hassasiyet) yüksekse bağlantı kurulur. Aradaki farka <strong>marj</strong> denir; yağmur, ağaç ve duvar bu marjdan yer.</p>
+    <p class="note-small">Hesap serbest uzay varsayar: engel, Fresnel bölgesi, yer yansıması ve dünyanın eğriliği yok. Yerdeki gerçek bağlantılar bundan onlarca dB kötü olabilir.</p>
+    <details class="more"><summary>Daha fazla: Friis denklemi</summary>
+      <p>Her şey dBm ve dB cinsinden toplanır:</p>
+      <span class="formula">P_al = P_ver − L_kablo1 + G_ver − FSPL + G_al − L_kablo2</span>
+      <span class="formula">FSPL = 20·log₁₀(4π·d·f / c)  [dB]</span>
+      <p>Marj = P_al − hassasiyet. Marj 6 dB artınca, serbest uzayda menzil iki katına çıkar. Kablo kaybı kablo türü, uzunluk ve frekanstan iletken ve dielektrik kaybıyla hesaplanır (ideal iletken; gerçek kablo biraz daha kayıplıdır).</p>
+    </details>
+    <p class="try">Wi-Fi senaryosunu seçin ve mesafeyi uzatın: sinyal kaç metrede hassasiyet çizgisinin altına iniyor?</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Senaryolar: 2 m el telsizi en çok 5 W (BTK teknik ölçütleri, 144–146 MHz'de el telsizi FM için sınır). LoRa: 868–868,6 MHz'de 25 mW e.r.p. ve %1 görev çevrimi (BTK, Frekans Tahsisinden Muaf Telsiz Cihaz ve Sistemlerine İlişkin Teknik Ölçütler); SX1276 veri sayfası 868 MHz'de SF12/125 kHz için −136 dBm hassasiyet verir.</li>
+    <li>Wi-Fi: 2,4 GHz'de 100 mW e.i.r.p. sınırı (aynı belge). Hassasiyet hıza bağlı: 54 Mbit/s için üreticiler −65 ile −76 dBm arası verir; seçilen −72 dBm tipik bir değer.</li>
+    <li>ISS'teki Kenwood telsizi 25 W ile sınırlıdır (ARISS). İstasyon ~400 km yükseklikte; tam tepedeyken ~400 km, ufka yakınken ~2000 km uzaktadır.</li>
+    <li>Anten kazançları senaryoda varsayımdır (el telsizi kauçuk anteni 0 dBi'den genelde daha kötüdür). Kablo kaybı ideal iletkenle hesaplanır, veri sayfasından %20–40 düşük çıkar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Vna" id="olcum">
+  <div class="text">
+    <h2>Ölçü aletini okumak</h2>
+    <p class="lead">Anteni ölçmenin üç yolu var: SWR metre, anten analizörü ve NanoVNA gibi küçük bir vektör ağ analizörü.</p>
+    <p><strong>SWR metre</strong> verici ile anten arasına girer ve tek bir sayı söyler: VSWR (duran dalga oranı). <strong>Anten analizörü</strong> kendi küçük sinyalini gönderir, frekansı tarar ve empedansı da ölçer. <strong>NanoVNA</strong> bunun cep boyu hâlidir: <span class="c-ref">yansıyan dalganın</span> genliğini de fazını da ölçer.</p>
+    <p>Sağdaki ekran bir dipolü ölçüyor. S11 eğrisinin çukuru rezonansı gösterir; VSWR eğrisi aynı bilginin başka yüzü. Kablo eklendikçe Smith abağındaki iz döner, ama kayıpsız kabloda VSWR hiç değişmez: kablo uyumsuzluğu düzeltmez, yalnızca gizler.</p>
+    <p class="note-small">Ölçümden önce kalibrasyon şarttır: kısa devre, açık devre ve 50 Ω yük (SOL) takılır ki cihaz kendi kablosunun etkisini çıkarabilsin. <span class="approx">yaklaşık model</span> Dipol seri RLC devresiyle modellendi.</p>
+    <details class="more"><summary>Daha fazla: ekrandaki sayılar</summary>
+      <span class="formula">S11 = 20·log₁₀|Γ|  (dB),  geri dönüş kaybı = −S11</span>
+      <span class="formula">Z(f) = R + j·Q·R·(f/f₀ − f₀/f)</span>
+      <p>Kablonun ucundaki empedans <code>Zin = Z₀(Z + Z₀ tanh γl)/(Z₀ + Z tanh γl)</code> ile bulunur. Kayıp varsa iz merkeze doğru sarmal çizer.</p>
+    </details>
+    <p class="try">Ekrandaki imleci sürükleyip çukurun dibine getirin, sonra kablo uzunluğunu artırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>NanoVNA ekranında genelde dört iz olur: S11 LOGMAG, S11 SWR, S11 Smith, S11 faz. Burada üçü gösteriliyor.</li>
+    <li>Yarım dalga dipolün besleme direnci serbest uzayda ≈ 73 Ω; 50 Ω'luk hatta rezonansta bile VSWR ≈ 1,46 olur. Gerçek dipolün yere yakınlığı bu değeri değiştirir.</li>
+    <li>Kalibrasyon düzlemi: SOL standartları kablonun ucuna takılırsa cihaz, kablonun ucunu ölçer; takılmazsa kablo ölçüme karışır (Smith izi döner).</li>
+    <li>Q kaydırıcısı anten bant genişliğini temsil eder: kalın tel düşük Q, ince tel yüksek Q.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Pitfalls" id="pratik-hatalar">
+  <div class="text">
+    <h2>Sık yapılan hatalar</h2>
+    <p class="lead">Kâğıtta kusursuz bir anten, sahada dört klasik hatadan biriyle bozulabilir.</p>
+    <ul>
+      <li><strong>75 Ω kablo 50 Ω sisteme</strong> girince (TV kablosu) VSWR kablo boyuna göre değişir.</li>
+      <li><strong>Uzun, kayıplı kablo</strong> VSWR'yi olduğundan iyi gösterir: yansıyan dalga dönerken de kaybolur.</li>
+      <li><strong>Metal yüzeye yakın anten</strong> kendi görüntüsüyle etkileşir; empedans ve desen değişir.</li>
+      <li><strong>Yanlış boyda kesilmiş dipol</strong> başka bir frekansta rezonansa girer.</li>
+    </ul>
+    <details class="more"><summary>Daha fazla: hesaplar</summary>
+      <span class="formula">|Γ_giriş| = |Γ_yük| · 10^(−2·kayıp/20)</span>
+      <span class="formula">f_rez ≈ 0,95 · c / (2·L)</span>
+      <p>Metal yüzey için iletken düzlemin ayna görüntüsü kullanılır: Z = Z₁₁ − Z₁₂(2h) (iki paralel yarım dalga dipolün karşılıklı empedansı). <span class="approx">yaklaşık model</span></p>
+    </details>
+    <p class="try">Uzun, kayıplı kablo senaryosunu seçin ve kabloyu uzatın: vericide görülen VSWR iyileşirken antene ulaşan güç düşer.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>75 Ω'luk kablo λ/2'nin katı uzunluktaysa 50 Ω'u aynen taşır; λ/4'ün tek katlarında 75²/50 = 112,5 Ω gösterir (VSWR 2,25).</li>
+    <li>Kayıplı kablo bir "zayıflatıcı" gibi davranır: ucunda açık devre olsa bile, 10 dB kayıplı kablonun girişinde VSWR 1,2'ye düşer. Kötü VSWR'yi kablo uzatarak "düzeltmek" gücü ısıya çevirir.</li>
+    <li>Metal düzlem modeli sonsuz ve mükemmel iletken düzlem, ince tel, sinüs akım varsayar (Balanis, karşılıklı empedans). Gerçek bir araba tavanı ya da duvar daha karmaşıktır.</li>
+    <li>Dipol kısaltma katsayısı 0,95 tel antenler için tipik değerdir; tel kalınlığı ve izolasyon bunu değiştirir. Önce biraz uzun kesip ölçerek kısaltmak güvenli yoldur.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Safety" id="guvenlik">
+  <div class="text">
+    <h2>Güvenlik ve yasal çerçeve</h2>
+    <p class="lead">Radyo dalgası yüksek güçte dokuyu ısıtır; bu yüzden antenle aranızda bir mesafe sınırı vardır.</p>
+    <p><a href="https://www.icnirp.org/en/frequencies/radiofrequency/index.html" target="_blank" rel="noopener">ICNIRP 2020</a> kılavuzu genel halk için güç yoğunluğu sınırı verir; hesaplayıcı bu sınıra inilen mesafeyi bulur. <strong>Yaklaşıktır</strong> (uzak alan varsayımı) ve resmî değerlendirmenin yerine geçmez.</p>
+    <p>Düşük güçte bile anten uçlarında yüzlerce volt olabilir: gönderirken antene dokunmayın.</p>
+    <p>Türkiye'de amatör bantlarda göndermek için <strong>amatör telsizcilik belgesi</strong> gerekir. Belgeyi sınavla <a href="https://www.kiyiemniyeti.gov.tr/" target="_blank" rel="noopener">Kıyı Emniyeti</a> verir (A, B, C sınıfı; çağrı işareti dahil). Bant ve güç sınırlarını <a href="https://www.btk.gov.tr/amator-telsizcilik" target="_blank" rel="noopener">BTK</a> belirler.</p>
+    <details class="more"><summary>Daha fazla: sınırlar ve gerilim</summary>
+      <span class="formula">S = P·G / (4π r²)  →  r = √(P·G / (4π·S_sınır))</span>
+      <p>ICNIRP 2020, genel halk, tüm vücut, 30 dakika ortalaması: 30–400 MHz'de 2 W/m², 400–2000 MHz'de f/200 W/m² (f MHz), 2–300 GHz'de 10 W/m². 30 MHz altında güç yoğunluğu değil, ayrı E ve H alan sınırları geçerlidir.</p>
+      <span class="formula">V ≈ √(P·Z)</span>
+      <p>Yüksek empedanslı bir besleme noktası, aynı güçte çok daha yüksek gerilim demektir. Uçtan beslemeli yarım dalga anten (EFHW) genellikle 49:1 dönüştürücüyle beslenir, yani ≈ 2,45 kΩ görür.</p>
+    </details>
+    <p class="try">Gücü artırın, sonra frekansı 400 MHz'in üstüne taşıyın ve güvenli mesafeye bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: ICNIRP, "Guidelines for limiting exposure to electromagnetic fields (100 kHz to 300 GHz)", Health Physics 118(5), 2020, Tablo 5. Belge: icnirp.org.</li>
+    <li>Gönderme oranı: sınırlar zaman ortalamasıdır; FM konuşmada verici zamanın bir kısmında açıktır. Sürekli taşıyıcı (FT8, uzun CW) için %100 alın.</li>
+    <li>Bu hesap sağlık tavsiyesi değildir. Yakın alanda (λ/2π'den yakın) güç yoğunluğu formülü geçersizdir; ölçüm ya da ayrıntılı analiz gerekir.</li>
+    <li>Belge: KEGM sınavı (50 soru; A/B ortak soru seti, 75 puan A, 60–74 puan B; C ayrı soru seti). Belge 10 yıl geçerli. Bant ve güç: BTK, Frekans Tahsisinden Muaf Telsiz Cihaz ve Sistemlerine İlişkin Teknik Ölçütler, Tablo "Amatör telsiz cihaz ve sistemleri" (ör. 144–146 MHz'de C sınıfı en çok 5 W).</li>
+  </ul></aside>
+</section>

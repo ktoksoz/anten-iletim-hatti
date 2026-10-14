@@ -1,0 +1,107 @@
+<!-- ================= 5. EMPEDANS UYDURMA ================= -->
+<section class="slide" data-chapter="5" data-demo="ch5Why" id="neden-uydurma">
+  <div class="text">
+    <h2>Neden uydurma?</h2>
+    <p class="lead">Her verici, içinde bir direnç saklıyormuş gibi davranır. Yük bu dirence eşit olduğunda en çok gücü alır.</p>
+    <p>Su hortumunu düşünün: musluğun kendi direnci var. Hortum çok darsa su az akar; çok genişse basınç düşer. İkisinin dengede olduğu bir nokta en çok suyu taşır. Elektrikte bu nokta <span class="c-r">yük direnci</span> = kaynağın iç direncidir.</p>
+    <p>Yük uyumsuzsa gücün bir kısmı yüke girmez, <span class="c-ref">geri döner</span>. Kaybolan bu güç, yansıma katsayısının karesiyle orantılıdır.</p>
+    <p>İkinci neden vericinin kendisi: geri dönen güç çıkış katındaki transistörlerin üstünde ek gerilim ve ısı demektir. Birçok yarı iletken çıkışlı telsiz yansıyan gücü bir yönlü kuplörle ölçer ve VSWR (duran dalga oranı) yükselince gücü kendiliğinden kısar. Eşik modelden modele değişir; şemadaki lamba yalnızca bir örnek.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <p>Açık devre gerilimi V, iç direnci Rs olan kaynakta yükün gücü:</p>
+      <span class="formula">P = V² · RL / (Rs + RL)²</span>
+      <p>Türevi sıfıra eşitlenince RL = Rs bulunur. Bu ifade aslında Pmax · (1 − |Γ|²)'ye eşittir; Γ = (RL − Rs)/(RL + Rs). Yani "geri dönen güç" ile "yüke girmeyen güç" aynı şeydir.</p>
+    </details>
+    <p class="try">Yük direncini 50 Ω'un altına ve üstüne kaydırın; sarı eğrinin tepesini bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Maksimum güç aktarımı verimlilik değildir: RL = Rs'te gücün yarısı kaynağın iç direncinde harcanır. Gerçek vericiler bu yüzden "50 Ω'luk bir direnç" değildir; 50 Ω yüke anma güçlerini verecek biçimde tasarlanır.</li>
+    <li>Ekrandaki kaynak modeli: 100 W verebilen, iç direnci 50 Ω ideal kaynak. Yansıyan güç Pmax·|Γ|² ile, yük gücü V²RL/(Rs+RL)² ile hesaplanıyor; ikisinin toplamı Pmax.</li>
+    <li>SWR koruması (foldback): katı hal telsizlerinin çoğunda yönlü kuplör yansıyan gücü izler; eşik ve davranış üreticiye göre değişir, kullanım kılavuzuna bakılmalı. Lambadaki 2:1 eşiği yalnızca örnektir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5LMatch" id="l-agi">
+  <div class="text">
+    <h2>L-ağı</h2>
+    <p class="lead">Bir bobin ve bir kondansatör, hemen her yükü 50 Ω'a çevirebilir. Smith abağında bu iki adımlık bir yolculuktur.</p>
+    <p>Seri eleman noktayı sabit <span class="c-r">direnç</span> dairesi üzerinde kaydırır; paralel eleman sabit iletkenlik dairesi (kesikli ızgara) üzerinde. Bobin (<span class="c-xp">+X</span>) bir yöne, kondansatör (<span class="c-xn">−X</span>) öbür yöne iter.</p>
+    <p>İlk eleman noktayı, merkezden geçen daireye taşır; ikincisi merkeze indirir. Bu yüzden genellikle iki çözüm vardır. Seri bobin ve paralel kondansatör <strong>alçak geçiren</strong> bir süzgeçtir (harmonikleri de bastırır); seri kondansatör ve paralel bobin <strong>yüksek geçiren</strong>.</p>
+    <details class="more"><summary>Daha fazla: hesap</summary>
+      <p>RL &gt; Z₀ ise paralel eleman yükün yanına konur; RL &lt; Z₀ ise seri eleman. Reaktanslar bileşene çevrilir:</p>
+      <span class="formula">L = X / (2πf) · C = 1 / (2πf · |X|)</span>
+      <p>Ekrandaki Zin, seçilen elemanlarla devrenin girişinden yeniden hesaplanır. Bileşenler ideal kabul edilir; gerçek parçaların kaybı ve parazitik değerleri yoktur.</p>
+    </details>
+    <p class="try">"Adım adım göster"e basın, sonra öbür çözümü seçin. Turuncu noktayı sürükleyerek yükü değiştirin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hesap RF.lMatch (Pozar 5.1); doğrulama RF.lMatchZin: kaynak tarafından görülen empedans her çözümde 50 + j0 Ω çıkıyor.</li>
+    <li>Yük reaktiflse iki bobinli ya da iki kondansatörlü çözüm de çıkabilir; bu durumda devre ne alçak ne yüksek geçirendir.</li>
+    <li>Pratikte alçak geçiren çözüm tercih edilir: vericinin harmoniklerini ek olarak zayıflatır. Yüksek geçiren çözüm DC'yi keser.</li>
+    <li>Ölçek: Smith abağındaki ızgara 50 Ω'a normalize. Merkez = 50 Ω, kesikli daireler admitans ızgarası.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Stub" id="ceyrek-dalga-stub">
+  <div class="text">
+    <h2>Hat parçasıyla uydurma</h2>
+    <p class="lead">Bobin ve kondansatör yerine kablonun kendisini kullanabiliriz.</p>
+    <p><strong>Çeyrek dalga dönüştürücü:</strong> araya, empedansı iki değerin geometrik ortalaması olan bir hat parçası konur. Bu hat boyunca nokta, <em>kendi</em> empedansına göre çizilmiş abağın merkezi etrafında döner; 50 Ω abağında ise bu dönüş kaymış bir daire gibi görünür. Çeyrek dalgada yük, öbür uçta 50 Ω olarak belirir. Yalnızca gerçek (dirençli) yükler için çalışır.</p>
+    <p><strong>Tek stub:</strong> yükten belli bir uzaklığa gidilir; orada iletkenlik tam 1'dir (kesikli <span class="c-r">g = 1</span> dairesi). Kalan sanal kısmı, paralel bağlı, ucu kısa devre bir hat parçası (stub) iptal eder.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">Z₁ = √(Z₀ · R_L) · Zin = Z₁² / R_L (ℓ = λ/4)</span>
+      <p>Kısa devre stubun admitansı −j·cot(βℓ)/Z₀: λ/4'ten kısaysa bobin, uzunsa kondansatör gibidir. Uzunluklar elektriksel uzunluktur; kablonun hız faktörüyle çarpılarak metreye çevrilir.</p>
+    </details>
+    <p class="try">"Oynat"a basıp hattın uzamasını izleyin; sonra "Tek stub"a geçin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Çeyrek dalga: Z₁ hattında |Γ| (Z₁'e göre) sabittir, nokta Z₁ abağında merkez etrafında yarım tur atar. 50 Ω abağına taşınınca daire kayar; iz her adımda RF.zinWl(RL, Z₁, ℓ) ile hesaplanıyor.</li>
+    <li>Tek stub: RF.singleStub (Pozar 5.2). Doğrulama: Y(d) + Y_stub = 1/50 S, yani Zin = 50 Ω (iki çözüm de).</li>
+    <li>Örnek uygulama: 75 Ω'luk TV kablosundan çeyrek dalga parçalarla iki anteni birleştirmek; VHF/UHF'de stub ile uydurma kolay, HF'de stub metrelerce uzar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Balun" id="balun">
+  <div class="text">
+    <h2>Balun</h2>
+    <p class="lead">Dipol dengelidir, koaksiyel kablo dengesiz. Doğrudan bağlarsanız kablonun dışı da anten olur.</p>
+    <p>Dipolün iki kolu birbirinin aynası: akımlar eşit ve simetrik. Koaksiyelde ise iç iletkenin akımı, örgünün <em>iç</em> yüzünden geri döner. Deri etkisi yüzünden örgünün iç ve dış yüzü yüksek frekansta iki ayrı iletken gibidir.</p>
+    <p>Besleme noktasında örgüden dönen akım ikiye ayrılır: bir kısmı dipolün koluna, bir kısmı da örgünün <span class="c-h">dış yüzüne</span> gider. Bu ortak mod akımı kollar arasındaki dengeyi bozar, kabloyu ışıtır, parazit toplar.</p>
+    <p><strong>Akım balunu</strong> (ferrit boğucu ya da ferrite sarılmış koaks) bu dış yola büyük bir empedans koyar. İçerideki akım etkilenmez, dışarı sızan akım kesilir. <strong>4:1 balun</strong> buna empedans dönüşümünü ekler: 1:2 sarım oranı empedansı 1:4 değiştirir.</p>
+    <details class="more"><summary>Daha fazla: model</summary>
+      <p>Ekrandaki akımlar basit bir akım bölücüyle hesaplanıyor: kılıfın dış yolu örnek olarak 150 Ω kabul edildi. Gerçekte bu değer kablo boyu ve yerleşimle çok değişir. Empedans oranı sarım oranının karesidir: Z₂/Z₁ = (N₂/N₁)².</p>
+    </details>
+    <p class="try">"Balunsuz" ile "1:1 akım balunu" arasında geçin; kılıfın dışındaki çivit akıma bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Balun = balanced–unbalanced. Akım balunu (Guanella türü, ya da ferrit boğucu) ortak mod akımını bastırır; gerilim balunu (Ruthroff) uçlarda eşit gerilim zorlar ama dengesiz yükte ortak mod akımını iyi kesmez.</li>
+    <li>Boğucunun ortak mod empedansı çalışma bandında birkaç yüz ile birkaç bin ohm arasında olmalı; ölçmek için anten analizörü kablo dışına bağlanır.</li>
+    <li>Belirtiler: SWR'nin kabloya dokununca değişmesi, istasyonda "RF ısırığı", kablo boyuyla değişen gürültü. Akım değerleri yaklaşık model; yalnızca eğilimi gösterir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Tuner" id="tuner">
+  <div class="text">
+    <h2>Anten tuner</h2>
+    <p class="lead">Tuner anteni düzeltmez; vericiye uyumlu bir empedans gösterir.</p>
+    <p>Tuner bir L-ağının ayarlı hâlidir. Vericinin yanına konduğunda verici tarafındaki VSWR 1'e iner ve verici rahatlar. Ama tunerın ötesinde hiçbir şey değişmez: anten hâlâ uyumsuz, kabloda <span class="c-ref">yansıyan dalga</span> ve <span class="c-tot">duran dalga</span> aynen durur.</p>
+    <p>Kablo kayıpsız olsaydı bu yansıma bir sorun olmazdı: geri dönen güç tunerdan yeniden antene gönderilir. Gerçek kablo ise her gidişte biraz ısınır. Uyumsuzluk büyüdükçe ve kablo uzadıkça bu ek kayıp artar.</p>
+    <p>Tuner anten ucuna konursa kablo uyumlu çalışır ve yalnızca kendi normal kaybı kalır.</p>
+    <details class="more"><summary>Daha fazla: ek kayıp</summary>
+      <p>Uyumlu kayıp ML (dB), a = 10^(ML/10), ρ = antendeki |Γ|. ARRL'nin "SWR'den doğan ek kayıp" bağıntısı:</p>
+      <span class="formula">Toplam kayıp = 10 log [(a² − ρ²) / (a · (1 − ρ²))]</span>
+      <p>Ekrandaki değer, kayıplı hat denklemiyle hesaplanan giriş empedansından güç akışı olarak bulunuyor; iki yol aynı sonucu verir. Kablo kaybı ideal iletken modelidir, gerçek kablo biraz daha kayıplıdır.</p>
+    </details>
+    <p class="try">"Tuner yok" ile başlayın, sonra tuneri vericinin ve antenin yanına koyun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>"Tuner yok" durumunda kablo kaybı, vericinin gördüğü VSWR'yi olduğundan iyi gösterir: yansıyan dalga dönüşte de zayıflar. Uzun ve kayıplı kabloda düşük SWR okuması iyi anten demek değildir.</li>
+    <li>Tuner yokken antene ulaşan güç, ideal 100 W kaynak ve uyumsuzluk kaybıyla basitçe hesaplandı; gerçek verici koruma devresiyle daha da az verebilir.</li>
+    <li>Tunerın kendi kaybı (bobin direnci) hesaba katılmadı. Yüksek VSWR'de tuner içindeki kayıp da önemli olabilir.</li>
+    <li>Kaynak: ARRL Antenna Book, "additional loss due to SWR"; hesap RF.zinLossy ile çapraz doğrulandı.</li>
+  </ul></aside>
+</section>

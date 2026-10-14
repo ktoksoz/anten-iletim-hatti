@@ -1,0 +1,89 @@
+<!-- ================= 6b. ANTEN: POLARİZASYON, YAGİ, FAZ DİZİSİ, DİĞER ANTENLER ================= -->
+<section class="slide" data-chapter="6" data-demo="ch6bPol" id="polarizasyon">
+  <div class="text">
+    <h2>Dalganın bir yönü var</h2>
+    <p class="lead">Elektrik alanı boşlukta hep aynı düzlemde titreşebilir ya da ilerlerken bir burgu gibi dönebilir. Buna polarizasyon denir.</p>
+    <p>Dikey bir dipol, <span class="c-e">elektrik alanı</span> dikey titreşen bir dalga yayar; <span class="c-h">manyetik alan</span> ona hep diktir. Alıcı anten aynı doğrultuda durursa bütün gücü alır. Alıcıyı yatırdıkça alınan güç azalır; tam 90°'de kuramsal olarak sıfıra iner.</p>
+    <p>Dairesel polarizasyonda alan vektörü döner: sağ el ya da sol el. Dairesel bir dalgayı doğrusal bir antenle almak yarı gücü, yani 3 dB'i götürür; ama antenin hangi açıda durduğu artık önemli olmaz. Bu yüzden uydular ve GPS dairesel polarizasyon kullanır.</p>
+    <details class="more"><summary>Daha fazla: cos² kuralı ve gerçek hayat</summary>
+      <p>İki doğrusal anten arasındaki açı Δ ise alınan güç oranı:</p>
+      <span class="formula">P_alınan / P_en çok = cos²(Δ)</span>
+      <p>45°'de yarı güç (3 dB), 90°'de kuramda sıfır. Pratikte sıfır olmaz: antenin kendi çapraz polarizasyonu, yansımalar ve hizalama hatası yüzünden ayrım çoğu zaman yalnızca 20–30 dB civarında kalır. Zıt yönde dönen iki dairesel anten (sağ ↔ sol) de kuramda hiç sinyal almaz; gerçekte kayıp yine büyük ama sonsuz değildir.</p>
+    </details>
+    <p class="try">Alıcıyı yavaşça 90°'ye çevirin ve güç göstergesini izleyin; sonra vericiyi "Sağ el" yapın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kural: E vektörünün doğrultusu = polarizasyon. Dikey dipol dikey polarizasyon yayar. FM ve TV yayınlarında yatay, VHF/UHF FM telsizde dikey yaygın; SSB/zayıf sinyal VHF'de çoğunlukla yatay.</li>
+    <li>Sağ ve sol el (IEEE tanımı): dalgaya arkasından, yani vericinin tarafından bakınca saat yönünde dönüyorsa sağ el. Yansıma el yönünü tersine çevirir.</li>
+    <li>90°'de sıfır yalnızca kuram. ITU-R S.727, doğrusal polarizasyonlu VSAT antenlerden ana hüzmede yalnızca en az 25 dB (kenarlarda 20 dB) eş/çapraz polarizasyon oranı ister; besleme açısı hatası ayrımı 20·log(tan θ) kadar düşürür.</li>
+    <li>Dairesel ↔ doğrusal: cos² ortalaması ½ → 3 dB. Pratikte dairesel antenin eksen oranı mükemmel olmadığından bu değer biraz oynar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bYagi" id="yagi">
+  <div class="text">
+    <h2>Yagi: çatıdaki tarak</h2>
+    <p class="lead">Bir dipolün yanına beslenmemiş birkaç çubuk koyun: ışıma bir yöne toplanır.</p>
+    <p>Yalnızca ortadaki <strong>sürülen eleman</strong> kabloya bağlıdır. Arkadaki biraz uzun <strong>yansıtıcı</strong> ve öndeki biraz kısa <strong>yönlendiriciler</strong>, sürülen elemanın alanından akım kapar ve kendileri de ışır. Akımlarının fazı aralığa ve boya göre kayar; dalgalar önde üst üste biner, arkada birbirini söndürür.</p>
+    <p>Eleman ekledikçe hüzme daralır, kazanç artar; ama her yeni yönlendiricinin katkısı bir öncekinden azdır. Antenin boyu (bom uzunluğu) kazancı en çok belirleyen şeydir.</p>
+    <p>Anten, 1926'da Tohoku İmparatorluk Üniversitesi'nde Shintaro Uda ile hocası Hidetsugu Yagi'nin çalışmasından doğdu; asıl buluşu Uda yaptı.</p>
+    <details class="more"><summary>Daha fazla: bu modelin sınırı</summary>
+      <p>Buradaki desen <span class="approx">yaklaşık model</span>: her elemana bir genlik ve faz atayıp dizi faktörünü topluyoruz. Fazlar, ilerleyen bir dalganın gecikmesine Hansen–Woodyard'daki gibi küçük bir ek gecikme eklenerek seçildi; genlik aralık büyüdükçe azalıyor.</p>
+      <span class="formula">F(φ) = Σ aₙ e^{j(2π xₙ cos φ + αₙ)} · F_dipol(φ)</span>
+      <p>Gerçek bir Yagi'de akımlar elemanlar arasındaki karşılıklı empedanslardan çıkar ve NEC gibi sayısal yöntemlerle (moment yöntemi) hesaplanır. Bu model eğilimleri doğru gösterir, tasarım için kullanılmaz.</p>
+    </details>
+    <p class="try">Eleman sayısını 3'ten 10'a çıkarın; kazancın ve ön/arka oranının nasıl değiştiğine bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: IEEE Milestone (1995) ve Wikipedia "Yagi–Uda antenna": Uda ve Yagi, Tohoku İmparatorluk Üniversitesi, 1926; ilk Japonca yayın Şubat 1926, Yagi'nin İngilizce makalesi Proc. IRE 1928. Bazı kaynaklar Uda'nın deneylerini 1925'e tarihler.</li>
+    <li>Model: yansıtıcı + sürülen + yönlendiriciler, ardışık faz gecikmesi 2πd + π/N (Hansen–Woodyard benzeri), yönlendirici genliği aralıkla ve sırayla azalır. Kazanç, 3B desenin küre üzerinde sayısal integraliyle (kayıpsız: kazanç = yönlülük) hesaplanır.</li>
+    <li>Gerçek değerler için: 3 elemanlı Yagi tipik olarak 7–8 dBi, 10 elemanlı uzun bomlu Yagi 12–14 dBi civarı. Model bu aralığa düşüyor ama ön/arka oranı gerçek tasarımlarda eleman boylarına çok duyarlıdır.</li>
+    <li>Olası soru: "Neden yansıtıcı tek?" Arkaya ikinci bir yansıtıcı koymak çok az kazandırır; geri ışıma zaten büyük ölçüde sönmüştür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bPA" id="faz-dizisi">
+  <div class="text">
+    <h2>Anten kıpırdamadan dönen hüzme</h2>
+    <p class="lead">Aynı sinyali yan yana dizilmiş antenlere biraz gecikmeyle verirseniz, dalga cephesi eğilir ve hüzme döner.</p>
+    <p>Her eleman kendi halkasını yayar; hepsi aynı anda beslenirse halkalar tam karşıda birleşir. Sağdakileri bir parça geç beslerseniz birleşen düz cephe yana yatar. Elemanların altındaki küçük oklar fazları gösterir.</p>
+    <p>Aralık yarım dalga boyunu aşarsa ana hüzmenin yanında istenmeyen güçlü hüzmeler belirir: <strong>ızgara lobları</strong>. Radarlar, 5G baz istasyonları ve Starlink'in düz kullanıcı terminali bu ilkeyle çalışır.</p>
+    <details class="more"><summary>Daha fazla: faz farkı ve dizi faktörü</summary>
+      <p>θ₀ yönüne hüzme için ardışık iki eleman arasındaki faz farkı:</p>
+      <span class="formula">β = −2π (d/λ) sin θ₀</span>
+      <span class="formula">AF(θ) = sin(Nψ/2) / (N sin(ψ/2)),  ψ = 2π (d/λ) sin θ + β</span>
+      <p>ψ, 2π'nin bir katına başka bir θ'da da ulaşabiliyorsa ızgara lobu oluşur: sin θ = sin θ₀ ± λ/d. Desen, elemanların arkasında bir yansıtıcı levha varmış gibi cos θ eleman deseniyle çarpılarak çizildi.</p>
+    </details>
+    <p class="try">Yönlendirme açısını 30°'ye getirin, sonra aralığı 0,9 λ'ya çıkarıp ızgara lobunu bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Fazörler: her elemanın sinyali aynı frekansta döner; okların açı farkı ardışık faz farkı β'dır. β = 0 → hüzme tam karşıda (broadside).</li>
+    <li>Yönlendirme açısı büyüdükçe hüzme genişler (etkin açıklık cos θ₀ kadar küçülür) ve kazanç düşer; bu yüzden düz paneller pratikte ±60° civarıyla sınırlı kalır. Starlink'in ikinci nesil terminali kaba yönelme için motorla da eğilir, ince yönlendirme elektroniktir.</li>
+    <li>Izgara lobu koşulu: d/λ > 1 / (1 + |sin θ₀|). Karşıya bakarken sınır 1 λ, 90°'ye kadar yönlendirmek için λ/2.</li>
+    <li>Kaynak: Starlink kullanıcı terminali Ku bandında, yüzlerce–binin üzerinde elemanlı elektronik yönlendirmeli faz dizisi (Microwave Journal, terminal sökümleri). Kesin eleman sayıları nesle göre değişir; sayı vermemek daha güvenli.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bOther" id="diger-antenler">
+  <div class="text">
+    <h2>Anten ailesinin geri kalanı</h2>
+    <p class="lead">Dipol ve Yagi tek seçenek değil. Bir teli halka yapın, bir bakır levhayı devre kartına basın, teli yay gibi sarın ya da dalgayı bir çanakla toplayın.</p>
+    <p>Her paftada bir anten, mavi baskı çizimi ve ışıma deseni var. Paftaya dokunun ya da alttan seçin; seçtiğinizin tek cümlelik özeti sahnenin altında belirir.</p>
+    <p>Çanakta kazanç, ağzın dalga boyuna göre ne kadar büyük olduğuna bağlıdır. Çapı ikiye katlamak kazancı dört kat (6 dB) artırır; frekansı ikiye katlamak da aynı işi görür.</p>
+    <details class="more"><summary>Daha fazla: çanak kazancı</summary>
+      <span class="formula">G = η (π D / λ)²</span>
+      <p>η açıklık verimidir; ev tipi çanaklarda %55 civarı alınır. Hüzme genişliği yaklaşık 70 λ / D derecedir. Desenlerin bir kısmı <span class="approx">temsilî</span>: biçimi doğru, ayrıntısı antene göre değişir.</p>
+    </details>
+    <p class="try">"Çanak" paftasını seçin ve çapı büyütün; kazanç artarken hüzmenin iğne gibi incelişini izleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Küçük halka (çevresi λ/10'dan küçük): deseni kısa dipolünkiyle aynı, ama E ve H yer değiştirmiş; ekseni boyunca sıfır. Yön bulma (tilki avı) ve AM/kısa dalga alıcılarında kullanılır.</li>
+    <li>Patch: devre kartında yaklaşık yarım dalga boyunda (dielektrik içinde) bakır levha; tek yöne bakar, tipik 6–8 dBi. GPS ve telefonlarda, faz dizilerinde eleman olarak.</li>
+    <li>Helisel (eksenel kip, John Kraus 1946): çevresi ≈ λ olan sarmal, dairesel polarizasyon üretir; uydu ve uzay haberleşmesinde. Yönlülük için Kraus'un yaklaşık formülü D ≈ 15 N C² S / λ³.</li>
+    <li>Çanak: G = η(πD/λ)², η ≈ 0,55. 60 cm'lik uydu çanağı Ku bandında 35 dBi civarı. Hüzme genişliği ≈ 70 λ/D derece (yaklaşık kural).</li>
+  </ul></aside>
+</section>

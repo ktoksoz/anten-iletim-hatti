@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kablodan Boşluğa</title>
+<meta name="author" content="Koray Toksöz">
+<meta name="description" content="Antenler, iletim hatları ve empedans, oynayarak: kablodaki dalgadan yansımaya, Smith abağından empedans uydurmaya ve antenin dalgayı boşluğa salmasına.">
+<meta name="theme-color" content="#0b1f33">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=1">
+<link rel="stylesheet" href="css/demos.css?v=1">
+<link rel="stylesheet" href="css/demos-ch1.css?v=1">
+<link rel="stylesheet" href="css/demos-ch2.css?v=1">
+<link rel="stylesheet" href="css/demos-ch3.css?v=1">
+<link rel="stylesheet" href="css/demos-ch4.css?v=1">
+<link rel="stylesheet" href="css/demos-ch6.css?v=1">
+<link rel="stylesheet" href="css/demos-ch6b.css?v=1">
+<link rel="stylesheet" href="css/demos-ch7.css?v=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1f33'/%3E%3Cpath d='M16 9v19M8 9h7M17 9h7' stroke='%23ee8f5f' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M6 5a12 12 0 0 1 20 0' stroke='%23ffd257' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<main id="deck">
+<!-- ================= 0. KAPAK ================= -->
+<section class="slide center cover" data-chapter="0" data-demo="cover" data-title="Kapak" id="kapak">
+  <div class="stage bare"></div>
+  <div class="cover-text">
+    <h1>Kablodan<br>boşluğa</h1>
+    <p class="sub">Antenler, iletim hatları ve empedans, oynayarak.</p>
+    <p>Arkadaki görüntü bir hesap, çizim değil: ortadan beslenen bir dipol antenin etrafındaki elektrik alanı, Maxwell denklemleriyle adım adım çözülüyor. Alan çizgileri antenden kopup halka halka boşluğa yayılıyor. Bir yere tıklayın; orada yeni bir dalga doğar ve ötekilerle girişim yapar.</p>
+    <p class="byline">Koray Toksöz</p>
+    <div class="cover-actions">
+      <button class="btn primary big" type="button" onclick="Narrator.start()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Sesli anlatımla başla
+      </button>
+      <button class="btn big ghost" type="button" onclick="Deck.next()">Kendi hızımda gez</button>
+    </div>
+    <p class="hint">Anlatımlı tur yaklaşık <span id="tour-min">20</span> dakika sürer ve slaytlar kendiliğinden ilerler; istediğiniz an durup deneylerle oynayabilirsiniz. Kendi hızınızda gezerken <kbd>→</kbd> ile ilerleyin.</p>
+    <div class="cover-meta">
+      <a class="gh-link" href="https://github.com/ktoksoz/anten-iletim-hatti" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Kaynak kodu GitHub'da</span></a>
+      <a class="lic" href="https://creativecommons.org/licenses/by/4.0/deed.tr" target="_blank" rel="license noopener" title="İçerik: Creative Commons Atıf 4.0">
+        <img src="img/cc-cc.svg" alt="Creative Commons" width="22" height="22"><img src="img/cc-by.svg" alt="Atıf" width="22" height="22">
+        <span>İçerik CC BY 4.0 · Kod MIT</span>
+      </a>
+    </div>
+  </div>
+  <aside class="notes"><ul>
+    <li>Arka plan canlı bir 2B FDTD simülasyonu: dipolün besleme boşluğuna sinüs akımı veriliyor; renk elektrik alanının şiddeti, ince çizgiler elektrik alan çizgileri.</li>
+    <li>Tıklayınca kısa bir dalga paketi ateşlenir. Dipolün dalgasıyla üst üste binince girişim desenleri oluşur.</li>
+    <li>Yol haritası: dalga → hat → yansıma → empedans → uydurma → anten → gerçek dünya.</li>
+    <li>Kısayollar: N notlar, T metni gizle, O tüm slaytlar, F tam ekran, A anlatım, G deney gösterimleri.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 1. DALGA VE KABLO ================= -->
+<section class="slide" data-chapter="1" data-demo="ch1Rope" id="ip-dalgasi">
+  <div class="text">
+    <h2>İpte ilerleyen dalga</h2>
+    <p class="lead">Bir ipin ucunu bir kez sallayın: bir tümsek ipin üzerinde koşar, öbür uca çarpar ve geri döner.</p>
+    <p>Kablodaki elektrik sinyali de tam böyle davranır. Bu sitede renkler hep aynı şeyi anlatır: <span class="c-fwd">sarı</span> kaynaktan uzaklaşan <span class="c-fwd">ileri dalga</span>, <span class="c-ref">camgöbeği</span> uçtan geri gelen <span class="c-ref">yansıyan dalga</span>, <span class="c-tot">beyaz</span> ikisinin toplamı, yani ipin gerçek şekli.</p>
+    <p>Uç duvara bağlıysa (<strong>sabit uç</strong>) tümsek ters dönerek, bir halkada serbestçe kayabiliyorsa (<strong>serbest uç</strong>) düz dönerek yansır. Kabloda sabit ucun karşılığı <strong>kısa devre</strong>, serbest ucun karşılığı <strong>açık devre</strong>dir.</p>
+    <details class="more"><summary>Daha fazla: neden ters döner?</summary>
+      <p>Kısa devrede iki tel birbirine bağlıdır; uçtaki gerilim sıfır olmak zorundadır. Bunu sağlamanın tek yolu, gelen dalgayla aynı büyüklükte ama ters işaretli bir dalganın geri dönmesidir. Açık devrede uçtan akım akamaz; bu kez dalga aynı işaretle döner ve uçtaki gerilim iki katına çıkar.</p>
+      <span class="formula">kısa devre: Γ = −1 · açık devre: Γ = +1</span>
+      <p>Γ (gama), yansıma katsayısı: yansıyan gerilimin gelen gerilime oranı. Akım dalgası tersini yapar: kısa devrede düz, açık devrede ters döner.</p>
+    </details>
+    <p class="try">“Salla” düğmesine basın, sonra ucu değiştirip yeniden sallayın; yansıyan tümseğin yönüne bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Görüntü bir hesap: 1B FDTD ile çözülen kayıpsız iletim hattı. İp benzetmesi gerilim dalgası için birebir: ipin yer değiştirmesi ↔ gerilim.</li>
+    <li>Sabit uç ↔ kısa devre (Γ = −1), serbest uç ↔ açık devre (Γ = +1). “Yansıyan / gelen” okuması simülasyondan ölçülür.</li>
+    <li>Sol uç, yani “el”, dalgayı yutan uyumlu bir kaynak; bu yüzden geri dönen dalga solda kaybolur ve ikinci kez yansımaz.</li>
+    <li>“Sürekli” seçilince ileri ve yansıyan dalgalar üst üste biner: yerinde sayan bir desen, yani duran dalga belirir (Bölüm 3'te ayrıntılı).</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="1" data-demo="ch1When" id="kablo-ne-zaman">
+  <div class="text">
+    <h2>Kablo ne zaman sadece bir tel değildir?</h2>
+    <p class="lead">Lambanızın 10 metrelik uzatma kablosu için “dalga” sözcüğü abartı gibi gelir. Frekans yükselince değil.</p>
+    <p>Belirleyici olan, kablonun boyunun <strong>dalga boyuna</strong> oranıdır. Dalga boyu kablodan çok uzunsa, kablonun iki ucu aynı anda aynı gerilimi görür: kablo sadece bir teldir.</p>
+    <p>Dalga boyu kabloya yaklaştıkça uçlar farklı anlarda farklı şeyler görür. Kablonun üstünde dalga belirir; artık o bir <strong>iletim hattı</strong>dır ve ucundaki yük, boyu, yapısı önem kazanır.</p>
+    <p>Kaba kural: kablo dalga boyunun onda birinden kısaysa tel gibi davranır.</p>
+    <details class="more"><summary>Daha fazla: elektriksel uzunluk</summary>
+      <p>Kablonun boyunu dalga boyu cinsinden, ya da bir tam dalga 360° olacak biçimde derece cinsinden yazarız. Bu elektriksel uzunluk iki uç arasındaki faz farkıdır.</p>
+      <span class="formula">λ = v / f · elektriksel uzunluk = 360° · ℓ / λ</span>
+      <p>Burada kablo, hız faktörü 0,66 olan RG-58 (katı polietilen dielektrikli koaksiyel); dalga kabloda ışığın üçte ikisi hızla ilerler.</p>
+    </details>
+    <p class="try">Frekans kaydırıcısını 50 Hz'ten yukarı doğru sürükleyin; iki uçtaki göstergelerin ne zaman ayrıştığına bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kablo 10 m RG-58 (VF 0,66). λ/10 sınırı bu kablo için yaklaşık 2 MHz'e denk gelir: kısa dalga bantlarında 10 m kablo artık bir iletim hattıdır.</li>
+    <li>Uçlardaki iki gösterge her ucun gerilim fazını gösterir; zaman ağır çekimde, fazlar arasındaki fark gerçek.</li>
+    <li>50 Hz'te dalga boyu binlerce kilometredir; şebeke hatları ancak yüzlerce kilometre uzunlukta iletim hattı gibi davranır.</li>
+    <li>Yük uyumlu varsayılır (yansıma yok); dalga yalnızca ileri gider. Uyumsuz yükü Bölüm 3'te göreceğiz.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="1" data-demo="ch1Velocity" id="hiz-faktoru">
+  <div class="text">
+    <h2>Kablodaki dalga ışıktan yavaştır</h2>
+    <p class="lead">Boşlukta ışık hızıyla giden dalga, kablonun içine girince yavaşlar.</p>
+    <p>Sinyal aslında tellerin içinde değil, iki iletken arasındaki yalıtkanda, yani <strong>dielektrik</strong>te ilerleyen bir alandır. Yalıtkan ne kadar “yoğun”sa (dielektrik sabiti ne kadar büyükse) dalga o kadar yavaşlar.</p>
+    <p>Hızın ışık hızına oranına <strong>hız faktörü</strong> denir. Dalga yavaşlayınca dalga boyu da kısalır: aynı frekansta kablodaki dalga boyu boşluktakinden kısadır. Kabloyla anten ya da çeyrek dalga parçası keserken bu yüzden önemlidir.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">VF = 1 / √εr · v = VF · c · λ_kablo = VF · c / f</span>
+      <p>Katı polietilen (εr ≈ 2,25) kabloda VF ≈ 0,66; köpük polietilende 0,8'in üstüne çıkar. Hava dielektrikli hatlar neredeyse ışık hızındadır.</p>
+    </details>
+    <p class="try">Kablo türünü “Köpük PE” yapın ve “Yarıştır”a basın; aradaki farka ve kısalan dalga boyuna bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yarışta iki dalga aynı anda aynı frekansta yola çıkar; pist boyu boşluktaki dalga boyunun beş katı. Varış süreleri RF.wavelength ve hız faktöründen hesaplanır.</li>
+    <li>Tipik değerler: RG-58 / RG-213 (katı PE) 0,66; RG-6 (köpük PE) 0,83 civarı; LMR-400 0,85.</li>
+    <li>Pratik sonuç: 145 MHz'te katı PE kabloyla yapılan bir çeyrek dalga parçası, boşluktaki çeyrek dalganın yalnızca üçte ikisi uzunluğundadır.</li>
+    <li>Hava “hız faktörü 1” sayılır; havanın εr değeri 1,0006 olduğundan aradaki fark binde birin altındadır.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 2. İLETİM HATTI ================= -->
+<section class="slide" data-chapter="2" data-demo="ch2Ladder" id="lc-merdiven">
+  <div class="text">
+    <h2>Hattın içi: bobin ve kondansatör merdiveni</h2>
+    <p class="lead">Bir kabloyu çok ince dilimlere kesin: her dilim, küçük bir bobin ve küçük bir kondansatörden ibarettir.</p>
+    <p>Teller boyunca akan akım manyetik alan kurar; bu, telin her santimetresinde küçük bir <span class="c-xp">bobin (L)</span> gibi davranır. İki iletken arasındaki gerilim elektrik alanı kurar; bu da her santimetrede küçük bir <span class="c-xn">kondansatör (C)</span> demektir.</p>
+    <p>Darbe bu merdivende basamak basamak ilerler: her bobin bir sonraki kondansatörü doldurur, o da bir sonraki bobine akım verir. Basamak az olunca darbe yayvanlaşır, gecikir ve biçimini kaybeder; basamak sayısı arttıkça merdiven gerçek, sürekli bir hatta dönüşür.</p>
+    <details class="more"><summary>Daha fazla: telgrafçı denklemleri</summary>
+      <p>Heaviside, hattı sonsuz sayıda sonsuz küçük L ve C basamağı olarak düşündü. Birim uzunluk değerleri L′ ve C′ ise dalganın hızı ve karakteristik empedansı:</p>
+      <span class="formula">v = 1 / √(L′C′) · Z₀ = √(L′ / C′)</span>
+      <p>Sonlu sayıda basamaktan oluşan merdiven ise bir alçak geçiren süzgeçtir: kesim frekansının üstündeki bileşenleri geçiremez. Darbenin hızlı değişen kısımları bu yüzden geçemez ve darbe yayvanlaşır; kesime yakın frekanslar da daha yavaş ilerlediği için biçim bozulur.</p>
+    </details>
+    <p class="try">Basamak sayısını 4'e indirip “Darbe gönder”e basın, sonra 60'a çıkarıp yeniden gönderin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hat: 1 m RG-58 boyutlarında koaksiyel; L′ ve C′ RF.coaxL / RF.coaxC ile kesitten hesaplanır. Toplam L ve C basamaklara eşit bölünür.</li>
+    <li>Merdiven, gerçek devre denklemleriyle (her bobin ve kondansatör için) küçük zaman adımlarıyla çözülür; “bozulma” ölçülen çıkışın ideal gecikmeli darbeden sapmasıdır.</li>
+    <li>Kesim frekansı f_c = 1 / (π√(LC)) basamak başına; darbenin içerdiği frekanslar f_c'ye yaklaştıkça bozulma büyür.</li>
+    <li>Olası soru: “Gerçek kablo kaç basamak?” Sonsuz; dalga boyuna göre çok küçük dilimler (λ/10'dan çok kısa) yeterince iyi bir modeldir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="2" data-demo="ch2Z0" id="karakteristik-empedans">
+  <div class="text">
+    <h2>Karakteristik empedans</h2>
+    <p class="lead">Kablonun “kimlik numarası” uzunluğu değil, kesitidir.</p>
+    <p>Sonsuz uzun bir kablonun ucuna gerilim uygulasanız, kablo belli bir akım çeker; bu oran kablonun <strong>karakteristik empedansı</strong>dır (Z₀). Bobin etkisi akımı frenler, kondansatör etkisi akımı çeker; Z₀ ikisinin dengesidir.</p>
+    <p>Teller birbirinden uzaklaştıkça Z₀ büyür, yaklaştıkça küçülür. Dielektrik dalgayı yavaşlatır ve Z₀'ı düşürür. Bu yüzden koaksiyel kablolar 50 ya da 75 Ω, geniş aralıklı çift hat 300 Ω civarındadır.</p>
+    <details class="more"><summary>Daha fazla: neden tam 50 Ω?</summary>
+      <p>Hava dielektrikli koaksiyelde en düşük kayıp <span class="num" data-z0="loss">…</span>, en yüksek güç taşıma <span class="num" data-z0="power">…</span> civarında olur (değerler burada formülden hesaplanır). 50 Ω ikisi arasında bir uzlaşmadır. Bu seçim, koaksiyel kabloyu 1929'da Bell Laboratuvarları'nda geliştiren Lloyd Espenschied ve Herman Affel'e atfedilir. 75 Ω ise düşük kayba yakın durur; kaybın gücten önemli olduğu TV ve video kablolarında tercih edilir.</p>
+      <span class="formula">Z₀ = √(L′/C′) · koaks: Z₀ = (60 / √εr) · ln(D/d)</span>
+    </details>
+    <p class="try">“Dış çap D” kaydırıcısını sürükleyin ya da kesitteki bakır tutamaçları çekin; sonra hazır kablo düğmelerini deneyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Z₀ değerleri RF.coaxZ0, RF.twinZ0 ve RF.microstripZ0 (Hammerstad, iletken kalınlığı ihmal) ile hesaplanır. Çift hatta dielektrik tellerin çevresini tamamen dolduruyor varsayılır; gerçek TV şeridinde etkin εr daha düşüktür.</li>
+    <li>50 Ω'un kökeni: Microwaves101, “Why fifty ohms?” (hava koaksiyelde en düşük kayıp ≈ 77 Ω, en yüksek tepe gücü ≈ 30 Ω); Belden, “50 ohms the forgotten impedance” (Espenschied ve Affel, Bell Labs, 1929). Birincil Bell Labs belgesi bulunamadı; atıf ikincil kaynaklara dayanır.</li>
+    <li>Bell Labs için ayrıca ≈ 60 Ω “en yüksek gerilim dayanımı” değeri anılır (D/d = e). Bunlar hava dielektrik içindir; katı PE ile en düşük kayıp ≈ 51 Ω'a iner.</li>
+    <li>Microwaves101'e göre 75 Ω'un nedeni tam olarak kayıp optimumu değil, kayıp ile esneklik/maliyet arasında pratik bir uzlaşmadır.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="2" data-demo="ch2Skin" id="deri-etkisi">
+  <div class="text">
+    <h2>Deri etkisi</h2>
+    <p class="lead">Frekans yükseldikçe akım telin içini terk eder ve yüzeye kaçar.</p>
+    <p>Telin içinde değişen akım, kendi manyetik alanıyla merkezde ters yönlü küçük girdaplar oluşturur. Bunlar merkezdeki akımı bastırır; akım yüzeydeki ince bir “deri”ye sıkışır.</p>
+    <p>Bu derinin kalınlığına <strong>deri derinliği</strong> denir. Bakırda 50 Hz'te santimetre mertebesindedir; radyo frekanslarında mikrometrelere iner. Akım daha dar bir yoldan akınca direnç ve kablo kaybı frekansla artar.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">δ = 1 / √(π f μ σ) · J(r) ≈ J(a) · e^(−(a − r)/δ)</span>
+      <p>Isı haritası tam çözümdür (Bessel fonksiyonları); ince çizgi yaklaşık üstel profil. Kablo kaybı eğrileri kuramsal: düz, pürüzsüz bakır varsayar. Örgülü dış iletken ve çok telli iç iletken yüzünden veri sayfası değerleri biraz daha yüksektir (noktalar).</p>
+    </details>
+    <p class="try">Frekans kaydırıcısını yavaşça 50 Hz'ten 1 GHz'e sürükleyin; akımın yüzeye çekilişine ve kaybın artışına bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Akım yoğunluğu çivit renkle (akım manyetik alan üretir); renk her frekansta yüzeydeki değere göre ölçeklenir.</li>
+    <li>δ = RF.skinDepth(f), bakır σ = 5,8·10⁷ S/m. AC/DC direnç oranı, tam profilden sayısal integralle hesaplanır; yüksek frekansta ≈ a / 2δ.</li>
+    <li>Kayıp eğrileri RF.coaxLoss (iletken + dielektrik, tanδ = 2·10⁻⁴). Veri sayfası noktaları: Belden 9201 (RG-58) ve Belden 8267 (RG-213) nominal zayıflama tabloları.</li>
+    <li>Gümüş kaplamanın yalnızca birkaç mikrometrelik bir katman olmasına rağmen işe yaraması bu yüzdendir: akım zaten orada akar.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 3. YANSIMA VE DURAN DALGA ================= -->
+<section class="slide" data-chapter="3" data-demo="ch3Line" data-title="Kablodaki yankı" id="hat-simulasyonu">
+  <div class="text">
+    <h2>Kablodaki yankı</h2>
+    <p class="lead">Kabloya gönderdiğiniz dalga, ucundaki yüke çarpar. Yük kablonun “beklediği” gibi değilse dalganın bir kısmı yankı olarak geri döner.</p>
+    <p>Bir ipi duvara bağlayıp silkelerseniz dalga duvardan ters dönerek geri gelir; ipin ucu serbestse düz döner. Kablo da böyle davranır: <span class="c-r">yük direnci</span> küçükse yankı ters, büyükse düz döner. Yük tam 50 Ω olduğunda kablo sonsuza uzanıyormuş gibi davranır: dalga yükte emilir, yankı olmaz.</p>
+    <p><span class="c-fwd">Sarı</span> kaynaktan yola çıkan dalga, <span class="c-ref">camgöbeği</span> yükten dönen yankı, <span class="c-tot">beyaz</span> ise kabloda bir voltmetreyle gerçekten ölçeceğiniz toplam gerilim.</p>
+    <details class="more"><summary>Daha fazla: reaktans, darbe ve formül</summary>
+      <p>Yüke <span class="c-xp">+X</span> eklediğinizde simülasyon sinüsün frekansında tam o reaktansı veren bir bobin, <span class="c-xn">−X</span> eklediğinizde bir kondansatör koyar. Sürekli sinüste yankının boyu ve kayması tek bir karmaşık sayıyla, Γ ile anlatılır; ölçülen ve hesaplanan değer yan yana durur.</p>
+      <p>Darbe ise birçok frekansın toplamıdır. Bobin ilk anda açık devre gibi davranır, sonra akımı geçirir; kondansatör ilk anda kısa devre gibidir, doldukça açık devreye döner. Bu yüzden reaktif yükte darbenin yankısı biçim değiştirir ve tek bir sayıyla anlatılamaz.</p>
+      <span class="formula">Γ = (Z_L − Z₀) / (Z_L + Z₀)</span>
+      <p>Simülasyon, kablonun telgrafçı denklemlerini FDTD yöntemiyle adım adım çözer; dalga her adımda tam bir hücre ilerler.</p>
+    </details>
+    <p class="try">Önce “Kısa devre”, sonra “Açık devre” düğmesine basın: yankı bir ters, bir düz döner. Sonra “50 Ω” ile yankıyı yok edin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hat 400 hücre; Courant sayısı 1 olduğundan dalga her adımda tam bir hücre ilerler, sayısal dağılma yok. Kaynağın iç direnci 50 Ω: geri dönen yankı kaynakta emilir, ikinci kez yansımaz.</li>
+    <li>İleri ve yansıyan dalga ayrımı yaklaşık değil: aynı kaynakla, uyumlu yüklü ikinci bir “gölge” hat koşar; ileri dalga = gölge hattaki gerilim, yansıyan = toplam − ileri.</li>
+    <li>Ölçüm darbede hattın ortasında (tepe oranı), sinüste yükte (bir periyotluk Fourier toplamı) yapılır. Uyumlu yükte ≈ 0, kısa devrede −1, açık devrede +1, 100 Ω'da +1/3, 25 Ω'da −1/3 çıkar.</li>
+    <li>Olası soru: “Yankı vericiye ne yapar?” Gerçek vericinin çıkışı her zaman 50 Ω'luk bir direnç gibi davranmaz; dönen güç çıkış katını zorlayabilir. Bölüm 5'te uydurma ile çözülür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Gamma" data-title="Yansıma katsayısı" id="yansima-katsayisi">
+  <div class="text">
+    <h2>Yankının boyu ve yönü</h2>
+    <p class="lead">Yansıma katsayısı Γ (gama) tek bir sayıda iki şey söyler: yankı ne kadar büyük ve gelen dalgaya göre ne kadar kaymış.</p>
+    <p>Γ'yı bir ok gibi düşünün. <strong>Okun boyu</strong> yankının genliği: 0 ise yankı yok, 1 ise dalganın tamamı geri dönüyor. <strong>Okun yönü</strong> yankının kayması: sağa bakan ok düz, sola bakan ok ters dönen yankı demek.</p>
+    <p>Ok hiçbir zaman birim çemberin dışına çıkmaz. Çemberin sol ucu kısa devre, sağ ucu açık devre, tam ortası uyumlu yük. Üst yarıda yük <span class="c-xp">endüktif (+X)</span>, alt yarıda <span class="c-xn">kapasitif (−X)</span>. Bu düzlem, birazdan Smith abağının zemini olacak.</p>
+    <p>Yansıyan güç okun boyunun karesidir: genliği yarıya inen yankı, gücün dörtte birini geri taşır.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <span class="formula">Γ = (Z_L − Z₀) / (Z_L + Z₀)</span>
+      <span class="formula">P_yansıyan / P_gelen = |Γ|²</span>
+      <span class="formula">Z_L = Z₀ (1 + Γ) / (1 − Γ)</span>
+      <p>Pay, yükün 50 Ω'dan ne kadar saptığını ölçer. Direnç negatif olamadığı için (pasif yük) |Γ| hiçbir zaman 1'i geçmez.</p>
+    </details>
+    <p class="try">Oku ucundan tutup çemberin içinde gezdirin; yük empedansı, |Γ| ve yansıyan güç canlı değişir.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Zemindeki soluk ızgara, Smith abağının ta kendisi: kemik renkli daireler sabit direnç, mor ve turkuaz yaylar sabit reaktans. Bölüm 4'te bu ızgarayı okuyacağız.</li>
+    <li>|Γ| = 1 çemberinin üstündeki yükler (kısa, açık, saf bobin, saf kondansatör) hiç güç tüketmez: gelen gücün tamamı geri döner.</li>
+    <li>Sağdaki iki dalga yükteki gelen (sarı) ve yansıyan (camgöbeği) dalgadır; aralarındaki zaman kayması Γ'nın açısıdır.</li>
+    <li>Gösteri sırası önerisi: Kısa devre → Açık devre → Uyumlu yük → Rastgele.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Swr" data-title="Duran dalga" id="duran-dalga">
+  <div class="text">
+    <h2>Duran dalga</h2>
+    <p class="lead">Giden dalga ile yankı aynı kabloda üst üste biner. Bazı noktalarda birbirini güçlendirir, bazılarında söndürür; ortaya yerinde sayan bir desen çıkar.</p>
+    <p><span class="c-tot">Beyaz</span> çizgi kablodaki gerçek gerilim; kesikli zarf, her noktada ulaşılan en yüksek değer. İki tepe arası hep yarım dalga boyudur.</p>
+    <p>En yüksek ve en düşük gerilimin oranı <strong>VSWR</strong> (duran dalga oranı): telsizcinin SWR metresinde okuduğu sayı. 1 kusursuz uyum demek.</p>
+    <p><strong>Geri dönüş kaybı</strong> yankının kaç desibel zayıf döndüğünü söyler; büyük olması iyidir. <strong>Uyumsuzluk kaybı</strong> ise yankı yüzünden antene ulaşamayan gücün desibel karşılığıdır.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <span class="formula">VSWR = V_max / V_min = (1 + |Γ|) / (1 − |Γ|)</span>
+      <span class="formula">Geri dönüş kaybı = −20 log₁₀ |Γ|  dB</span>
+      <span class="formula">Uyumsuzluk kaybı = −10 log₁₀ (1 − |Γ|²)  dB</span>
+      <span class="formula">|V(d)| = |V⁺| · |1 + Γ e^(−j2βd)|</span>
+      <p>Örnek kablo: <span class="mono" data-ch3="swr-f"></span> ve RG-58 (hız faktörü <span class="mono" data-ch3="swr-vf"></span>); burada λ/2 = <span class="mono" data-ch3="swr-half"></span>. Hesap kayıpsız hat ve uyumlu verici varsayar. Gerçek kablonun kaybı yankıyı da zayıflatır; bu yüzden vericinin yanında ölçülen SWR, antenin yanındakinden iyi görünür.</p>
+    </details>
+    <p class="try">Yük direncini 50 Ω'dan uzaklaştırın: zarf dalgalanır, VSWR büyür, antene ulaşan güç çubuğu kısalır.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Çizim, kararlı durumdaki fazör çözümü: V(d, t) = Re{(e^(jβd) + Γ e^(−jβd)) e^(jωt)}. Zarf RF.envelope ile, VSWR, geri dönüş ve uyumsuzluk kaybı RF ile hesaplanır; “V_max / V_min” okuması zarftan ölçülür ve VSWR ile aynı çıkmalı.</li>
+    <li>Saf direnç yükte (X = 0) R &gt; 50 Ω iken yükte tepe, R &lt; 50 Ω iken yükte çukur olur. Reaktans eklenince desen kayar.</li>
+    <li>Güç çubuğu kayıpsız hat ve uyumlu kaynak varsayar: yüke ulaşan oran 1 − |Γ|². VSWR 2 iken kayıp yalnızca yarım desibel civarındadır; asıl dert yansıyan gücün vericiyi zorlamasıdır.</li>
+    <li>Olası soru: “SWR metre nereye takılmalı?” Kablo kaybı yüzünden vericinin yanında ölçülen SWR olduğundan iyi görünür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="3" data-demo="ch3Tdr" data-title="TDR" id="tdr">
+  <div class="text">
+    <h2>Yankıdan arıza bulmak</h2>
+    <p class="lead">Kabloya kısa bir darbe gönderip yankısını dinlerseniz kabloyu sökmeden nerede ne olduğunu bulursunuz. Buna TDR (zaman alanında yansıma ölçümü) denir.</p>
+    <p><strong>Ne zaman</strong> döndüğü uzaklığı verir: darbe arızaya gidip geri gelir, yolu iki kez kateder. RG-58'de dalga ışık hızının <span class="mono" data-ch3="tdr-vf"></span> katıyla ilerler.</p>
+    <p><strong>Hangi yönde</strong> döndüğü türünü söyler: <strong>kopuk</strong> kablo (açık devre) düz, <strong>kısa devre</strong> ters ve tam boy yankı verir. <strong>Ezilmiş</strong> kesitte empedans düşer: önce ters, sonra düz küçük bir yankı. <strong>Kötü konektör</strong> kısa bir yüksek empedans bölgesidir: önce düz, sonra ters.</p>
+    <details class="more"><summary>Daha fazla: hesap</summary>
+      <span class="formula">d = v · t / 2,   v = hız faktörü · c</span>
+      <p>RG-58'de darbe 1 ns'de <span class="mono" data-ch3="tdr-cm1"></span> yol alır; gidiş-dönüş hesaba katılınca osiloskoptaki her 1 ns, kablo üzerinde <span class="mono" data-ch3="tdr-cm2"></span> demektir.</p>
+      <p>Gerçek TDR cihazları çoğunlukla darbe yerine hızlı yükselen bir basamak gönderir; okuma mantığı aynıdır. NanoVNA gibi ağ analizörleri de frekans taramasından bu grafiği hesaplayabilir.</p>
+    </details>
+    <p class="try">“Arızayı bul”a geçin. Osiloskopta yankının zamanını okuyun, türünü seçin, sonra kablo üzerinde arızanın yerine tıklayın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Ölçek: 25 m RG-58 (hız faktörü 0,66), 500 hücre × 5 cm; bir simülasyon adımı ≈ 0,25 ns. Kablonun ucunda uyumlu 50 Ω yük var, bu yüzden arıza yoksa uçtan yankı gelmez.</li>
+    <li>Ezik: dış iletken iç iletkene yaklaşır, D/d küçülür, Z₀ = 60/√εr · ln(D/d) düşer (burada 35 Ω). Kötü konektör: 15 cm boyunca 120 Ω.</li>
+    <li>Simülasyon kayıpsız. Gerçek kabloda kayıp, uzaktaki yankıyı küçültür ve yayar; yine de zamanı aynıdır.</li>
+    <li>Oyunda puan, tahminle gerçek yer arasındaki metre cinsinden hatadır; tür tahmini ayrıca sayılır.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 4. EMPEDANS VE SMITH ABAĞI ================= -->
+<section class="slide" data-chapter="4" data-demo="ch4Imp" id="empedans-nedir">
+  <div class="text">
+    <h2>Empedans nedir?</h2>
+    <p class="lead">Bir yük, gelen dalgaya iki türlü karşılık verir: enerjiyi yutar ya da bir an saklayıp geri verir.</p>
+    <p><span class="c-r">Direnç (R)</span> enerjiyi ısıya ya da ışımaya çevirir. Bobin enerjiyi manyetik alanında, kondansatör elektrik alanında saklar ve her yarım periyotta geri verir. Bu saklayıp geri verme işine <em>reaktans</em> (X) denir: bobininki <span class="c-xp">artı (+X, endüktif)</span>, kondansatörünkü <span class="c-xn">eksi (−X, kapasitif)</span>.</p>
+    <p>Bobin hızlı değişime direnir; frekans arttıkça reaktansı büyür. Kondansatör yavaş değişimde dolup akımı keser; frekans düştükçe reaktansı büyür. İkisini birlikte yazınca empedans tek bir sayı olmaktan çıkar, düzlemde bir nokta olur: yatayda R, dikeyde X.</p>
+    <details class="more"><summary>Daha fazla: formüller</summary>
+      <p>Empedans karmaşık bir sayıdır. Baştaki j, sayının dikey eksende durduğunu söyler (j² = −1). Seri bağlı elemanların reaktansları toplanır.</p>
+      <span class="formula">Z = R + jX &nbsp;·&nbsp; X_L = 2πfL &nbsp;·&nbsp; X_C = −1/(2πfC) &nbsp;·&nbsp; |Z| = √(R² + X²)</span>
+    </details>
+    <p class="try">Frekansı kaydırın: nokta yalnızca dikey yönde kayar; mor ok uzarken turkuaz ok kısalır.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Seri R-L-C'de R frekansla değişmez; bu yüzden nokta düzlemde dikey bir çizgi üzerinde gezer. Paralel devrede durum farklıdır (sonraki slayt).</li>
+    <li>Okların uç uca eklenmesi karmaşık toplamanın kendisidir: önce R kadar sağa, sonra X_L kadar yukarı, sonra X_C kadar aşağı.</li>
+    <li>Olası soru: "Reaktans güç harcar mı?" Hayır; ideal bobin ve kondansatör enerjiyi yarım periyot saklar, sonra devreye geri verir. Harcanan güç yalnızca R'dedir.</li>
+    <li>Gerçek bobinin telinde direnç, gerçek kondansatörde kaçak vardır; burada ideal elemanlar kullanılıyor.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Res" id="rezonans">
+  <div class="text">
+    <h2>Rezonans</h2>
+    <p class="lead">Salıncağı kendi ritminde iterseniz küçük itmeler büyük salınıma dönüşür. Bobin ile kondansatör de böyle bir çift kurar.</p>
+    <p>Enerji bobinin manyetik alanı ile kondansatörün elektrik alanı arasında gidip gelir. Bir frekansta iki reaktans eşit büyüklükte ve ters işaretli olur, birbirini sıfırlar: geriye yalnızca <span class="c-r">direnç</span> kalır. Bu frekans <em>rezonans</em> frekansıdır; grafikte <span class="c-xp">mor</span> ve <span class="c-xn">turkuaz</span> çizgilerin kesiştiği yer.</p>
+    <p>Seri devrede empedans rezonansta en küçük değerine iner, akım en büyük olur. Paralel devrede tersine en büyük değerine çıkar. Direnç sürtünme gibidir; tepeyi yayvanlaştırır. Tepenin ne kadar sivri olduğunu <em>Q faktörü</em> söyler.</p>
+    <details class="more"><summary>Daha fazla: f₀, Q ve bant genişliği</summary>
+      <span class="formula">f₀ = 1 / (2π√(LC)) &nbsp;·&nbsp; Q_seri = (1/R)·√(L/C) &nbsp;·&nbsp; Q_paralel = R·√(C/L) &nbsp;·&nbsp; BW = f₀/Q</span>
+      <p>Bant genişliği, gücün yarıya indiği (−3 dB) iki frekans arasındaki aralıktır; grafikte bakır ölçü çizgisi. Antenler de rezonans devresi gibi davranır: yüksek Q'lu bir anten dar bantlıdır.</p>
+    </details>
+    <p class="try">Frekansı rezonansa getirin, sonra direnci küçültün: salıncak büyür, tepe sivrilir.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Grafik iki eksende de logaritmik: X_L ve |X_C| bu ölçekte düz çizgi olur ve tam f₀'da kesişir.</li>
+    <li>Salıncak benzetmesi: itme ritmi sürücü frekansı, salıncağın kendi ritmi f₀. Salınım yüzdesi, seri devrede akımın, paralel devrede gerilimin rezonanstaki değerine oranı.</li>
+    <li>Seri devrede küçük R yüksek Q verir; paralel devrede büyük R yüksek Q verir. Aynı sezgi: sürtünme azalınca tepe sivrilir.</li>
+    <li>Olası soru: "Antenim neden yalnızca bir bantta iyi?" Çünkü anten de bir rezonans devresi; rezonanstan uzaklaştıkça reaktansı büyür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Line" id="hat-donusumu">
+  <div class="text">
+    <h2>Hat empedansı dönüştürür</h2>
+    <p class="lead">Bir yükü kablonun öbür ucundan ölçerseniz yükün kendisini değil, kablonun dönüştürdüğü empedansı görürsünüz.</p>
+    <p>Yükten dönen yankı girişe gidip gelme yolu kadar gecikir. Kablo uzadıkça yankının fazı döner ve girişte toplanan dalga başka bir gerilim/akım oranı gösterir. Bu yüzden giriş empedansının <span class="c-r">R</span>'si ve <span class="c-xp">+X</span>/<span class="c-xn">−X</span>'i hat boyunca dalgalanır.</p>
+    <p>İki uzunluk özeldir. <strong>Çeyrek dalga boyu</strong> hat empedansı tersine çevirir: küçük büyük, kısa devre açık devre olur. <strong>Yarım dalga boyu</strong> hat yükü aynen tekrarlar; desen her yarım dalga boyunda baştan başlar.</p>
+    <details class="more"><summary>Daha fazla: giriş empedansı formülü</summary>
+      <span class="formula">Z_giriş = Z₀ · (Z_L + jZ₀ tan βd) / (Z₀ + jZ_L tan βd) &nbsp;·&nbsp; β = 2π/λ</span>
+      <p>d = λ/4'te tan βd sonsuza gider ve Z_giriş = Z₀²/Z_L olur; d = λ/2'de tan βd = 0 ve Z_giriş = Z_L. Burada hat kayıpsız kabul ediliyor (ideal model).</p>
+    </details>
+    <p class="try">Hat uzunluğunu sürükleyin, sonra λ/4 ve λ/2 düğmelerine basıp giriş empedansını yükle karşılaştırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Pratik sonuç: anten analizörünü kablonun ucuna takarsanız, kablo uzunluğu ölçülen empedansı değiştirir; VSWR ise (kayıpsız hatta) değişmez.</li>
+    <li>λ/4 dönüştürücü uydurmada kullanılır (Bölüm 5): Z₁ = √(Z₀·R_L) empedanslı çeyrek dalga hat, R_L'yi Z₀'a çevirir.</li>
+    <li>Kısa devre yükle λ/4 hat girişte açık devre gibi görünür; stub filtreleri ve "çeyrek dalga tuzakları" böyle çalışır.</li>
+    <li>Sağ üstteki küçük Smith önizlemesi: nokta merkez etrafında dönüyor; bir sonraki slaytın konusu.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Smith" id="smith-abagi">
+  <div class="text">
+    <h2>Smith abağı</h2>
+    <p class="lead">Bütün pasif empedansları tek bir daireye sığdıran harita: sonsuza uzanan düzlemi büküp bir daireye kapatır.</p>
+    <p>Düz düzlemde R sıfırdan sonsuza, X eksi sonsuzdan artı sonsuza gider. Smith abağı bu düzlemi yansıma katsayısına (Γ) göre büker: merkez tam uyum, sol uç kısa devre, sağ uç açık devre, dış çember saf reaktans. <span class="c-r">Kemik daireler</span> sabit direnç, <span class="c-xp">üst</span> ve <span class="c-xn">alt</span> yaylar sabit reaktanstır.</p>
+    <p>Merkezden uzaklık |Γ|'dır; aynı uzaklıktaki her nokta aynı VSWR (duran dalga oranı) değerini verir. Hat eklemek noktayı bu <span class="c-ref">daire</span> üzerinde saat yönünde döndürür; yarım dalga boyunda tam bir tur.</p>
+    <p>Bell Laboratuvarları'ndan Phillip H. Smith abağı Ocak 1939'da <em>Electronics</em> dergisinde yayımladı. İlk denemesi dikdörtgen bir çizelgeydi.</p>
+    <details class="more"><summary>Daha fazla: abağın matematiği</summary>
+      <span class="formula">z = Z/Z₀ &nbsp;·&nbsp; Γ = (z − 1)/(z + 1) &nbsp;·&nbsp; VSWR = (1 + |Γ|)/(1 − |Γ|) &nbsp;·&nbsp; Γ(d) = Γ_L·e^(−j2βd)</span>
+      <p>Bu dönüşüm doğruları ve daireleri yine daireye çevirir; bu yüzden ızgaranın hepsi daire yaylarından oluşur. Dış ölçek, hattın kaynağa doğru kaç dalga boyu uzadığını okur.</p>
+    </details>
+    <p class="try">“Düz düzlem” düğmesine basıp abağın açılışını izleyin; sonra noktayı abakta sürükleyin ve hat ekleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: P. H. Smith, "Transmission Line Calculator", Electronics, c. 12, sayı 1, Ocak 1939, s. 29–31; geliştirilmiş sürüm Ocak 1944. Japonya'da Tōsaku Mizuhashi 1937'de benzer bir abak yayımladı (en.wikipedia.org/wiki/Smith_chart).</li>
+    <li>Smith önce dikdörtgen bir çizelge kullandı, sonra kutupsal biçime geçti; "Düz düzlem" animasyonu bu bükülmeyi gösteriyor. Düz düzlemde yalnızca R ≤ 4·Z₀ ve |X| ≤ 2,6·Z₀ kısmı sığar.</li>
+    <li>NanoVNA'nın Smith ekranı aynı şeyi gösterir: frekans taranırken nokta abakta bir eğri çizer (Bölüm 7).</li>
+    <li>Olası soru: "Nokta neden saat yönünde döner?" Hat, yansımaya gidiş-dönüş gecikmesi ekler; faz geriler, Γ saat yönünde döner.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="4" data-demo="ch4Game" id="smith-oyun">
+  <div class="text">
+    <h2>Smith'te oyna</h2>
+    <p class="lead">Rastgele bir yükü yalnızca bobin, kondansatör ve kablo ekleyerek merkeze, yani uyuma getirin.</p>
+    <ul>
+      <li><span class="c-xp">Seri bobin</span> ya da <span class="c-xn">seri kondansatör</span> direnci değiştirmez: nokta kendi kemik direnç dairesinde kayar; bobin yukarı, kondansatör aşağı.</li>
+      <li>Paralel eleman iletkenliği değiştirmez: nokta kesikli iletkenlik dairesinde kayar (kesikli izler).</li>
+      <li>Hat parçası noktayı merkez çevresinde döndürür (noktalı iz).</li>
+    </ul>
+    <p>Püf noktası: önce noktayı merkezden geçen kesikli daireye (g = 1) ya da kemik daireye (r = 1) taşıyın, sonra tek elemanla merkeze kayın. Sonraki bölümün L-ağı tam olarak budur.</p>
+    <p class="try">“Seri L” ekleyip miktarı artırın; nokta kesikli daireye değince “Paralel C” ekleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Değerler seçilen frekansta ideal bobin ve kondansatöre çevriliyor (pF, nH). Aynı Smith yolu 7 MHz'te ve 435 MHz'te çok farklı parça değerleri verir.</li>
+    <li>Hedef halkası VSWR 1,2'nin altını gösterir; amatör telsizde VSWR 1,5'in altı genellikle yeterli sayılır.</li>
+    <li>Hat adımının fiziksel uzunluğu RG-58'in hız faktörüyle hesaplanıyor.</li>
+    <li>İpucu: paralel eleman eklerken admitans ızgarasına (kesikli soluk daireler) bakın; seri eleman eklerken empedans ızgarasına.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 5. EMPEDANS UYDURMA ================= -->
+<section class="slide" data-chapter="5" data-demo="ch5Why" id="neden-uydurma">
+  <div class="text">
+    <h2>Neden uydurma?</h2>
+    <p class="lead">Her verici, içinde bir direnç saklıyormuş gibi davranır. Yük bu dirence eşit olduğunda en çok gücü alır.</p>
+    <p>Su hortumunu düşünün: musluğun kendi direnci var. Hortum çok darsa su az akar; çok genişse basınç düşer. İkisinin dengede olduğu bir nokta en çok suyu taşır. Elektrikte bu nokta <span class="c-r">yük direnci</span> = kaynağın iç direncidir.</p>
+    <p>Yük uyumsuzsa gücün bir kısmı yüke girmez, <span class="c-ref">geri döner</span>. Kaybolan bu güç, yansıma katsayısının karesiyle orantılıdır.</p>
+    <p>İkinci neden vericinin kendisi: geri dönen güç çıkış katındaki transistörlerin üstünde ek gerilim ve ısı demektir. Birçok yarı iletken çıkışlı telsiz yansıyan gücü bir yönlü kuplörle ölçer ve VSWR (duran dalga oranı) yükselince gücü kendiliğinden kısar. Eşik modelden modele değişir; şemadaki lamba yalnızca bir örnek.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <p>Açık devre gerilimi V, iç direnci Rs olan kaynakta yükün gücü:</p>
+      <span class="formula">P = V² · RL / (Rs + RL)²</span>
+      <p>Türevi sıfıra eşitlenince RL = Rs bulunur. Bu ifade aslında Pmax · (1 − |Γ|²)'ye eşittir; Γ = (RL − Rs)/(RL + Rs). Yani "geri dönen güç" ile "yüke girmeyen güç" aynı şeydir.</p>
+    </details>
+    <p class="try">Yük direncini 50 Ω'un altına ve üstüne kaydırın; sarı eğrinin tepesini bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Maksimum güç aktarımı verimlilik değildir: RL = Rs'te gücün yarısı kaynağın iç direncinde harcanır. Gerçek vericiler bu yüzden "50 Ω'luk bir direnç" değildir; 50 Ω yüke anma güçlerini verecek biçimde tasarlanır.</li>
+    <li>Ekrandaki kaynak modeli: 100 W verebilen, iç direnci 50 Ω ideal kaynak. Yansıyan güç Pmax·|Γ|² ile, yük gücü V²RL/(Rs+RL)² ile hesaplanıyor; ikisinin toplamı Pmax.</li>
+    <li>SWR koruması (foldback): katı hal telsizlerinin çoğunda yönlü kuplör yansıyan gücü izler; eşik ve davranış üreticiye göre değişir, kullanım kılavuzuna bakılmalı. Lambadaki 2:1 eşiği yalnızca örnektir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5LMatch" id="l-agi">
+  <div class="text">
+    <h2>L-ağı</h2>
+    <p class="lead">Bir bobin ve bir kondansatör, hemen her yükü 50 Ω'a çevirebilir. Smith abağında bu iki adımlık bir yolculuktur.</p>
+    <p>Seri eleman noktayı sabit <span class="c-r">direnç</span> dairesi üzerinde kaydırır; paralel eleman sabit iletkenlik dairesi (kesikli ızgara) üzerinde. Bobin (<span class="c-xp">+X</span>) bir yöne, kondansatör (<span class="c-xn">−X</span>) öbür yöne iter.</p>
+    <p>İlk eleman noktayı, merkezden geçen daireye taşır; ikincisi merkeze indirir. Bu yüzden genellikle iki çözüm vardır. Seri bobin ve paralel kondansatör <strong>alçak geçiren</strong> bir süzgeçtir (harmonikleri de bastırır); seri kondansatör ve paralel bobin <strong>yüksek geçiren</strong>.</p>
+    <details class="more"><summary>Daha fazla: hesap</summary>
+      <p>RL &gt; Z₀ ise paralel eleman yükün yanına konur; RL &lt; Z₀ ise seri eleman. Reaktanslar bileşene çevrilir:</p>
+      <span class="formula">L = X / (2πf) · C = 1 / (2πf · |X|)</span>
+      <p>Ekrandaki Zin, seçilen elemanlarla devrenin girişinden yeniden hesaplanır. Bileşenler ideal kabul edilir; gerçek parçaların kaybı ve parazitik değerleri yoktur.</p>
+    </details>
+    <p class="try">"Adım adım göster"e basın, sonra öbür çözümü seçin. Turuncu noktayı sürükleyerek yükü değiştirin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Hesap RF.lMatch (Pozar 5.1); doğrulama RF.lMatchZin: kaynak tarafından görülen empedans her çözümde 50 + j0 Ω çıkıyor.</li>
+    <li>Yük reaktiflse iki bobinli ya da iki kondansatörlü çözüm de çıkabilir; bu durumda devre ne alçak ne yüksek geçirendir.</li>
+    <li>Pratikte alçak geçiren çözüm tercih edilir: vericinin harmoniklerini ek olarak zayıflatır. Yüksek geçiren çözüm DC'yi keser.</li>
+    <li>Ölçek: Smith abağındaki ızgara 50 Ω'a normalize. Merkez = 50 Ω, kesikli daireler admitans ızgarası.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Stub" id="ceyrek-dalga-stub">
+  <div class="text">
+    <h2>Hat parçasıyla uydurma</h2>
+    <p class="lead">Bobin ve kondansatör yerine kablonun kendisini kullanabiliriz.</p>
+    <p><strong>Çeyrek dalga dönüştürücü:</strong> araya, empedansı iki değerin geometrik ortalaması olan bir hat parçası konur. Bu hat boyunca nokta, <em>kendi</em> empedansına göre çizilmiş abağın merkezi etrafında döner; 50 Ω abağında ise bu dönüş kaymış bir daire gibi görünür. Çeyrek dalgada yük, öbür uçta 50 Ω olarak belirir. Yalnızca gerçek (dirençli) yükler için çalışır.</p>
+    <p><strong>Tek stub:</strong> yükten belli bir uzaklığa gidilir; orada iletkenlik tam 1'dir (kesikli <span class="c-r">g = 1</span> dairesi). Kalan sanal kısmı, paralel bağlı, ucu kısa devre bir hat parçası (stub) iptal eder.</p>
+    <details class="more"><summary>Daha fazla: formül</summary>
+      <span class="formula">Z₁ = √(Z₀ · R_L) · Zin = Z₁² / R_L (ℓ = λ/4)</span>
+      <p>Kısa devre stubun admitansı −j·cot(βℓ)/Z₀: λ/4'ten kısaysa bobin, uzunsa kondansatör gibidir. Uzunluklar elektriksel uzunluktur; kablonun hız faktörüyle çarpılarak metreye çevrilir.</p>
+    </details>
+    <p class="try">"Oynat"a basıp hattın uzamasını izleyin; sonra "Tek stub"a geçin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Çeyrek dalga: Z₁ hattında |Γ| (Z₁'e göre) sabittir, nokta Z₁ abağında merkez etrafında yarım tur atar. 50 Ω abağına taşınınca daire kayar; iz her adımda RF.zinWl(RL, Z₁, ℓ) ile hesaplanıyor.</li>
+    <li>Tek stub: RF.singleStub (Pozar 5.2). Doğrulama: Y(d) + Y_stub = 1/50 S, yani Zin = 50 Ω (iki çözüm de).</li>
+    <li>Örnek uygulama: 75 Ω'luk TV kablosundan çeyrek dalga parçalarla iki anteni birleştirmek; VHF/UHF'de stub ile uydurma kolay, HF'de stub metrelerce uzar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Balun" id="balun">
+  <div class="text">
+    <h2>Balun</h2>
+    <p class="lead">Dipol dengelidir, koaksiyel kablo dengesiz. Doğrudan bağlarsanız kablonun dışı da anten olur.</p>
+    <p>Dipolün iki kolu birbirinin aynası: akımlar eşit ve simetrik. Koaksiyelde ise iç iletkenin akımı, örgünün <em>iç</em> yüzünden geri döner. Deri etkisi yüzünden örgünün iç ve dış yüzü yüksek frekansta iki ayrı iletken gibidir.</p>
+    <p>Besleme noktasında örgüden dönen akım ikiye ayrılır: bir kısmı dipolün koluna, bir kısmı da örgünün <span class="c-h">dış yüzüne</span> gider. Bu ortak mod akımı kollar arasındaki dengeyi bozar, kabloyu ışıtır, parazit toplar.</p>
+    <p><strong>Akım balunu</strong> (ferrit boğucu ya da ferrite sarılmış koaks) bu dış yola büyük bir empedans koyar. İçerideki akım etkilenmez, dışarı sızan akım kesilir. <strong>4:1 balun</strong> buna empedans dönüşümünü ekler: 1:2 sarım oranı empedansı 1:4 değiştirir.</p>
+    <details class="more"><summary>Daha fazla: model</summary>
+      <p>Ekrandaki akımlar basit bir akım bölücüyle hesaplanıyor: kılıfın dış yolu örnek olarak 150 Ω kabul edildi. Gerçekte bu değer kablo boyu ve yerleşimle çok değişir. Empedans oranı sarım oranının karesidir: Z₂/Z₁ = (N₂/N₁)².</p>
+    </details>
+    <p class="try">"Balunsuz" ile "1:1 akım balunu" arasında geçin; kılıfın dışındaki çivit akıma bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Balun = balanced–unbalanced. Akım balunu (Guanella türü, ya da ferrit boğucu) ortak mod akımını bastırır; gerilim balunu (Ruthroff) uçlarda eşit gerilim zorlar ama dengesiz yükte ortak mod akımını iyi kesmez.</li>
+    <li>Boğucunun ortak mod empedansı çalışma bandında birkaç yüz ile birkaç bin ohm arasında olmalı; ölçmek için anten analizörü kablo dışına bağlanır.</li>
+    <li>Belirtiler: SWR'nin kabloya dokununca değişmesi, istasyonda "RF ısırığı", kablo boyuyla değişen gürültü. Akım değerleri yaklaşık model; yalnızca eğilimi gösterir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="5" data-demo="ch5Tuner" id="tuner">
+  <div class="text">
+    <h2>Anten tuner</h2>
+    <p class="lead">Tuner anteni düzeltmez; vericiye uyumlu bir empedans gösterir.</p>
+    <p>Tuner bir L-ağının ayarlı hâlidir. Vericinin yanına konduğunda verici tarafındaki VSWR 1'e iner ve verici rahatlar. Ama tunerın ötesinde hiçbir şey değişmez: anten hâlâ uyumsuz, kabloda <span class="c-ref">yansıyan dalga</span> ve <span class="c-tot">duran dalga</span> aynen durur.</p>
+    <p>Kablo kayıpsız olsaydı bu yansıma bir sorun olmazdı: geri dönen güç tunerdan yeniden antene gönderilir. Gerçek kablo ise her gidişte biraz ısınır. Uyumsuzluk büyüdükçe ve kablo uzadıkça bu ek kayıp artar.</p>
+    <p>Tuner anten ucuna konursa kablo uyumlu çalışır ve yalnızca kendi normal kaybı kalır.</p>
+    <details class="more"><summary>Daha fazla: ek kayıp</summary>
+      <p>Uyumlu kayıp ML (dB), a = 10^(ML/10), ρ = antendeki |Γ|. ARRL'nin "SWR'den doğan ek kayıp" bağıntısı:</p>
+      <span class="formula">Toplam kayıp = 10 log [(a² − ρ²) / (a · (1 − ρ²))]</span>
+      <p>Ekrandaki değer, kayıplı hat denklemiyle hesaplanan giriş empedansından güç akışı olarak bulunuyor; iki yol aynı sonucu verir. Kablo kaybı ideal iletken modelidir, gerçek kablo biraz daha kayıplıdır.</p>
+    </details>
+    <p class="try">"Tuner yok" ile başlayın, sonra tuneri vericinin ve antenin yanına koyun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>"Tuner yok" durumunda kablo kaybı, vericinin gördüğü VSWR'yi olduğundan iyi gösterir: yansıyan dalga dönüşte de zayıflar. Uzun ve kayıplı kabloda düşük SWR okuması iyi anten demek değildir.</li>
+    <li>Tuner yokken antene ulaşan güç, ideal 100 W kaynak ve uyumsuzluk kaybıyla basitçe hesaplandı; gerçek verici koruma devresiyle daha da az verebilir.</li>
+    <li>Tunerın kendi kaybı (bobin direnci) hesaba katılmadı. Yüksek VSWR'de tuner içindeki kayıp da önemli olabilir.</li>
+    <li>Kaynak: ARRL Antenna Book, "additional loss due to SWR"; hesap RF.zinLossy ile çapraz doğrulandı.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 6. ANTEN (ilk yarı) ================= -->
+<section class="slide" data-chapter="6" data-demo="ch6Open" id="anten-nasil-isir">
+  <div class="text">
+    <h2>Anten nasıl ışır?</h2>
+    <p class="lead">Anten, ağzı açılmış bir iletim hattıdır.</p>
+    <p>İki paralel tel enerjiyi taşırken alan iki telin arasına hapsolur: tellerden birinin alanını öbürü hemen yok eder. Hattın ucu açık kalırsa dalganın çoğu oraya çarpıp geri döner. Uçtaki kolları birbirinden ayırınca alan çizgileri artık kapanamaz; halka olup kopar ve boşluğa yayılır.</p>
+    <p>Antene çok yakında <span class="c-e">E</span> ile <span class="c-h">H</span> enerjiyi bir depolayıp bir geri verir (yakın alan). Uzaklaştıkça adım adım yürümeye başlarlar ve oranları 377 Ω'a oturur (uzak alan).</p>
+    <details class="more"><summary>Daha fazla: yakın alan, uzak alan, model</summary>
+      <p>Reaktif yakın alanın sınırı yaklaşık λ/2π'dir. Uzak alan kuralı r ≫ λ ve r &gt; 2D²/λ'dır (D: antenin boyu); çizimde 2λ'da işaretli.</p>
+      <span class="formula">r_yakın ≈ λ / 2π     r_uzak &gt; 2D² / λ</span>
+      <p>Bu sahne <span class="approx">yaklaşık model</span>: 2B FDTD, yani teller sayfanın içine doğru sonsuz uzun şeritler. Gerçek antenin 3B alanı uzaklıkla daha hızlı zayıflar. Bu yüzden yakın alandaki faz farkı 2B ölçümde 3B kuramdan farklı çıkar; sonda kutusu ikisini yan yana gösterir. 2B'de hattın açık ucu da bir miktar sızdırır; gerçek ince bir hatta bu sızıntı çok daha küçüktür. Kollar yarı açıkken hat bir huni gibi kademeli genişler ve en iyi uyumu o verir; huni (horn) antenler bu fikirle çalışır.</p>
+    </details>
+    <p class="try">“Açılma” kaydırıcısını sona çekin; sonra sondayı antene yakından uzağa sürükleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Renk |E| şiddeti (ya da H modunda Hz işareti); ince çizgiler elektrik alan çizgileri (Ψ eş-değer eğrileri). Verici solda; hat sola doğru sönümleyici kenara girer, yani verici uyumlu.</li>
+    <li>“Geri dönen” ve “boşluğa salınan” yüzdeleri hattaki duran dalgaya ileri ve geri dalga uydurularak ölçülür (|Γ|²). Paralel hatta güç büyük ölçüde geri döner; açınca boşluğa giden pay artar.</li>
+    <li>Olası soru: “Yarı açıkken neden daha çok ışıyor?” Kademeli açılan hat bir huni gibi uyum sağlar: horn ve Vivaldi antenleri bu fikirle çalışır. Tam dipolün empedansı ise hattınkinden farklı; gerçekte de 300 Ω hatla 73 Ω dipol uyumsuzdur.</li>
+    <li>Sonda: teğet E ile Hz arasındaki faz farkı ve E/H oranı (×376,7 Ω). Uzakta ≈ 0° ve ≈ 377 Ω.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Dipole" id="dipol">
+  <div class="text">
+    <h2>Yarım dalga dipol</h2>
+    <p class="lead">Ortadan kesilip beslenen, yarım dalga boyunda bir tel: antenlerin “merhaba dünya”sı.</p>
+    <p>Telin uçlarında akım gidecek yer bulamaz, sıfırdır; yükler orada yığılır, gerilim tepe yapar. Ortada tam tersi: <span class="c-h">akım</span> en büyük, <span class="c-e">gerilim</span> en küçüktür. Besleme noktası bu yüzden yaklaşık 73 Ω görür, koaks için çok uygun.</p>
+    <p>Tam λ/2 boyundaki tel biraz “uzun” davranır (+j42,5 Ω). Tel yüzde birkaç kısaltılınca reaktans sıfırlanır: buna <strong>kısaltma faktörü</strong> denir.</p>
+    <details class="more"><summary>Daha fazla: neden kısaltma?</summary>
+      <p>Telin uçları küçük birer kondansatör gibi yük tutar (uç etkisi); akım tel ucunda birden kesilmez. Tel kalınlaştıkça bu etki büyür. Telde dalganın yavaşladığı açıklaması yaygındır ama asıl neden bu uç ve kalınlık etkileridir.</p>
+      <span class="formula">L = k · λ/2 = k · c / (2f)     Z ≈ 73 + j42,5 Ω (L = λ/2)</span>
+      <p>Empedans <span class="approx">yaklaşık model</span>: boşlukta ince tel, sinüs akım (indüklenmiş EMK yöntemi). Yerden yükseklik gerçek değeri epey değiştirir.</p>
+    </details>
+    <p class="try">145 MHz'i seçin, sonra “Rezonansa getir”e basıp reaktansın sıfırlandığı boyu bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Amatör kuralı 468/f (feet, f MHz) ≈ 143/f metre; k ≈ 0,95'e karşılık gelir. Hesaplayıcıdaki “rezonans için k” tel çapına bağlı olarak 0,93–0,98 arasında değişir.</li>
+    <li>Rezonansta direnç 73 Ω'un biraz altına (≈ 65–68 Ω) iner; ekranda canlı hesaplanır. Kaynak: Balanis, Antenna Theory, böl. 8 (indüklenmiş EMK); kb6nu.com “468: ham radio's magic number”.</li>
+    <li>Uç gerilimi: ortalama karakteristik empedans Za = 120(ln(L/a) − 1) ile kaba tahmin. 100 W'ta bile uçlarda kilovolt mertebesi: izolatör ve dokunma uyarısı.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Mono" id="monopol">
+  <div class="text">
+    <h2>Monopol ve toprak düzlemi</h2>
+    <p class="lead">Dipolün yarısını atın, yerine iletken bir düzlem koyun: alan aynı kalır.</p>
+    <p>İletken düzlem bir ayna gibi davranır. Üstteki çeyrek dalga tel, düzlemin altında hayalî bir eşi varmış gibi ışır. Düzlemin üstündeki alan, tam bir yarım dalga dipolün üst yarısıyla birebir aynıdır.</p>
+    <p>Fark beslemede: gerilim yarı tele düşer, ışıma direnci yarıya iner (≈ 36 Ω). Bütün güç üst yarı uzaya gider; yönlülük 3 dB artar (≈ 5,16 dBi).</p>
+    <p>Gerçekte düzlem; toprağa serilen radyal teller, aracın metal tavanı ya da el telsizinde elinizdir.</p>
+    <p class="try">“Ayna görüntüsünü göster”e basın, sonra “Tam dipol” ile karşılaştırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>İki benzetim yan yana koşuyor: biri toprak düzlemi + λ/4 tel, öbürü düzlem olmadan λ/2 dipol. “Üst yarıda fark” iki benzetimin |E|² alanlarının ölçülen bağıl farkı; ayna görüntüsü fikrini sayıyla doğrular.</li>
+    <li>Değerler mükemmel ve sonsuz düzlem içindir. Gerçek toprak kayıplıdır; radyal sayısı azsa verim düşer, besleme direnci yükselir.</li>
+    <li>Araç tavanındaki 145 MHz'lik çeyrek dalga anten (≈ 49 cm) tipik örnektir.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Pattern" id="isima-deseni">
+  <div class="text">
+    <h2>Işıma deseni</h2>
+    <p class="lead">Anten her yöne eşit ışımaz; deseni simidi andırır.</p>
+    <p>Dipol en güçlü kendi eksenine dik yönde ışır; telin ucuna doğru hiç ışımaz (boşluk). Kutupsal çizim dikey kesiti desibel ölçeğinde gösterir; yanındaki çizim aynı desenin 3B hâli.</p>
+    <p>Teli uzattıkça simit yassılaşır ve yönlülük artar. Bir buçuk dalga boyunda tel üstünde ters yönlü akan parçalar belirir; ana lob ikiye bölünür, yatay yönde zayıflar.</p>
+    <details class="more"><summary>Daha fazla: desen formülü</summary>
+      <span class="formula">F(θ) = [cos(πL/λ · cosθ) − cos(πL/λ)] / sinθ</span>
+      <p>θ telle yapılan açıdır. Sinüs akım dağılımlı ince dipol için geçerlidir. 1λ ve 2λ'da besleme noktası akım düğümüne düşer; besleme direnci kuramda çok yükselir.</p>
+    </details>
+    <p class="try">Önce 1λ'ya, sonra 1,5λ'ya basın; 3B deseni sürükleyip çevirin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yönlülük: 0,5λ'da 2,15 dBi, 1,25λ'da ≈ 5,2 dBi (dipolün en yönlü olduğu boy), 1,5λ'da loblar bölünür ve yönlülük düşer.</li>
+    <li>Işıma direnci akım tepesine göre; besleme direnci beslemedeki akıma göre. İkisi yarım dalgada aynıdır.</li>
+    <li>Kutupsal ızgara: 0, −10, −20, −30 dB halkaları; −40 dB merkez.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6Gain" id="kazanc">
+  <div class="text">
+    <h2>Kazanç, yönlülük, dBi ve dBd</h2>
+    <p class="lead">Kazanç enerji yaratmaz; olanı yönlendirir.</p>
+    <p>Işıma desenini bir balon gibi düşünün: bir yerden sıkıştırınca başka yerden şişer. Toplam güç aynıdır; ama bir yöne toplanınca o yönde daha güçlü görünür. Yönlülük bu toplanmanın ölçüsüdür.</p>
+    <p>Karşılaştırma için iki cetvel var: <strong>dBi</strong> her yöne eşit ışıyan hayalî (izotropik) antene, <strong>dBd</strong> yarım dalga dipole göre. Dipol 2,15 dBi olduğu için dBd = dBi − 2,15.</p>
+    <p>Kayıplar (direnç, toprak, uyumsuz parçalar) gücün bir kısmını ısıya çevirir: <span class="c-fwd">kazanç</span> = <span class="c-r">verim</span> × yönlülük.</p>
+    <p class="try">“Dipol”den “Yönlü”ye geçin ve sıkıştırmayı artırın; sonra verimi düşürün.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Yönlü desen cosⁿθ (yalnız ön yarı uzay). Yönlülük her desen için sayısal integralle hesaplanır; cosⁿ için 2(n+1) çıkmalı (n = 4 → 10 → 10 dBi).</li>
+    <li>“Toplam ışınan güç” göstergesi desenin küre üstündeki integralidir: desen ne olursa olsun verimle aynı kalır. Balonun hacmi değil, desenin integrali sabittir; balon bir benzetme.</li>
+    <li>Reklam tuzağı: “dB” yazan kazanç dBi mi dBd mi? 2,15 dB fark eder. Olası soru: izotropik anten gerçekte yoktur, yalnızca cetveldir.</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 6b. ANTEN: POLARİZASYON, YAGİ, FAZ DİZİSİ, DİĞER ANTENLER ================= -->
+<section class="slide" data-chapter="6" data-demo="ch6bPol" id="polarizasyon">
+  <div class="text">
+    <h2>Dalganın bir yönü var</h2>
+    <p class="lead">Elektrik alanı boşlukta hep aynı düzlemde titreşebilir ya da ilerlerken bir burgu gibi dönebilir. Buna polarizasyon denir.</p>
+    <p>Dikey bir dipol, <span class="c-e">elektrik alanı</span> dikey titreşen bir dalga yayar; <span class="c-h">manyetik alan</span> ona hep diktir. Alıcı anten aynı doğrultuda durursa bütün gücü alır. Alıcıyı yatırdıkça alınan güç azalır; tam 90°'de kuramsal olarak sıfıra iner.</p>
+    <p>Dairesel polarizasyonda alan vektörü döner: sağ el ya da sol el. Dairesel bir dalgayı doğrusal bir antenle almak yarı gücü, yani 3 dB'i götürür; ama antenin hangi açıda durduğu artık önemli olmaz. Bu yüzden uydular ve GPS dairesel polarizasyon kullanır.</p>
+    <details class="more"><summary>Daha fazla: cos² kuralı ve gerçek hayat</summary>
+      <p>İki doğrusal anten arasındaki açı Δ ise alınan güç oranı:</p>
+      <span class="formula">P_alınan / P_en çok = cos²(Δ)</span>
+      <p>45°'de yarı güç (3 dB), 90°'de kuramda sıfır. Pratikte sıfır olmaz: antenin kendi çapraz polarizasyonu, yansımalar ve hizalama hatası yüzünden ayrım çoğu zaman yalnızca 20–30 dB civarında kalır. Zıt yönde dönen iki dairesel anten (sağ ↔ sol) de kuramda hiç sinyal almaz; gerçekte kayıp yine büyük ama sonsuz değildir.</p>
+    </details>
+    <p class="try">Alıcıyı yavaşça 90°'ye çevirin ve güç göstergesini izleyin; sonra vericiyi "Sağ el" yapın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kural: E vektörünün doğrultusu = polarizasyon. Dikey dipol dikey polarizasyon yayar. FM ve TV yayınlarında yatay, VHF/UHF FM telsizde dikey yaygın; SSB/zayıf sinyal VHF'de çoğunlukla yatay.</li>
+    <li>Sağ ve sol el (IEEE tanımı): dalgaya arkasından, yani vericinin tarafından bakınca saat yönünde dönüyorsa sağ el. Yansıma el yönünü tersine çevirir.</li>
+    <li>90°'de sıfır yalnızca kuram. ITU-R S.727, doğrusal polarizasyonlu VSAT antenlerden ana hüzmede yalnızca en az 25 dB (kenarlarda 20 dB) eş/çapraz polarizasyon oranı ister; besleme açısı hatası ayrımı 20·log(tan θ) kadar düşürür.</li>
+    <li>Dairesel ↔ doğrusal: cos² ortalaması ½ → 3 dB. Pratikte dairesel antenin eksen oranı mükemmel olmadığından bu değer biraz oynar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bYagi" id="yagi">
+  <div class="text">
+    <h2>Yagi: çatıdaki tarak</h2>
+    <p class="lead">Bir dipolün yanına beslenmemiş birkaç çubuk koyun: ışıma bir yöne toplanır.</p>
+    <p>Yalnızca ortadaki <strong>sürülen eleman</strong> kabloya bağlıdır. Arkadaki biraz uzun <strong>yansıtıcı</strong> ve öndeki biraz kısa <strong>yönlendiriciler</strong>, sürülen elemanın alanından akım kapar ve kendileri de ışır. Akımlarının fazı aralığa ve boya göre kayar; dalgalar önde üst üste biner, arkada birbirini söndürür.</p>
+    <p>Eleman ekledikçe hüzme daralır, kazanç artar; ama her yeni yönlendiricinin katkısı bir öncekinden azdır. Antenin boyu (bom uzunluğu) kazancı en çok belirleyen şeydir.</p>
+    <p>Anten, 1926'da Tohoku İmparatorluk Üniversitesi'nde Shintaro Uda ile hocası Hidetsugu Yagi'nin çalışmasından doğdu; asıl buluşu Uda yaptı.</p>
+    <details class="more"><summary>Daha fazla: bu modelin sınırı</summary>
+      <p>Buradaki desen <span class="approx">yaklaşık model</span>: her elemana bir genlik ve faz atayıp dizi faktörünü topluyoruz. Fazlar, ilerleyen bir dalganın gecikmesine Hansen–Woodyard'daki gibi küçük bir ek gecikme eklenerek seçildi; genlik aralık büyüdükçe azalıyor.</p>
+      <span class="formula">F(φ) = Σ aₙ e^{j(2π xₙ cos φ + αₙ)} · F_dipol(φ)</span>
+      <p>Gerçek bir Yagi'de akımlar elemanlar arasındaki karşılıklı empedanslardan çıkar ve NEC gibi sayısal yöntemlerle (moment yöntemi) hesaplanır. Bu model eğilimleri doğru gösterir, tasarım için kullanılmaz.</p>
+    </details>
+    <p class="try">Eleman sayısını 3'ten 10'a çıkarın; kazancın ve ön/arka oranının nasıl değiştiğine bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: IEEE Milestone (1995) ve Wikipedia "Yagi–Uda antenna": Uda ve Yagi, Tohoku İmparatorluk Üniversitesi, 1926; ilk Japonca yayın Şubat 1926, Yagi'nin İngilizce makalesi Proc. IRE 1928. Bazı kaynaklar Uda'nın deneylerini 1925'e tarihler.</li>
+    <li>Model: yansıtıcı + sürülen + yönlendiriciler, ardışık faz gecikmesi 2πd + π/N (Hansen–Woodyard benzeri), yönlendirici genliği aralıkla ve sırayla azalır. Kazanç, 3B desenin küre üzerinde sayısal integraliyle (kayıpsız: kazanç = yönlülük) hesaplanır.</li>
+    <li>Gerçek değerler için: 3 elemanlı Yagi tipik olarak 7–8 dBi, 10 elemanlı uzun bomlu Yagi 12–14 dBi civarı. Model bu aralığa düşüyor ama ön/arka oranı gerçek tasarımlarda eleman boylarına çok duyarlıdır.</li>
+    <li>Olası soru: "Neden yansıtıcı tek?" Arkaya ikinci bir yansıtıcı koymak çok az kazandırır; geri ışıma zaten büyük ölçüde sönmüştür.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bPA" id="faz-dizisi">
+  <div class="text">
+    <h2>Anten kıpırdamadan dönen hüzme</h2>
+    <p class="lead">Aynı sinyali yan yana dizilmiş antenlere biraz gecikmeyle verirseniz, dalga cephesi eğilir ve hüzme döner.</p>
+    <p>Her eleman kendi halkasını yayar; hepsi aynı anda beslenirse halkalar tam karşıda birleşir. Sağdakileri bir parça geç beslerseniz birleşen düz cephe yana yatar. Elemanların altındaki küçük oklar fazları gösterir.</p>
+    <p>Aralık yarım dalga boyunu aşarsa ana hüzmenin yanında istenmeyen güçlü hüzmeler belirir: <strong>ızgara lobları</strong>. Radarlar, 5G baz istasyonları ve Starlink'in düz kullanıcı terminali bu ilkeyle çalışır.</p>
+    <details class="more"><summary>Daha fazla: faz farkı ve dizi faktörü</summary>
+      <p>θ₀ yönüne hüzme için ardışık iki eleman arasındaki faz farkı:</p>
+      <span class="formula">β = −2π (d/λ) sin θ₀</span>
+      <span class="formula">AF(θ) = sin(Nψ/2) / (N sin(ψ/2)),  ψ = 2π (d/λ) sin θ + β</span>
+      <p>ψ, 2π'nin bir katına başka bir θ'da da ulaşabiliyorsa ızgara lobu oluşur: sin θ = sin θ₀ ± λ/d. Desen, elemanların arkasında bir yansıtıcı levha varmış gibi cos θ eleman deseniyle çarpılarak çizildi.</p>
+    </details>
+    <p class="try">Yönlendirme açısını 30°'ye getirin, sonra aralığı 0,9 λ'ya çıkarıp ızgara lobunu bulun.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Fazörler: her elemanın sinyali aynı frekansta döner; okların açı farkı ardışık faz farkı β'dır. β = 0 → hüzme tam karşıda (broadside).</li>
+    <li>Yönlendirme açısı büyüdükçe hüzme genişler (etkin açıklık cos θ₀ kadar küçülür) ve kazanç düşer; bu yüzden düz paneller pratikte ±60° civarıyla sınırlı kalır. Starlink'in ikinci nesil terminali kaba yönelme için motorla da eğilir, ince yönlendirme elektroniktir.</li>
+    <li>Izgara lobu koşulu: d/λ > 1 / (1 + |sin θ₀|). Karşıya bakarken sınır 1 λ, 90°'ye kadar yönlendirmek için λ/2.</li>
+    <li>Kaynak: Starlink kullanıcı terminali Ku bandında, yüzlerce–binin üzerinde elemanlı elektronik yönlendirmeli faz dizisi (Microwave Journal, terminal sökümleri). Kesin eleman sayıları nesle göre değişir; sayı vermemek daha güvenli.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="6" data-demo="ch6bOther" id="diger-antenler">
+  <div class="text">
+    <h2>Anten ailesinin geri kalanı</h2>
+    <p class="lead">Dipol ve Yagi tek seçenek değil. Bir teli halka yapın, bir bakır levhayı devre kartına basın, teli yay gibi sarın ya da dalgayı bir çanakla toplayın.</p>
+    <p>Her paftada bir anten, mavi baskı çizimi ve ışıma deseni var. Paftaya dokunun ya da alttan seçin; seçtiğinizin tek cümlelik özeti sahnenin altında belirir.</p>
+    <p>Çanakta kazanç, ağzın dalga boyuna göre ne kadar büyük olduğuna bağlıdır. Çapı ikiye katlamak kazancı dört kat (6 dB) artırır; frekansı ikiye katlamak da aynı işi görür.</p>
+    <details class="more"><summary>Daha fazla: çanak kazancı</summary>
+      <span class="formula">G = η (π D / λ)²</span>
+      <p>η açıklık verimidir; ev tipi çanaklarda %55 civarı alınır. Hüzme genişliği yaklaşık 70 λ / D derecedir. Desenlerin bir kısmı <span class="approx">temsilî</span>: biçimi doğru, ayrıntısı antene göre değişir.</p>
+    </details>
+    <p class="try">"Çanak" paftasını seçin ve çapı büyütün; kazanç artarken hüzmenin iğne gibi incelişini izleyin.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Küçük halka (çevresi λ/10'dan küçük): deseni kısa dipolünkiyle aynı, ama E ve H yer değiştirmiş; ekseni boyunca sıfır. Yön bulma (tilki avı) ve AM/kısa dalga alıcılarında kullanılır.</li>
+    <li>Patch: devre kartında yaklaşık yarım dalga boyunda (dielektrik içinde) bakır levha; tek yöne bakar, tipik 6–8 dBi. GPS ve telefonlarda, faz dizilerinde eleman olarak.</li>
+    <li>Helisel (eksenel kip, John Kraus 1946): çevresi ≈ λ olan sarmal, dairesel polarizasyon üretir; uydu ve uzay haberleşmesinde. Yönlülük için Kraus'un yaklaşık formülü D ≈ 15 N C² S / λ³.</li>
+    <li>Çanak: G = η(πD/λ)², η ≈ 0,55. 60 cm'lik uydu çanağı Ku bandında 35 dBi civarı. Hüzme genişliği ≈ 70 λ/D derece (yaklaşık kural).</li>
+  </ul></aside>
+</section>
+
+<!-- ================= 7. GERÇEK DÜNYADA ================= -->
+<section class="slide" data-chapter="7" data-demo="ch7Budget" id="baglanti-butcesi">
+  <div class="text">
+    <h2>Bu bağlantı kurulur mu?</h2>
+    <p class="lead">Bir telsiz bağlantısı, verici gücünden başlayıp alıcıya kadar süren bir desibel hesabıdır: kimi basamak ekler, kimi götürür.</p>
+    <p>Kablolar biraz kaybettirir, antenler gücü bir yöne toplayarak kazandırır. Asıl büyük düşüş yolda olur: dalga yayıldıkça güç gittikçe büyüyen bir küreye dağılır. Mesafe iki katına çıkınca sinyal dörtte birine iner (6 dB).</p>
+    <p>Alıcıya ulaşan <span class="c-fwd">sinyal seviyesi</span>, alıcının duyabildiği en zayıf sinyalden (hassasiyet) yüksekse bağlantı kurulur. Aradaki farka <strong>marj</strong> denir; yağmur, ağaç ve duvar bu marjdan yer.</p>
+    <p class="note-small">Hesap serbest uzay varsayar: engel, Fresnel bölgesi, yer yansıması ve dünyanın eğriliği yok. Yerdeki gerçek bağlantılar bundan onlarca dB kötü olabilir.</p>
+    <details class="more"><summary>Daha fazla: Friis denklemi</summary>
+      <p>Her şey dBm ve dB cinsinden toplanır:</p>
+      <span class="formula">P_al = P_ver − L_kablo1 + G_ver − FSPL + G_al − L_kablo2</span>
+      <span class="formula">FSPL = 20·log₁₀(4π·d·f / c)  [dB]</span>
+      <p>Marj = P_al − hassasiyet. Marj 6 dB artınca, serbest uzayda menzil iki katına çıkar. Kablo kaybı kablo türü, uzunluk ve frekanstan iletken ve dielektrik kaybıyla hesaplanır (ideal iletken; gerçek kablo biraz daha kayıplıdır).</p>
+    </details>
+    <p class="try">Wi-Fi senaryosunu seçin ve mesafeyi uzatın: sinyal kaç metrede hassasiyet çizgisinin altına iniyor?</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Senaryolar: 2 m el telsizi en çok 5 W (BTK teknik ölçütleri, 144–146 MHz'de el telsizi FM için sınır). LoRa: 868–868,6 MHz'de 25 mW e.r.p. ve %1 görev çevrimi (BTK, Frekans Tahsisinden Muaf Telsiz Cihaz ve Sistemlerine İlişkin Teknik Ölçütler); SX1276 veri sayfası 868 MHz'de SF12/125 kHz için −136 dBm hassasiyet verir.</li>
+    <li>Wi-Fi: 2,4 GHz'de 100 mW e.i.r.p. sınırı (aynı belge). Hassasiyet hıza bağlı: 54 Mbit/s için üreticiler −65 ile −76 dBm arası verir; seçilen −72 dBm tipik bir değer.</li>
+    <li>ISS'teki Kenwood telsizi 25 W ile sınırlıdır (ARISS). İstasyon ~400 km yükseklikte; tam tepedeyken ~400 km, ufka yakınken ~2000 km uzaktadır.</li>
+    <li>Anten kazançları senaryoda varsayımdır (el telsizi kauçuk anteni 0 dBi'den genelde daha kötüdür). Kablo kaybı ideal iletkenle hesaplanır, veri sayfasından %20–40 düşük çıkar.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Vna" id="olcum">
+  <div class="text">
+    <h2>Ölçü aletini okumak</h2>
+    <p class="lead">Anteni ölçmenin üç yolu var: SWR metre, anten analizörü ve NanoVNA gibi küçük bir vektör ağ analizörü.</p>
+    <p><strong>SWR metre</strong> verici ile anten arasına girer ve tek bir sayı söyler: VSWR (duran dalga oranı). <strong>Anten analizörü</strong> kendi küçük sinyalini gönderir, frekansı tarar ve empedansı da ölçer. <strong>NanoVNA</strong> bunun cep boyu hâlidir: <span class="c-ref">yansıyan dalganın</span> genliğini de fazını da ölçer.</p>
+    <p>Sağdaki ekran bir dipolü ölçüyor. S11 eğrisinin çukuru rezonansı gösterir; VSWR eğrisi aynı bilginin başka yüzü. Kablo eklendikçe Smith abağındaki iz döner, ama kayıpsız kabloda VSWR hiç değişmez: kablo uyumsuzluğu düzeltmez, yalnızca gizler.</p>
+    <p class="note-small">Ölçümden önce kalibrasyon şarttır: kısa devre, açık devre ve 50 Ω yük (SOL) takılır ki cihaz kendi kablosunun etkisini çıkarabilsin. <span class="approx">yaklaşık model</span> Dipol seri RLC devresiyle modellendi.</p>
+    <details class="more"><summary>Daha fazla: ekrandaki sayılar</summary>
+      <span class="formula">S11 = 20·log₁₀|Γ|  (dB),  geri dönüş kaybı = −S11</span>
+      <span class="formula">Z(f) = R + j·Q·R·(f/f₀ − f₀/f)</span>
+      <p>Kablonun ucundaki empedans <code>Zin = Z₀(Z + Z₀ tanh γl)/(Z₀ + Z tanh γl)</code> ile bulunur. Kayıp varsa iz merkeze doğru sarmal çizer.</p>
+    </details>
+    <p class="try">Ekrandaki imleci sürükleyip çukurun dibine getirin, sonra kablo uzunluğunu artırın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>NanoVNA ekranında genelde dört iz olur: S11 LOGMAG, S11 SWR, S11 Smith, S11 faz. Burada üçü gösteriliyor.</li>
+    <li>Yarım dalga dipolün besleme direnci serbest uzayda ≈ 73 Ω; 50 Ω'luk hatta rezonansta bile VSWR ≈ 1,46 olur. Gerçek dipolün yere yakınlığı bu değeri değiştirir.</li>
+    <li>Kalibrasyon düzlemi: SOL standartları kablonun ucuna takılırsa cihaz, kablonun ucunu ölçer; takılmazsa kablo ölçüme karışır (Smith izi döner).</li>
+    <li>Q kaydırıcısı anten bant genişliğini temsil eder: kalın tel düşük Q, ince tel yüksek Q.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Pitfalls" id="pratik-hatalar">
+  <div class="text">
+    <h2>Sık yapılan hatalar</h2>
+    <p class="lead">Kâğıtta kusursuz bir anten, sahada dört klasik hatadan biriyle bozulabilir.</p>
+    <ul>
+      <li><strong>75 Ω kablo 50 Ω sisteme</strong> girince (TV kablosu) VSWR kablo boyuna göre değişir.</li>
+      <li><strong>Uzun, kayıplı kablo</strong> VSWR'yi olduğundan iyi gösterir: yansıyan dalga dönerken de kaybolur.</li>
+      <li><strong>Metal yüzeye yakın anten</strong> kendi görüntüsüyle etkileşir; empedans ve desen değişir.</li>
+      <li><strong>Yanlış boyda kesilmiş dipol</strong> başka bir frekansta rezonansa girer.</li>
+    </ul>
+    <details class="more"><summary>Daha fazla: hesaplar</summary>
+      <span class="formula">|Γ_giriş| = |Γ_yük| · 10^(−2·kayıp/20)</span>
+      <span class="formula">f_rez ≈ 0,95 · c / (2·L)</span>
+      <p>Metal yüzey için iletken düzlemin ayna görüntüsü kullanılır: Z = Z₁₁ − Z₁₂(2h) (iki paralel yarım dalga dipolün karşılıklı empedansı). <span class="approx">yaklaşık model</span></p>
+    </details>
+    <p class="try">Uzun, kayıplı kablo senaryosunu seçin ve kabloyu uzatın: vericide görülen VSWR iyileşirken antene ulaşan güç düşer.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>75 Ω'luk kablo λ/2'nin katı uzunluktaysa 50 Ω'u aynen taşır; λ/4'ün tek katlarında 75²/50 = 112,5 Ω gösterir (VSWR 2,25).</li>
+    <li>Kayıplı kablo bir "zayıflatıcı" gibi davranır: ucunda açık devre olsa bile, 10 dB kayıplı kablonun girişinde VSWR 1,2'ye düşer. Kötü VSWR'yi kablo uzatarak "düzeltmek" gücü ısıya çevirir.</li>
+    <li>Metal düzlem modeli sonsuz ve mükemmel iletken düzlem, ince tel, sinüs akım varsayar (Balanis, karşılıklı empedans). Gerçek bir araba tavanı ya da duvar daha karmaşıktır.</li>
+    <li>Dipol kısaltma katsayısı 0,95 tel antenler için tipik değerdir; tel kalınlığı ve izolasyon bunu değiştirir. Önce biraz uzun kesip ölçerek kısaltmak güvenli yoldur.</li>
+  </ul></aside>
+</section>
+
+<section class="slide" data-chapter="7" data-demo="ch7Safety" id="guvenlik">
+  <div class="text">
+    <h2>Güvenlik ve yasal çerçeve</h2>
+    <p class="lead">Radyo dalgası yüksek güçte dokuyu ısıtır; bu yüzden antenle aranızda bir mesafe sınırı vardır.</p>
+    <p><a href="https://www.icnirp.org/en/frequencies/radiofrequency/index.html" target="_blank" rel="noopener">ICNIRP 2020</a> kılavuzu genel halk için güç yoğunluğu sınırı verir; hesaplayıcı bu sınıra inilen mesafeyi bulur. <strong>Yaklaşıktır</strong> (uzak alan varsayımı) ve resmî değerlendirmenin yerine geçmez.</p>
+    <p>Düşük güçte bile anten uçlarında yüzlerce volt olabilir: gönderirken antene dokunmayın.</p>
+    <p>Türkiye'de amatör bantlarda göndermek için <strong>amatör telsizcilik belgesi</strong> gerekir. Belgeyi sınavla <a href="https://www.kiyiemniyeti.gov.tr/" target="_blank" rel="noopener">Kıyı Emniyeti</a> verir (A, B, C sınıfı; çağrı işareti dahil). Bant ve güç sınırlarını <a href="https://www.btk.gov.tr/amator-telsizcilik" target="_blank" rel="noopener">BTK</a> belirler.</p>
+    <details class="more"><summary>Daha fazla: sınırlar ve gerilim</summary>
+      <span class="formula">S = P·G / (4π r²)  →  r = √(P·G / (4π·S_sınır))</span>
+      <p>ICNIRP 2020, genel halk, tüm vücut, 30 dakika ortalaması: 30–400 MHz'de 2 W/m², 400–2000 MHz'de f/200 W/m² (f MHz), 2–300 GHz'de 10 W/m². 30 MHz altında güç yoğunluğu değil, ayrı E ve H alan sınırları geçerlidir.</p>
+      <span class="formula">V ≈ √(P·Z)</span>
+      <p>Yüksek empedanslı bir besleme noktası, aynı güçte çok daha yüksek gerilim demektir. Uçtan beslemeli yarım dalga anten (EFHW) genellikle 49:1 dönüştürücüyle beslenir, yani ≈ 2,45 kΩ görür.</p>
+    </details>
+    <p class="try">Gücü artırın, sonra frekansı 400 MHz'in üstüne taşıyın ve güvenli mesafeye bakın.</p>
+  </div>
+  <div class="stage"></div>
+  <aside class="notes"><ul>
+    <li>Kaynak: ICNIRP, "Guidelines for limiting exposure to electromagnetic fields (100 kHz to 300 GHz)", Health Physics 118(5), 2020, Tablo 5. Belge: icnirp.org.</li>
+    <li>Gönderme oranı: sınırlar zaman ortalamasıdır; FM konuşmada verici zamanın bir kısmında açıktır. Sürekli taşıyıcı (FT8, uzun CW) için %100 alın.</li>
+    <li>Bu hesap sağlık tavsiyesi değildir. Yakın alanda (λ/2π'den yakın) güç yoğunluğu formülü geçersizdir; ölçüm ya da ayrıntılı analiz gerekir.</li>
+    <li>Belge: KEGM sınavı (50 soru; A/B ortak soru seti, 75 puan A, 60–74 puan B; C ayrı soru seti). Belge 10 yıl geçerli. Bant ve güç: BTK, Frekans Tahsisinden Muaf Telsiz Cihaz ve Sistemlerine İlişkin Teknik Ölçütler, Tablo "Amatör telsiz cihaz ve sistemleri" (ör. 144–146 MHz'de C sınıfı en çok 5 W).</li>
+  </ul></aside>
+</section>
+
+<!-- ================= KAPANIŞ ================= -->
+<section class="slide center cover" data-chapter="7" data-demo="outro" data-title="Kapanış" id="son">
+  <div class="stage bare"></div>
+  <div class="cover-text">
+    <h2 class="outro-title">Bir kablo ile<br>boşluk arasında</h2>
+    <p class="sub">Bütün radyo, bir kablo ile boşluk arasındaki uyumdan ibaret.</p>
+    <p>İpteki dalga, kablodaki yankı, Smith abağında merkeze yürüyen nokta ve antenden kopan alan halkaları aynı hikâyenin parçaları: enerji bir ortamdan ötekine geçerken empedans uyuşuyorsa yoluna devam eder, uyuşmuyorsa geri döner.</p>
+    <p class="also">Aynı dizinin öteki sunumları:
+      <a href="https://sdr.koraytoksoz.com" target="_blank" rel="noopener">Dalgadan Sayıya</a> (SDR ve IQ verisi),
+      <a href="https://muzik.koraytoksoz.com" target="_blank" rel="noopener">Titreşimden Şarkıya</a> (müzik teorisi),
+      <a href="https://yz.koraytoksoz.com" target="_blank" rel="noopener">Nörondan Dil Modeline</a> (yapay zekâ).</p>
+    <p class="hint">Sorular? <kbd>O</kbd> ile istediğiniz slayta dönebilirsiniz.</p>
+    <div class="cover-meta closing">
+      <a class="gh-link" href="https://github.com/ktoksoz/anten-iletim-hatti" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Kaynak kodu GitHub'da</span></a>
+      <a class="lic" href="https://creativecommons.org/licenses/by/4.0/deed.tr" target="_blank" rel="license noopener" title="İçerik: Creative Commons Atıf 4.0">
+        <img src="img/cc-cc.svg" alt="Creative Commons" width="22" height="22"><img src="img/cc-by.svg" alt="Atıf" width="22" height="22">
+        <span>İçerik CC BY 4.0 · Kod MIT</span>
+      </a>
+    </div>
+    <p class="license">© 2026 Koray Toksöz · Bütün simülasyonlar ve hesaplar tarayıcıda yapılır; üçüncü taraf veri kullanılmaz.</p>
+  </div>
+  <aside class="notes"><ul>
+    <li>Arka planda yine dipol alanı: başladığımız yere döndük. Tıklayınca yeni dalga kaynakları ateşlenir.</li>
+    <li>Tek cümlelik özet: empedans uyumu, enerjinin bir ortamdan ötekine geçip geçmeyeceğini belirler; kablo, uydurma devresi ve anten bu geçişin üç halkasıdır.</li>
+    <li>İleri okuma: ARRL Antenna Book; Balanis, Antenna Theory; Pozar, Microwave Engineering (README'de künyeler).</li>
+  </ul></aside>
+</section>
+
+</main>
+
+<div id="notes" role="dialog" aria-label="Sunucu notları"></div>
+<div id="overview" role="dialog" aria-label="Tüm slaytlar"></div>
+
+<nav id="bar" aria-label="Slayt gezinmesi">
+  <div class="chapter-name"></div>
+  <button class="iconbtn" id="btn-prev" aria-label="Önceki slayt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <div id="progress"></div>
+  <button class="iconbtn" id="btn-next" aria-label="Sonraki slayt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+  <span class="counter"></span>
+  <button class="iconbtn" id="btn-voice" aria-label="Sesli anlatım (A)" title="Sesli anlatım (A)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+  <button class="iconbtn" id="btn-text" aria-label="Açıklama metnini gizle (T)" title="Metni gizle (T)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h10M4 10h10M4 14h7M18 5v14"/></svg></button>
+  <button class="iconbtn" id="btn-notes" aria-label="Sunucu notları (N)" title="Sunucu notları (N)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg></button>
+  <button class="iconbtn" id="btn-overview" aria-label="Tüm slaytlar (O)" title="Tüm slaytlar (O)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></button>
+</nav>
+
+<script src="js/lib.js?v=1"></script>
+<script src="js/rf.js?v=1"></script>
+<script src="js/fdtd1d.js?v=1"></script>
+<script src="js/fdtd2d.js?v=1"></script>
+<script src="js/viz.js?v=1"></script>
+<script src="js/smith.js?v=1"></script>
+<script src="js/demos/ch0.js?v=1"></script>
+<script src="js/demos/ch1.js?v=1"></script>
+<script src="js/demos/ch2.js?v=1"></script>
+<script src="js/demos/ch3.js?v=1"></script>
+<script src="js/demos/ch4.js?v=1"></script>
+<script src="js/demos/ch5.js?v=1"></script>
+<script src="js/demos/ch6.js?v=1"></script>
+<script src="js/demos/ch6b.js?v=1"></script>
+<script src="js/demos/ch7.js?v=1"></script>
+<script src="js/glossary.js?v=1"></script>
+<script src="js/app.js?v=1"></script>
+<script src="js/narrator.js?v=1"></script>
+<script src="js/guide.js?v=1"></script>
+</body>
+</html>
