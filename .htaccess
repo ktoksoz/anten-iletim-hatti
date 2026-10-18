@@ -1,4 +1,4 @@
-# anten.koraytoksoz.com — DreamHost (Apache) ayarları
+# egitim.koraytoksoz.com/anten/ — DreamHost (Apache) ayarları
 
 # HTTP'yi HTTPS'e yönlendir
 <IfModule mod_rewrite.c>

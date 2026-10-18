@@ -1,6 +1,6 @@
 # Kablodan Boşluğa
 
-**Canlı site: https://anten.koraytoksoz.com**
+**Canlı site: https://egitim.koraytoksoz.com/anten/** (eski adres https://anten.koraytoksoz.com buraya yönlendirilir; bütün eğitimler: https://egitim.koraytoksoz.com)
 
 Antenleri, iletim hatlarını ve empedansı; kabloda ilerleyip yansıyan dalgadan karakteristik empedansa, duran dalgaya, Smith abağına, empedans uydurmaya ve antenin dalgayı boşluğa salmasına kadar slayt slayt anlatan, Türkçe, etkileşimli bir sunum sitesi. Her slaytta oynanabilen bir deney ya da canlı bir hesaplayıcı var; bütün simülasyonlar tarayıcıda çalışır.
 
@@ -92,7 +92,7 @@ NODE_PATH=<node_modules> node tools/check-guide.js
 ## Yayınlama
 
 ```sh
-tools/deploy.sh   # varsayılan koray@koraytoksoz.com → ~/anten.koraytoksoz.com
+tools/deploy.sh   # varsayılan koray@koraytoksoz.com → ~/egitim.koraytoksoz.com/anten/
 ```
 
 Betik önce `index.html`'i parçalardan kurar ve CSS/JS bağlantılarındaki `?v=` sürüm etiketini yeniler, sonra `rsync` ile yalnızca değişen dosyaları gönderir (geliştirme dosyaları gönderilmez, sunucudaki dosyalar silinmez). `.htaccess` HTTPS yönlendirmesi, sıkıştırma ve önbellek ayarlarını içerir.
@@ -152,4 +152,4 @@ Simülasyonların, hesapların ve görsellerin tamamı bu projede üretilir; ü�
 
 Önerilen atıf:
 
-> Koray Toksöz, Kablodan Boşluğa, https://anten.koraytoksoz.com
+> Koray Toksöz, Kablodan Boşluğa, https://egitim.koraytoksoz.com/anten/

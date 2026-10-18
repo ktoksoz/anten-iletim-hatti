@@ -13,8 +13,8 @@
   const curId = () => (slides()[curIndex()] || {}).id;
 
   const store = {
-    get(k, d) { try { const v = localStorage.getItem("anlatim." + k); return v == null ? d : v === "1"; } catch (e) { return d; } },
-    set(k, v) { try { localStorage.setItem("anlatim." + k, v ? "1" : "0"); } catch (e) {} },
+    get(k, d) { try { const v = localStorage.getItem("anten.anlatim." + k); return v == null ? d : v === "1"; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("anten.anlatim." + k, v ? "1" : "0"); } catch (e) {} },
   };
   auto = store.get("auto", true);
 
